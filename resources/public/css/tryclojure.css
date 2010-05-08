@@ -1,0 +1,27 @@
+body
+{
+    text-align:center;
+    background-color:#071019;
+}
+p
+{
+    font-family:\"Times New Roman\";
+    font-size:20px;
+}
+h1
+{
+    color:#19A3A3;
+}
+div.scroll 
+{
+    text-align:left;
+    height:300px;
+    width:800px;
+    word-wrap: break-word;
+    margin-left:auto;
+    margin-right:auto;
+    overflow-x:auto;
+    border: 1px solid #666;
+    background-color: #FFFFFF;
+    padding: 8px;
+}
