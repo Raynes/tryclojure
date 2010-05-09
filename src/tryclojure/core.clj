@@ -34,11 +34,11 @@
 
 (defn str-join [stuff] (apply str (interpose "\n" stuff)))
 
-(defn fire-html [text]
+(defn fire-html []
   (html
    (:html5 doctype)
-   
    [:head
+    [:meta {:http-equiv "Content-Type" :content "text/html; charset=UTF-8"}]
     [:title "TryClojure"]
     (include-css "/resources/public/css/tryclojure.css")
     (include-js "/resources/public/js/jquery.js")    
@@ -55,6 +55,11 @@
     [:p#note
      "Many thanks to " [:a {:href "http://tryhaskel.org"} "tryhaskel"] " their javascript for the repl console is great and we are using it as the base for try-clojure.org."]]))
 
+(defn handler [_]
+  {:status  200
+   :headers {"Content-Type" "text/html"}
+   :body  (fire-html)})
+
 (defn repl-handler [{params :query-params session :session uri :uri :as request}]
   (pr request)
   (let [expr (params "expr")
@@ -70,9 +75,10 @@
       (wrap-file (System/getProperty "user.dir"))
       (wrap-params)
       (wrap-stacktrace)
+      [""] handler
       ["clojure.json"] repl-handler))
 
-(defn tryclj [] (run-jetty #'clojureroutes {:port 8081}))
+(defn tryclj [] (run-jetty #'clojureroutes {:port 8081 :encoding "utf-8"}))
 
 (def *server-thread* (Thread. (fn [] (tryclj))))
 (.start *server-thread*)
