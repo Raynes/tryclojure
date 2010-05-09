@@ -41,9 +41,9 @@
      [:td.sides {:width "10%" :valign "top"}
       [:div "Ohai"]]
      [:td {:width "80%"}
-      [:div#code.scroll text]
-      [:script {:type "text/javascript"} "var objDiv = document.getElementById(\"code\");
-window.scrollTo(0,objDiv.offsetTop+objDiv.offsetHeight);;
+      [:div#code.scroll text [:a#bottom_div]]
+      [:script {:type "text/javascript"} "var objDiv = document.getElementById(\"bottom_div\");
+objDiv.scrollIntoView(false);
 "]
       (form-to [:post "/"]
 	       [:input {:name "code" :size 99}]
@@ -53,10 +53,12 @@ window.scrollTo(0,objDiv.offsetTop+objDiv.offsetHeight);;
   
 (defn handler [{fparams :form-params session :session}]
   (let [result (execute-text (fparams "code"))
-	history (apply str (concat (:history session) result))]
+	history (if (seq result) 
+		  (str (:history session) result "<br />") 
+		  (str (:history session) "<br />"))]
     {:status  200
      :headers {"Content-Type" "text/html"}
-     :body    (fire-html history)
+     :body    (fire-html (do (println history) history))
      :session {:history history}}))
 
 (def clojureroutes
