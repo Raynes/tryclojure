@@ -70,7 +70,6 @@
       (wrap-file (System/getProperty "user.dir"))
       (wrap-params)
       (wrap-stacktrace)
-      [""] handler
       ["clojure.json"] repl-handler))
 
 (defn tryclj [] (run-jetty #'clojureroutes {:port 8081}))
