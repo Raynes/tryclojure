@@ -47,7 +47,7 @@
 	(format-links
 	 (link-to "http://clojure.org" "clojure.org")
 	 (link-to "http://java.ociweb.com/mark/clojure/article.html" "Clojure Tutorial")
-	 (link-to "http://http://joyofclojure.com/" "The Joy of Clojure")
+	 (link-to "http://joyofclojure.com/" "The Joy of Clojure")
 	 (link-to "http://groups.google.com/group/clojure" "Clojure Mailing List")
 	 (link-to "http://www.reddit.com/r/clojure" "Clojure Reddit"))
 	[:br] [:br]
