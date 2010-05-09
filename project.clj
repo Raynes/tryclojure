@@ -4,6 +4,7 @@
                  [org.clojure/clojure-contrib "1.1.0"]
 		 [net.cgrand/moustache "1.0.0-SNAPSHOT"]
                  [ring/ring-jetty-adapter "0.2.0"]
+		 [commons-lang/commons-lang "2.5"]
 		 [clj-sandbox "0.3.4"]
 		 [hiccup "0.2.3"]]
   :dev-dependencies [[swank-clojure "1.2.0-SNAPSHOT"]
