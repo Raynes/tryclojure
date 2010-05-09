@@ -1,23 +1,19 @@
-body
-{
+body {
     text-align:center;
     background-color:#071019;
 }
-p
-{
+p {
     font-family:\"Times New Roman\";
     font-size:20px;
 }
-h1
-{
+h1 {
     color:#19A3A3;
 }
-td.sides
-{
+
+td.sides {
     background-color:#FFFFCC;
 }
-div.scroll 
-{
+div.scroll {
     text-align:left;
     height:300px;
     width:800px;
@@ -29,3 +25,98 @@ div.scroll
     background-color: #FFFFFF;
     padding: 8px;
 }
+
+ /* styles from tryhaskel.org for the console code. */ 
+:focus { outline: 0; } 
+div.console { 
+    /*height:200px*/
+    height:220px;
+    cursor:text;
+    text-align: left;
+}
+div.console {
+    background:#fff;
+    font-size:14px;
+    position:relative;
+}
+div.console div.jquery-console-inner {
+    height:220px; 
+    overflow:auto;
+    background:white;
+}
+div.console div.jquery-console-prompt-box {
+    color:#437375;
+    font-family:monospace;
+    margin-top:0.5em;
+}
+div.console div.jquery-console-focus span.jquery-console-cursor {
+    background:#666;
+    color:#fff; 
+} 
+div.console div.jquery-console-message-error {
+    color:#ef0505;
+    font-family:sans-serif;
+    font-weight:bold;
+    padding-left:1em;
+    padding-top:0.25em;
+}
+div.console div.jquery-console-message-value {
+    color:#000;
+    font-family:monospace;
+    padding-left:1em;
+    padding-top:0.25em; 
+    font-weight: bold;
+}
+div.console div.jquery-console-message-type {
+    color:#382567; 
+    font-family:monospace;
+    padding-left:1em;
+    padding-top:0.25em;
+    font-size:.9em;
+}
+div.console span.jquery-console-prompt-label {
+    font-weight:bold;
+}
+div.console div.jquery-console-welcome {
+    font-family:"DejaVu Sans",sans-serif;
+}
+a.reset-btn {
+    float:left;
+    display:block;
+    width:59px;
+    height:24px;
+    background-position: -427px -18px;
+    background-repeat: no-repeat;
+}
+a.reset-btn span {
+    display:none;
+} 
+div.clear {
+    clear:both;
+}
+div.console-wrapper .notice {
+    position:absolute;
+    bottom:0;
+    right:0;
+    margin:10px;
+    background:#eee;
+    color:black;
+    padding:10px;
+    font-size:12px;
+    font-family:sans-serif; 
+    font-weight:bold;
+} 
+p.ajax-loader {
+    background:url(images/ajax-loader.gif);
+    width:16px; 
+    height:16px;
+    text-indent:-9999px;
+} 
+.notice a {
+    padding:3px;
+    background:#333;
+    color:white;
+}
+.notice .action {
+    text-align: right;
+} 
