@@ -12,15 +12,19 @@ h1
 {
     color:#19A3A3;
 }
+td.sides
+{
+    background-color:#FFFFCC;
+}
 div.scroll 
 {
     text-align:left;
     height:300px;
     width:800px;
-    word-wrap: break-word;
+    word-wrap:break-word;
     margin-left:auto;
     margin-right:auto;
-    overflow-x:auto;
+    overflow-y:scroll;
     border: 1px solid #666;
     background-color: #FFFFFF;
     padding: 8px;
