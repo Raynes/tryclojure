@@ -2,6 +2,7 @@ body {
     text-align:center;
     background-color:#FFFFFF;
 }
+
 p {
     font-family:\"Times New Roman\";
     font-size:20px;
@@ -16,6 +17,21 @@ p#note {
     font-size: 12px;
     text-align: left;
 }
+#header {
+    height: 100px;
+}
+#header #logo {
+    width: 100px;
+    height: 100px;
+    float: left;
+}
+
+#header #title {
+    width: 400px;
+    height: 100px;
+    float:left;
+}
+
 
 
 div.scroll {

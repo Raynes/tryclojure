@@ -46,7 +46,11 @@
     (include-js "/resources/public/js/tryclojure.js")
     ]
    [:body
-    [:h1 "Welcome to TryClojure!"]
+    [:div#header 
+     [:div#logo 
+      [:img {:src "/resources/public/images/clojure-icon.gif" :alt "Clojure icon"}]]
+     [:div#title [:h1 "Welcome to TryClojure!"]]
+     ]
     [:div#console {:class "console"}]
     [:p#note
      "Many thanks to " [:a {:href "http://tryhaskel.org"} "tryhaskel"] " their javascript for the repl console is great and we are using it as the base for try-clojure.org."]]))
