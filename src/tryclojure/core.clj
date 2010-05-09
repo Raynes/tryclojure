@@ -23,9 +23,7 @@
      (str writer ((sc txt) {'*out* writer}))
      (catch TimeoutException _ "Execution Timed Out!")
      (catch SecurityException e e)
-     (catch Exception e (.getMessage (root-cause e))))))
-
-(defn str-join [stuff] (apply str (interpose "\n" stuff)))
+     (catch Exception e (str (root-cause e))))))
 
 (defn fire-html [text]
   (html
@@ -41,7 +39,7 @@
      [:td.sides {:width "10%" :valign "top"}
       [:div "Ohai"]]
      [:td {:width "80%"}
-      [:div#code.scroll text [:a#bottom_div]]
+      [:div#code.scroll (.replaceAll (if (seq text) text "") "\n" "<br />") [:a#bottom_div]]
       [:script {:type "text/javascript"} "var objDiv = document.getElementById(\"bottom_div\");
 objDiv.scrollIntoView(false);
 "]
@@ -55,11 +53,11 @@ objDiv.scrollIntoView(false);
   (let [result (when (seq (fparams "code")) (execute-text (fparams "code")))
 	sess-history (:history session)
 	history (if (seq result) 
-		  (str sess-history result "<br />") 
+		  (str sess-history "=> " (fparams "code") "<br />" result "<br />") 
 		  (when (and (seq sess-history) ()) (str sess-history "<br />")))]
     {:status  200
      :headers {"Content-Type" "text/html"}
-     :body    (fire-html (do (println history) history))
+     :body    (fire-html history)
      :session {:history history}}))
 
 (def clojureroutes
