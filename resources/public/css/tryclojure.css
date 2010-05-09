@@ -6,13 +6,18 @@ p {
     font-family:\"Times New Roman\";
     font-size:20px;
 }
+
 h1 {
     color:#3D5A96;
 }
 
-td.sides {
-    background-color:#FFFFCC;
+
+p#note {
+    font-size: 12px;
+    text-align: left;
 }
+
+
 div.scroll {
     text-align:left;
     height:300px;

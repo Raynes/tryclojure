@@ -22,7 +22,7 @@
     (try
      (let [writer (java.io.StringWriter.)
 	   r ((sc txt) {'*out* writer})]
-       {:result (str writer r)
+       {:result (str writer (pr-str r))
 	:type (str (type r))
 	:expr txt})
      (catch TimeoutException _ 
@@ -47,7 +47,9 @@
     ]
    [:body
     [:h1 "Welcome to TryClojure!"]
-    [:div#console {:class "console"}]]))
+    [:div#console {:class "console"}]
+    [:p#note
+     "Many thanks to " [:a {:href "http://tryhaskel.org"} "tryhaskel"] " their javascript for the repl console is great and we are using it as the base for try-clojure.org."]]))
 
 (defn repl-handler [{params :query-params session :session uri :uri :as request}]
   (pr request)
