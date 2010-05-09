@@ -52,10 +52,11 @@ objDiv.scrollIntoView(false);
      [:td {:width "10%"}]]]))
   
 (defn handler [{fparams :form-params session :session}]
-  (let [result (execute-text (fparams "code"))
+  (let [result (when (seq (fparams "code")) (execute-text (fparams "code")))
+	sess-history (:history session)
 	history (if (seq result) 
-		  (str (:history session) result "<br />") 
-		  (str (:history session) "<br />"))]
+		  (str sess-history result "<br />") 
+		  (when (and (seq sess-history) ()) (str sess-history "<br />")))]
     {:status  200
      :headers {"Content-Type" "text/html"}
      :body    (fire-html (do (println history) history))
@@ -71,3 +72,5 @@ objDiv.scrollIntoView(false);
       [""] handler))
 
 (defn tryclj [] (run-jetty #'clojureroutes {:port 8081}))
+
+(tryclj)
