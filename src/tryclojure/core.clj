@@ -37,7 +37,7 @@
      (include-css "/resources/public/css/tryclojure.css")
      [:head
       [:title "TryClojure"]]
-     [:body
+     [:body {:onload "SetFocus()"}
       [:tr]
       [:h1 "Welcome to TryClojure!"]
       [:table {:border "0" :width "100%" :cellpadding "10"}
@@ -61,9 +61,10 @@
 objDiv.scrollIntoView(false);
 "]
 	(form-to [:post "/"]
-		 [:input {:name "code" :size 99}]
+		 [:input#code_input {:name "code" :size 99}]
 		 [:p]
 		 (submit-button "Make Magic Happen"))]
+       [:script {:type "text/javascript"} "document.getElementById(\"code_input\").focus();"]
        [:td {:width "15%"}]]])))
   
 (defn handler [{fparams :form-params session :session}]
@@ -80,7 +81,7 @@ objDiv.scrollIntoView(false);
 
 (def clojureroutes
      (app
-      (wrap-reload '(tryclojure.core))
+      ;(wrap-reload '(tryclojure.core))
       (wrap-session)
       (wrap-file (System/getProperty "user.dir"))
       (wrap-params)
