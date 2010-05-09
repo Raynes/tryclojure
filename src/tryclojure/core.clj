@@ -20,9 +20,10 @@
 						 :timeout 1000)))
 
 (defn execute-text [txt]
-  (let [writer (java.io.StringWriter.)]
+  (let [writer (java.io.StringWriter.)
+	result (pr-str ((sc txt) {'*out* writer}))]
     (try
-     (str writer ((sc txt) {'*out* writer}))
+     (str writer result)
      (catch TimeoutException _ "Execution Timed Out!")
      (catch SecurityException e "Disabled for security purposes.")
      (catch Exception e (str (root-cause e))))))
