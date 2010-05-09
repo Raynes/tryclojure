@@ -1,13 +1,13 @@
 body {
     text-align:center;
-    background-color:#071019;
+    background-color:#FFFFFF;
 }
 p {
     font-family:\"Times New Roman\";
     font-size:20px;
 }
 h1 {
-    color:#19A3A3;
+    color:#3D5A96;
 }
 
 td.sides {
@@ -35,6 +35,7 @@ div.console {
     text-align: left;
 }
 div.console {
+    border: 1px solid black;
     background:#fff;
     font-size:14px;
     position:relative;

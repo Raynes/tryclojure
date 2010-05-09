@@ -194,7 +194,7 @@ function toHex(n){
                                   [{msg:err,
                                     className:"jquery-console-message-error jquery-console-message-exception"}]
                               );
-                              if (err == result.exception) {
+                              if (err == result.exception && false) {
                                   notice('compile-error',
                                          "A run-time error! The expression was right but the"+
                                          " result didn't make sense. Check your expression and try again.",

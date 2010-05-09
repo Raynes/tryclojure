@@ -25,9 +25,12 @@
        {:result (str writer r)
 	:type (str (type r))
 	:expr txt})
-     (catch TimeoutException _ "Execution Timed Out!")
-     (catch SecurityException e e)
-     (catch Exception e (.getMessage (root-cause e)))))
+     (catch TimeoutException _ 
+       {:exception "Execution Timed Out!"})
+     (catch SecurityException e 
+       {:exception (str e)})
+     (catch Exception e
+       {:exception (str (.getMessage (root-cause e)))})))
 
 (defn str-join [stuff] (apply str (interpose "\n" stuff)))
 
@@ -43,26 +46,8 @@
     (include-js "/resources/public/js/tryclojure.js")
     ]
    [:body
-    [:tr]
     [:h1 "Welcome to TryClojure!"]
-    [:table {:border "0" :width "100%" :cellpadding "10"}
-     [:tr]
-     [:td.sides {:width "10%" :valign "top"}
-      [:div "Ohai"]]
-     [:td {:width "80%"}
-      [:div#console {:class "console"} "text"]]
-     [:td {:width "10%"}]]]))
-  
-(defn handler [{fparams :form-params session :session uri :uri :as request}]
-  (let [result (when (seq (fparams "code")) (execute-text (fparams "code")))
-	sess-history (:history session)
-	history (if (seq result) 
-		  (str sess-history result "<br/>") 
-		  (when (and (seq sess-history) ()) (str sess-history "<br />")))]
-    {:status  200
-     :headers {"Content-Type" "text/html"}
-     :body    (fire-html (do (println history) history))
-     :session {:history history}}))
+    [:div#console {:class "console"}]]))
 
 (defn repl-handler [{params :query-params session :session uri :uri :as request}]
   (pr request)
