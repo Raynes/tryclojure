@@ -298,17 +298,18 @@ function toHex(n){
         } else {
             if (result.result) {
                 report(
-                    [{msg:'=> ' + result.result,
-                      className:"jquery-console-message-value"},
-                     {msg:':: ' + result.type,
-                      className:"jquery-console-message-type"}]
+                    [{msg:result.result,
+                      className:"brush: clj;"},
+                     /*{msg:':: ' + result.type,
+                      className:"jquery-console-message-type"}*/]
                 );
-            } else {
+            } /*else {
                 report(
                     [{msg:':: ' + result.type,
                       className:"jquery-console-message-type"}]
                 );
-            }
+            } */
+            SyntaxHighlighter.highlight();
         }
     };
  
