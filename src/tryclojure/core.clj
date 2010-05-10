@@ -45,6 +45,7 @@
     (include-js "/resources/public/js/jquery.js")       
     (include-js "/resources/public/js/jquery.console.js")
     (include-js "/resources/public/js/shCore.js")
+    (inclide-js " resources/public/js/shBrushClojure.js")
     (include-js "/resources/public/js/tryclojure.js")
     ]
    [:body
