@@ -40,8 +40,11 @@
     [:meta {:http-equiv "Content-Type" :content "text/html; charset=UTF-8"}]
     [:title "TryClojure"]
     (include-css "/resources/public/css/tryclojure.css")
-    (include-js "/resources/public/js/jquery.js")    
+    (include-css "/resources/public/css/shCore.css")
+    (include-css "/resources/public/css/shThemeDefault.css")
+    (include-js "/resources/public/js/jquery.js")       
     (include-js "/resources/public/js/jquery.console.js")
+    (include-js "/resources/public/js/shCore.js")
     (include-js "/resources/public/js/tryclojure.js")
     ]
    [:body
