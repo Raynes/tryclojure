@@ -68,7 +68,12 @@ objDiv.scrollIntoView(false);
 	(form-to [:post "/?clear=true"]
 		 (submit-button "Clear REPL"))]
        [:script {:type "text/javascript"} "document.getElementById(\"code_input\").focus();"]
-       [:td {:width "15%"}]]])))
+       [:td {:width "15%" :align "left"}
+	[:p (str "This is a largely HTML based web application for executing Clojure code and seeing the result. "
+		 "Enter your code and press enter (or Make Magic Happen) and your code will be executed. "
+		 "It works just like a normal REPL.")]
+	[:p "Written by Anthony Simpson (Raynes)."] 
+	[:p "Powered by " (link-to "http://github.com/Licenser/clj-sandbox" "clj-sandbox.")]]]])))
   
 (defn handler [{fparams :form-params qparams :query-params session :session}]
   (let [code (StringEscapeUtils/escapeHtml (if (seq (fparams "code")) (fparams "code") ""))

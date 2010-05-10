@@ -1,15 +1,13 @@
 # tryclojure
 
-FIXME: write description
+TryClojure is a online Clojure REPL written using Moustache, Ring, and a few tiny bits of JavaScript. It uses clj-sandbox for Clojure code evaluation.
 
 ## Usage
 
-FIXME: write
+http://tryclj.licenser.net
 
-## Installation
-
-FIXME: write
+Many thanks to Licenser for giving me a place to put it.
 
 ## License
 
-FIXME: write
+Licensed under the same thing Clojure is licensed under: the EPL, of which you can find a copy at the root of this directory.
