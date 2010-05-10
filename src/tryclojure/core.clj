@@ -32,7 +32,7 @@
 
 (defn fire-html [text]
   (let [result (.replaceAll (if (seq text) text "") "\n" "<br />")
-	ftext (if (seq result) (html [:p result]) result)]
+	ftext (if (seq result) (html [:p.primary result]) result)]
     (html
      (:html5 doctype)
      (include-css "/resources/public/css/tryclojure.css")
@@ -43,7 +43,7 @@
       [:h1 "Welcome to TryClojure!"]
       [:table {:border "0" :width "100%" :cellpadding "10"}
        [:tr]
-       [:td.sides {:width "15%" :align "left"}
+       [:td.left {:align "left"}
 	"Useful links:" [:br] [:br]
 	(unordered-list 
 	 [(link-to "http://clojure.org" "clojure.org")
@@ -56,7 +56,7 @@
 	[:br] [:br]
 	(format-links
 	 (link-to "http://github.com/Raynes/tryclojure" "This site's source code"))]
-       [:td {:width "60%"}
+       [:td.prime
 	[:div#code.scroll ftext [:a#bottom_div]]
 	[:script {:type "text/javascript"} "var objDiv = document.getElementById(\"bottom_div\");
 objDiv.scrollIntoView(false);
@@ -68,12 +68,14 @@ objDiv.scrollIntoView(false);
 	(form-to [:post "/?clear=true"]
 		 (submit-button "Clear REPL"))]
        [:script {:type "text/javascript"} "document.getElementById(\"code_input\").focus();"]
-       [:td {:width "15%" :align "left"}
+       [:td.right {:width "15%" :align "left"}
 	[:p (str "This is a largely HTML based web application for executing Clojure code and seeing the result. "
 		 "Enter your code and press enter (or Make Magic Happen) and your code will be executed. "
 		 "It works just like a normal REPL.")]
 	[:p "Written by Anthony Simpson (Raynes)."] 
-	[:p "Powered by " (link-to "http://github.com/Licenser/clj-sandbox" "clj-sandbox.")]]]])))
+	[:p "Powered by " (link-to "http://github.com/Licenser/clj-sandbox" "clj-sandbox.")]]]
+      [:br] [:br]
+      [:div.footer [:p.footer "Copyright 2010 Anthony Simpson. All Rights Reserved."]]])))
   
 (defn handler [{fparams :form-params qparams :query-params session :session}]
   (let [code (StringEscapeUtils/escapeHtml (if (seq (fparams "code")) (fparams "code") ""))

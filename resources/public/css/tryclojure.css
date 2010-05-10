@@ -5,17 +5,40 @@ body
 }
 p
 {
-    color:#E65C00;
+    color:#A9A9A9;
     font-family:\"Times New Roman\";
     font-size:14px;
+}
+p.primary
+{
+    color:#1A1A1A;
+    font-size:20px;
+}
+p.footer
+{
+    color:#A9A9A9;
+    font-size:10px.
 }
 h1
 {
     color:#E65C00;
 }
-td.sides
+td.right
 {
-    background-color:#FFFFCC;
+    width:15%;
+}
+td.left
+{
+    background-color:#33ADFF;
+    width:15%;
+}
+td.prime
+{
+    width:60%;
+}
+div.footer
+{
+    text-align:center;
 }
 div.scroll 
 {
