@@ -21,12 +21,12 @@
 
 (defn execute-text [txt]
   (let [writer (java.io.StringWriter.)
-	result (pr-str ((sc txt) {'*out* writer}))]
-    (try
-     (str writer result)
-     (catch TimeoutException _ "Execution Timed Out!")
-     (catch SecurityException e "Disabled for security purposes.")
-     (catch Exception e (str (root-cause e))))))
+	result (try
+		(pr-str ((sc txt) {'*out* writer}))
+		(catch TimeoutException _ "Execution Timed Out!")
+		(catch SecurityException _ "Disabled for security purposes.")
+		(catch Exception e (str (root-cause e))))]
+    (str writer result) ))
 
 (defn format-links [& links] (interpose [:br] links))
 
@@ -43,14 +43,14 @@
       [:h1 "Welcome to TryClojure!"]
       [:table {:border "0" :width "100%" :cellpadding "10"}
        [:tr]
-       [:td.sides {:width "15%" :valign "top"}
+       [:td.sides {:width "15%" :align "left"}
 	"Useful links:" [:br] [:br]
-	(format-links
-	 (link-to "http://clojure.org" "clojure.org")
-	 (link-to "http://java.ociweb.com/mark/clojure/article.html" "Clojure Tutorial")
-	 (link-to "http://joyofclojure.com/" "The Joy of Clojure")
-	 (link-to "http://groups.google.com/group/clojure" "Clojure Mailing List")
-	 (link-to "http://www.reddit.com/r/clojure" "Clojure Reddit"))
+	(unordered-list 
+	 [(link-to "http://clojure.org" "clojure.org")
+	  (link-to "http://java.ociweb.com/mark/clojure/article.html" "Clojure Tutorial")
+	  (link-to "http://joyofclojure.com/" "The Joy of Clojure")
+	  (link-to "http://groups.google.com/group/clojure" "Clojure Mailing List")
+	  (link-to "http://www.reddit.com/r/clojure" "Clojure Reddit")])
 	[:br] [:br]
 	"Personal links:"
 	[:br] [:br]
@@ -64,17 +64,20 @@ objDiv.scrollIntoView(false);
 	(form-to [:post "/"]
 		 [:input#code_input {:name "code" :size 99}]
 		 [:p]
-		 (submit-button "Make Magic Happen"))]
+		 (submit-button "Make Magic Happen"))
+	(form-to [:post "/?clear=true"]
+		 (submit-button "Clear REPL"))]
        [:script {:type "text/javascript"} "document.getElementById(\"code_input\").focus();"]
        [:td {:width "15%"}]]])))
   
-(defn handler [{fparams :form-params session :session}]
+(defn handler [{fparams :form-params qparams :query-params session :session}]
   (let [code (StringEscapeUtils/escapeHtml (if (seq (fparams "code")) (fparams "code") ""))
 	result (StringEscapeUtils/escapeHtml (if (seq code) (execute-text (fparams "code")) ""))
 	sess-history (:history session)
-	history (if (seq result) 
-		  (str sess-history "=> " code "<br />" result "<br />") 
-		  (when (and (seq sess-history) ()) (str sess-history "<br />")))]
+	history (when-not (= "true" (qparams "clear")) 
+		  (if (seq result) 
+		    (str sess-history "=> " code "<br />" result "<br />") 
+		    (when (and (seq sess-history) ()) (str sess-history "<br />"))))]
     {:status  200
      :headers {"Content-Type" "text/html"}
      :body    (fire-html history)
