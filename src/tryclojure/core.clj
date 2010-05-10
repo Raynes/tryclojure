@@ -23,7 +23,7 @@
      (let [writer (java.io.StringWriter.)
 	   r ((sc txt) {'*out* writer})]
        {:result (str writer (pr-str r))
-	:type (str (type r))
+	:type (if (nil? r) "nil" (str (type r)))
 	:expr txt})
      (catch TimeoutException _ 
        {:exception "Execution Timed Out!"})
@@ -34,8 +34,7 @@
 
 (defn str-join [stuff] (apply str (interpose "\n" stuff)))
 
-(defn fire-html []
-  (html
+(def main-html (html
    (:html5 doctype)
    [:head
     [:meta {:http-equiv "Content-Type" :content "text/html; charset=UTF-8"}]
@@ -53,7 +52,22 @@
      ]
     [:div#console {:class "console"}]
     [:p#note
-     "Many thanks to " [:a {:href "http://tryhaskel.org"} "tryhaskel"] " their javascript for the repl console is great and we are using it as the base for try-clojure.org."]]))
+     "Many thanks to "
+     [:a {:href "http://tryhaskel.org"} "tryhaskel"] 
+     " their javascript for the repl console is great and we are using it as the base for try-clojure.org." [:br]
+     "Also many thanks to Raynes, " [:a {:href "http://tryclj.licenser.net/"} "his code"] " is what this version of try clojure is based on."]
+    [:script {:type "text/javascript"}
+	      "var gaJsHost = (('https:' == document.location.protocol) ? 'https://ssl.' : 'http://www.');
+document.write(unescape(\"%3Cscript src='\" + gaJsHost + \"google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E\"));"
+    ]
+   [:script {:type "text/javascript"}
+    "try {
+  var pageTracker = _gat._getTracker('UA-552543-3');
+  pageTracker._trackPageview();
+} catch(err) {}"]]))
+
+(defn fire-html []
+  main-html)
 
 (defn handler [_]
   {:status  200
@@ -61,7 +75,6 @@
    :body  (fire-html)})
 
 (defn repl-handler [{params :query-params session :session uri :uri :as request}]
-  (pr request)
   (let [expr (params "expr")
 	result (when (seq expr) (execute-text expr))]
     {:status  200
@@ -81,4 +94,5 @@
 (defn tryclj [] (run-jetty #'clojureroutes {:port 8081 :encoding "utf-8"}))
 
 (def *server-thread* (Thread. (fn [] (tryclj))))
+
 (.start *server-thread*)
