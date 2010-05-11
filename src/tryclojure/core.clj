@@ -31,12 +31,20 @@
 (defn format-links [& links] (interpose [:br] links))
 
 (defn fire-html [text]
-  (let [result (.replaceAll (if (seq text) text "") "\n" "<br />")
-	ftext (if (seq result) (html [:p.primary result]) result)]
+  (let [result text
+	ftext (if (seq result) (html [:pre.brush:.clojure result]) result)]
     (html
      (:html5 doctype)
-     (include-css "/resources/public/css/tryclojure.css")
      [:head
+      (include-js "/resources/public/javascript/syntaxhilighter/scripts/shCore.js"
+		  "/resources/public/javascript/syntaxhilighter/scripts/shBrushClojure.js")
+      (include-css "/resources/public/css/tryclojure.css"
+		   "/resources/public/javascript/syntaxhilighter/styles/shCore.css"
+		   "/resources/public/javascript/syntaxhilighter/styles/shThemeDefault.css")
+      (javascript-tag "SyntaxHighlighter.defaults['gutter'] = false;
+SyntaxHighlighter.defaults['toolbar'] = false;
+SyntaxHighlighter.defaults['light'] = true;
+SyntaxHighlighter.all();")
       [:title "TryClojure"]]
      [:body {:onload "SetFocus()"}
       [:tr]
@@ -83,8 +91,8 @@ objDiv.scrollIntoView(false);
 	sess-history (:history session)
 	history (when-not (= "true" (qparams "clear")) 
 		  (if (seq result) 
-		    (str sess-history "=> " code "<br />" result "<br />") 
-		    (when (and (seq sess-history) ()) (str sess-history "<br />"))))]
+		    (str sess-history "=> " code "\n" result "\n") 
+		    (when (and (seq sess-history) ()) (str sess-history "\n"))))]
     {:status  200
      :headers {"Content-Type" "text/html"}
      :body    (fire-html history)
