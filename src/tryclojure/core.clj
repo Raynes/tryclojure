@@ -61,7 +61,7 @@ SyntaxHighlighter.config.tagName = 'div';
 
     [:div#header 
      [:div#logo 
-      [:img {:src "/resources/public/images/clojure-icon.gif" :alt "Clojure icon"}]]
+      [:a {:href "http://clojure.org"} [:img {:src "/resources/public/images/clojure-icon.gif" :alt "Clojure icon"}]]]
      [:div#title [:h1 "Welcome to TryClojure!"]]
      ]
     [:div#console {:class "console"}]

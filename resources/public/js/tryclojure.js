@@ -298,14 +298,15 @@ function toHex(n){
         } else {
             if (result.result) {
                 report(
-                    [{msg: "" + result.result,
+                    [{msg: ";;=>\n" +
+                            result.result,
                       className:"brush: clj;"},
                      /*{msg:':: ' + result.type,
                       className:"jquery-console-message-type"}*/]
                 );
             } /*else {
                 report(
-                    [{msg:':: ' + result.type,
+                    [{msg:':: ' + result.type ,
                       className:"jquery-console-message-type"}]
                 );
             } */
