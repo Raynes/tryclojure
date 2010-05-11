@@ -45,10 +45,18 @@
     (include-js "/resources/public/js/jquery.js")       
     (include-js "/resources/public/js/jquery.console.js")
     (include-js "/resources/public/js/shCore.js")
-    (inclide-js " resources/public/js/shBrushClojure.js")
+    (include-js " resources/public/js/shBrushClojure.js")
     (include-js "/resources/public/js/tryclojure.js")
     ]
    [:body
+    [:script  {:type "text/javascript"} "
+SyntaxHighlighter.config.gutter = false;
+SyntaxHighlighter.defaults['gutter'] = false;
+SyntaxHighlighter.config.toolbar = false;
+SyntaxHighlighter.config.wraplines = false;
+SyntaxHighlighter.config.tagName = 'div';
+"]
+
     [:div#header 
      [:div#logo 
       [:img {:src "/resources/public/images/clojure-icon.gif" :alt "Clojure icon"}]]
