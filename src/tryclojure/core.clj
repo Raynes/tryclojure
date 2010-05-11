@@ -51,9 +51,11 @@
    [:body
     [:script  {:type "text/javascript"} "
 SyntaxHighlighter.config.gutter = false;
-SyntaxHighlighter.defaults['gutter'] = false;
 SyntaxHighlighter.config.toolbar = false;
 SyntaxHighlighter.config.wraplines = false;
+SyntaxHighlighter.defaults['gutter'] = false;
+SyntaxHighlighter.defaults['toolbar'] = false;
+SyntaxHighlighter.defaults['wrap-lines'] = false;
 SyntaxHighlighter.config.tagName = 'div';
 "]
 
