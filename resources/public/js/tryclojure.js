@@ -298,7 +298,7 @@ function toHex(n){
         } else {
             if (result.result) {
                 report(
-                    [{msg:result.result,
+                    [{msg: "" + result.result,
                       className:"brush: clj;"},
                      /*{msg:':: ' + result.type,
                       className:"jquery-console-message-type"}*/]
@@ -310,6 +310,7 @@ function toHex(n){
                 );
             } */
             SyntaxHighlighter.highlight();
+            controller.scrollToBottom();
         }
     };
  
