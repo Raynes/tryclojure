@@ -68,7 +68,7 @@ SyntaxHighlighter.config.tagName = 'div';
     [:p#note
      "Many thanks to "
      [:a {:href "http://tryhaskel.org"} "tryhaskel"] 
-     " their javascript for the repl console is great and we are using it as the base for try-clojure.org." [:br]
+     " - their javascript for the repl console is great and we are using it as the base for try-clojure.org." [:br]
      "Also many thanks to Raynes, " [:a {:href "http://tryclj.licenser.net/"} "his code"] " is what this version of try clojure is based on."]
     [:script {:type "text/javascript"}
 	      "var gaJsHost = (('https:' == document.location.protocol) ? 'https://ssl.' : 'http://www.');
