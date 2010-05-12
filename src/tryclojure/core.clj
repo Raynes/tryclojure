@@ -13,8 +13,7 @@
 (def sandbox-tester
      (extend-tester secure-tester 
 		    (whitelist 
-		     (function-matcher 'println 'print 'pr 'prn 'var 'print-doc 'doc 'throw
-				       'def 'defn 'defmacro))))
+		     (function-matcher 'println 'print 'pr 'prn 'var 'print-doc 'doc 'throw))))
 
 (def sc (stringify-sandbox (new-sandbox-compiler :tester sandbox-tester 
 						 :timeout 1000)))
@@ -26,15 +25,15 @@
 		(catch TimeoutException _ "Execution Timed Out!")
 		(catch SecurityException _ "Disabled for security purposes.")
 		(catch Exception e (str (root-cause e))))]
-    (str writer result) ))
+    (str writer result)))
 
 (defn format-links [& links] (interpose [:br] links))
 
 (defn fire-html [text]
   (let [result text
-	ftext (if (seq result) (html [:pre.brush:.clojure result]) result)]
+	ftext (html [:pre.brush:.clojure result])]
     (html
-     (:html5 doctype)
+     (:html4 doctype)
      [:head
       (include-js "/resources/public/javascript/syntaxhilighter/scripts/shCore.js"
 		  "/resources/public/javascript/syntaxhilighter/scripts/shBrushClojure.js")
@@ -46,7 +45,7 @@ SyntaxHighlighter.defaults['toolbar'] = false;
 SyntaxHighlighter.defaults['light'] = true;
 SyntaxHighlighter.all();")
       [:title "TryClojure"]]
-     [:body {:onload "SetFocus()"}
+     [:body
       [:tr]
       [:h1 "Welcome to TryClojure!"]
       [:table {:border "0" :width "100%" :cellpadding "10"}
@@ -65,10 +64,9 @@ SyntaxHighlighter.all();")
 	(format-links
 	 (link-to "http://github.com/Raynes/tryclojure" "This site's source code"))]
        [:td.prime
-	[:div#code.scroll ftext [:a#bottom_div]]
-	[:script {:type "text/javascript"} "var objDiv = document.getElementById(\"bottom_div\");
-objDiv.scrollIntoView(false);
-"]
+	[:div#code.scroll ftext]
+	[:script {:type "text/javascript"} "var objDiv = document.getElementById(\"code\");
+objDiv.scrollTop = objDiv.scrollHeight;"]
 	(form-to [:post "/"]
 		 [:input#code_input {:name "code" :size 99}]
 		 [:p]
@@ -81,7 +79,10 @@ objDiv.scrollIntoView(false);
 		 "Enter your code and press enter (or Make Magic Happen) and your code will be executed. "
 		 "It works just like a normal REPL.")]
 	[:p "Written by Anthony Simpson (Raynes)."] 
-	[:p "Powered by " (link-to "http://github.com/Licenser/clj-sandbox" "clj-sandbox.")]]]
+	[:p "Powered by " (link-to "http://github.com/Licenser/clj-sandbox" "clj-sandbox.")]
+	[:p "This website isn't finished. There are still some important bugs that need fixed. Here is a link "
+	 "to a list currently known issues, and the progress on fixing them: " 
+	 (link-to "http://github.com/Raynes/tryclojure/issues" "Issues")]]]
       [:br] [:br]
       [:div.footer [:p.footer "Copyright 2010 Anthony Simpson. All Rights Reserved."]]])))
   
@@ -92,7 +93,7 @@ objDiv.scrollIntoView(false);
 	history (when-not (= "true" (qparams "clear")) 
 		  (if (seq result) 
 		    (str sess-history "=> " code "\n" result "\n") 
-		    (when (and (seq sess-history) ()) (str sess-history "\n"))))]
+		    (when (seq sess-history) (str sess-history "\n"))))]
     {:status  200
      :headers {"Content-Type" "text/html"}
      :body    (fire-html history)
