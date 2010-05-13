@@ -35,10 +35,16 @@ td.left
 td.prime
 {
     width:60%;
+    
 }
 div.footer
 {
     text-align:center;
+}
+iframe.prime
+{
+    height:500px;
+    width:850px;
 }
 div.scroll 
 {
@@ -46,9 +52,9 @@ div.scroll
     height:300px;
     width:800px;
     word-wrap:break-word;
+    overflow-y:scroll;
     margin-left:auto;
     margin-right:auto;
-    overflow-y:scroll;
     border: 1px solid #666;
     background-color: #FFFFFF;
     padding: 8px;
