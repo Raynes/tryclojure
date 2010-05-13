@@ -30,13 +30,17 @@
 (defn format-links [& links] (interpose [:br] links))
 
 (defn fire-html [text]
-  (let [result text
-	ftext (html [:pre.brush:.clojure result])]
+  (let [result (.replaceAll (if (seq text) text "") "\n" "<br />")
+	ftext (html [:p.primary result])]
     (html
      (:html4 doctype)
      [:head
       (include-js "/resources/public/javascript/syntaxhilighter/scripts/shCore.js"
 		  "/resources/public/javascript/syntaxhilighter/scripts/shBrushClojure.js")
+      [:script {:type "text/javascript"} "function dosStuff() { 
+var objDiv = document.getElementById(\"code\");
+objDiv.innerHtml =
+objDiv.scrollTop = objDiv.scrollHeight;"]
       (include-css "/resources/public/css/tryclojure.css"
 		   "/resources/public/javascript/syntaxhilighter/styles/shCore.css"
 		   "/resources/public/javascript/syntaxhilighter/styles/shThemeDefault.css")
@@ -69,7 +73,7 @@ SyntaxHighlighter.all();")
 objDiv.scrollTop = objDiv.scrollHeight;"]
 	(form-to [:post "/"]
 		 [:input#code_input {:name "code" :size 99}]
-		 [:p]
+		 [:br]
 		 (submit-button "Make Magic Happen"))
 	(form-to [:post "/?clear=true"]
 		 (submit-button "Clear REPL"))]
@@ -90,10 +94,10 @@ objDiv.scrollTop = objDiv.scrollHeight;"]
   (let [code (StringEscapeUtils/escapeHtml (if (seq (fparams "code")) (fparams "code") ""))
 	result (StringEscapeUtils/escapeHtml (if (seq code) (execute-text (fparams "code")) ""))
 	sess-history (:history session)
-	history (when-not (= "true" (qparams "clear")) 
+	history (when-not (= "true" (qparams "clear"))
 		  (if (seq result) 
-		    (str sess-history "=> " code "\n" result "\n") 
-		    (when (seq sess-history) (str sess-history "\n"))))]
+		    (str sess-history "=> " code "<br />" result "<br />") 
+		    (when (seq sess-history) (str sess-history "<br />"))))]
     {:status  200
      :headers {"Content-Type" "text/html"}
      :body    (fire-html history)
