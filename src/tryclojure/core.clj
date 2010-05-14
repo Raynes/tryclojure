@@ -74,11 +74,9 @@
    :body    fire-html})
 
 (defn div-handler [{qparams :query-params}]
-  (let [code (URLDecoder/decode (StringEscapeUtils/escapeHtml (if (seq (qparams "code")) (qparams "code") "")) "UTF-8")
-	result (StringEscapeUtils/escapeHtml (if (seq code) (execute-text (qparams "code")) ""))]
-    {:status  200
-     :headers {"Content-Type" "text/html"}
-     :body    result}))
+  {:status  200
+   :headers {"Content-Type" "text/html"}
+   :body    (StringEscapeUtils/escapeHtml (execute-text (qparams "code")))})
 
 (def clojureroutes
      (app
