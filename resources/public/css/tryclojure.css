@@ -1,7 +1,7 @@
 body { background-color:white; }
 div#container { width: 600px; height: 400px; 
 		margin: 50px auto;}
-h1 { font-size: 32pt; color: black;  border-bottom: 1px dotted #333; }
+h1 { font-size: 32pt; color: black;  border-bottom: 1px solid #333; font-family: arial black;}
 .bottom { background-color: white; color: #333; }
 .bottom a,a:visited { color: #111; }
 p.bottom
