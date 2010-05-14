@@ -40,32 +40,18 @@
 		   "/resources/public/javascript/tryclojure.js")
        [:title "TryClojure"]]
       [:body
-       [:tr]
-       [:h1 "Welcome to TryClojure!"]
-       [:table {:border "0" :width "100%" :height "300" :cellpadding "10"}
-	[:tr]
-	[:td.left {:align "left"}
-	 "Useful links:" [:br] [:br]
-	 (unordered-list 
-	  [(link-to "http://clojure.org" "clojure.org")
-	   (link-to "http://java.ociweb.com/mark/clojure/article.html" "Clojure Tutorial")
-	   (link-to "http://joyofclojure.com/" "The Joy of Clojure")
-	   (link-to "http://groups.google.com/group/clojure" "Clojure Mailing List")
-	   (link-to "http://www.reddit.com/r/clojure" "Clojure Reddit")])
-	 [:br] [:br]
-	 "Personal links:"
-	 [:br] [:br]
-	 (format-links
-	  (link-to "http://github.com/Raynes/tryclojure" "This site's source code"))]
-	[:td.primary [:div#console.console]]
-	[:td.right {:width "15%" :align "left"}
-	 [:p (str "This is an online Clojure REPL. Just enter your code and press enter and it will be executed.")]
-	 [:p "Written by Anthony Simpson (Raynes)."] 
-	 [:p "Powered by " (link-to "http://github.com/Licenser/clj-sandbox" "clj-sandbox") " and "
-	  (link-to "http://github.com/chrisdone/jquery-console" "jquery-console") " written by Chris Done."]
-	 [:p "This website isn't finished. There may still be issues. To find a list of current issues, visit: " 
-	  (link-to "http://github.com/Raynes/tryclojure/issues" "Issues")]]]
-       [:br] [:br]
+       [:div#container [:div#console.console]
+	[:div.bottom
+	 [:p.status 
+	  "This site is still under construction. I can't promise everything will work correctly."
+	  [:br] [:br]
+	  "TryClojure is written in Clojure and JavaScript, powered by " 
+	  (link-to "http://github.com/Licenser/clj-sandbox" "clj-sandbox")
+	  "and Chris Done's "
+	  (link-to "http://github.com/chrisdone/jquery-console" "jquery-console")
+	  [:br] [:br]
+	  "Huge thanks to " (link-to "http://www.bestinclass.dk/" "Lau Jensen")
+	  " for lot's of help with everything ranging from Gimp, to straight up CSS and HTML design tips."]]]
        [:div.footer [:p.footer "Copyright 2010 Anthony Simpson. All Rights Reserved."]]]))
 
 (defn handler [req]
