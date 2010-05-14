@@ -1,6 +1,6 @@
 # tryclojure
 
-TryClojure is a online Clojure REPL written using Moustache, Ring, and a few tiny bits of JavaScript. It uses clj-sandbox for Clojure code evaluation.
+TryClojure is a online Clojure REPL written using Moustache, Ring, and Chris Done's jquery console (you're awesome, Chris).
 
 ## Usage
 

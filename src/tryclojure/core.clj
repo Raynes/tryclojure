@@ -5,8 +5,7 @@
 	[hiccup core form-helpers page-helpers]
 	[ring.middleware reload stacktrace params file session]
 	net.cgrand.moustache
-	[clojure.stacktrace :only [root-cause]]
-	#_clj-gist.core)
+	[clojure.stacktrace :only [root-cause]])
   (:import java.io.StringWriter
 	   org.apache.commons.lang.StringEscapeUtils
 	   java.util.concurrent.TimeoutException))
@@ -30,31 +29,14 @@
 
 (defn format-links [& links] (interpose [:br] links))
 
-;(defn gist-history [text]
-;  (post-gist "history.clj" (.replaceAll text "<br />" "\n")))
-
-(defn hist-text [text]
-  (html [:p.primary (.replaceAll (if (seq text) text "") "\n" "<br />")]))
-
-(def texta (html
-	    [:table {:border "1" :width "100%" :height "60" :cellpadding "0"}
-	     [:tr]
-	     [:td.arrow {:valign "top"} 
-	      [:p.arrow "=>"]]
-	     [:td {:valign "top"}
-	      [:textarea#code_input.primary]]
-	     [:script {:type "text/javascript"} 
-	      "setupInput(); grabFocus(); setupResize();"]]))
-
 (def fire-html
      (html
       (:html4 doctype)
       [:head
        (include-css "/resources/public/css/tryclojure.css")
        (include-js "/resources/public/javascript/jquery-1.4.2.min.js"
-		   "/resources/public/javascript/tryclojure.js"
-		   "/resources/public/javascript/autoresize.jquery.min.js"
-		   "/resources/public/javascript/jquery.console.js")
+		   "/resources/public/javascript/jquery.console.js"
+		   "/resources/public/javascript/tryclojure.js")
        [:title "TryClojure"]]
       [:body
        [:tr]
@@ -76,13 +58,11 @@
 	  (link-to "http://github.com/Raynes/tryclojure" "This site's source code"))]
 	[:td.primary [:div#console.console]]
 	[:td.right {:width "15%" :align "left"}
-	 [:p (str "This is a largely HTML based web application for executing Clojure code and seeing the result. "
-		  "Enter your code and press enter (or Make Magic Happen) and your code will be executed. "
-		  "It works just like a normal REPL.")]
+	 [:p (str "This is an online Clojure REPL. Just enter your code and press enter and it will be executed.")]
 	 [:p "Written by Anthony Simpson (Raynes)."] 
-	 [:p "Powered by " (link-to "http://github.com/Licenser/clj-sandbox" "clj-sandbox.")]
-	 [:p "This website isn't finished. There are still some important bugs that need fixed. Here is a link "
-	  "to a list currently known issues, and the progress on fixing them: " 
+	 [:p "Powered by " (link-to "http://github.com/Licenser/clj-sandbox" "clj-sandbox") " and "
+	  (link-to "http://github.com/chrisdone/jquery-console" "jquery-console") " written by Chris Done."]
+	 [:p "This website isn't finished. There may still be issues. To find a list of current issues, visit: " 
 	  (link-to "http://github.com/Raynes/tryclojure/issues" "Issues")]]]
        [:br] [:br]
        [:div.footer [:p.footer "Copyright 2010 Anthony Simpson. All Rights Reserved."]]]))
@@ -91,12 +71,6 @@
   {:status  200
    :headers {"Content-Type" "text/html"}
    :body    fire-html})
-
-(defn clear-handler [{session :session}]
-  {:status 200
-   :headers {"Content-Type" "text/html"}
-   :body texta
-   :session nil})
 
 (defn div-handler [{qparams :query-params}]
     (let [code (StringEscapeUtils/escapeHtml (if (seq (qparams "code")) (qparams "code") ""))
@@ -112,7 +86,6 @@
       (wrap-params)
       (wrap-stacktrace)
       ["magics"] div-handler
-      ["clear"] clear-handler
       [""] handler))
 
-(defn tryclj [] (run-jetty #'clojureroutes {:port 8802}))
+(defn tryclj [] (run-jetty #'clojureroutes {:port 8801}))
