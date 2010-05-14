@@ -51,7 +51,7 @@
 	  (link-to "http://github.com/chrisdone/jquery-console" "jquery-console") ""
 	  [:br] [:br]
 	  "Huge thanks to " (link-to "http://www.bestinclass.dk/" "Lau Jensen")
-	  " for lot's of help with everything ranging from Gimp, to straight up CSS and HTML design tips."]]]
+	  " for lots of help with everything ranging from Gimp, to straight up CSS and HTML design tips."]]]
        [:div.footer [:p.footer "Copyright 2010 Anthony Simpson. All Rights Reserved."]]]))
 
 (defn handler [req]
