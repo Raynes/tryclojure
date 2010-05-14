@@ -28,9 +28,9 @@
      (catch TimeoutException _ 
        {:exception "Execution Timed Out!"})
      (catch SecurityException e 
-       {:exception (str e)})
+       {:exception (str "Execution: " e)})
      (catch Exception e
-       {:exception (str (.getMessage (root-cause e)))})))
+       {:exception (str "Execution: " (.getMessage (root-cause e)))})))
 
 (defn str-join [stuff] (apply str (interpose "\n" stuff)))
 
@@ -67,7 +67,7 @@ SyntaxHighlighter.config.tagName = 'div';
     [:div#console {:class "console"}]
     [:p#note
      "Many thanks to "
-     [:a {:href "http://tryhaskel.org"} "tryhaskel"] 
+     [:a {:href "http://tryhaskell.org/"} "tryhaskell"] 
      " - their javascript for the repl console is great and we are using it as the base for try-clojure.org." [:br]
      "Also many thanks to Raynes, " [:a {:href "http://tryclj.licenser.net/"} "his code"] " is what this version of try clojure is based on."]
     [:script {:type "text/javascript"}
