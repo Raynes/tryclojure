@@ -40,6 +40,7 @@
 		   "/resources/public/javascript/tryclojure.js")
        [:title "TryClojure"]]
       [:body
+       [:h1 "Try Clojure"]
        [:div#container [:div#console.console]
 	[:div.bottom
 	 [:p.bottom
@@ -52,7 +53,7 @@
 	  [:br] [:br]
 	  "Huge thanks to " (link-to "http://www.bestinclass.dk/" "Lau Jensen")
 	  " for lots of help with everything ranging from Gimp, to straight up CSS and HTML design tips."]]]
-       [:div.footer [:p.footer "Copyright 2010 Anthony Simpson. All Rights Reserved."]]]))
+	  [:div.footer [:p.footer "Copyright 2010 Anthony Simpson. All Rights Reserved."]]]))
 
 (defn handler [req]
   {:status  200
