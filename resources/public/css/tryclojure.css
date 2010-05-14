@@ -1,12 +1,14 @@
 body { background-color:white; }
 div#container { width: 600px; height: 400px; 
 		margin: 50px auto;}
-p.status
+h1 { font-size: 32pt; color: black; width: 650px; border-bottom: 1px dotted #333; }
+.bottom { background-color: white; color: #333; }
+.bottom a,a:visited { color: #111; }
+p.bottom
 {
-    padding: 0.3em;
-    color:yellow;
-    font-family:\"Times New Roman\";
-    font-size:14px;
+    padding: 0;
+    font-family: verdana;
+    font-size: 8pt;
 }
 p
 {
@@ -14,7 +16,7 @@ p
     font-family:\"Times New Roman\";
     font-size:14px;
 }
-div.bottom { width: 600px; background-color: black;}
+div.bottom { width: 600px;}
 div.footer
 {
     text-align:center;

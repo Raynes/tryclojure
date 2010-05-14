@@ -42,13 +42,13 @@
       [:body
        [:div#container [:div#console.console]
 	[:div.bottom
-	 [:p.status 
+	 [:p.bottom
 	  "This site is still under construction. I can't promise everything will work correctly."
 	  [:br] [:br]
 	  "TryClojure is written in Clojure and JavaScript, powered by " 
 	  (link-to "http://github.com/Licenser/clj-sandbox" "clj-sandbox")
-	  "and Chris Done's "
-	  (link-to "http://github.com/chrisdone/jquery-console" "jquery-console")
+	  " and Chris Done's "
+	  (link-to "http://github.com/chrisdone/jquery-console" "jquery-console") ""
 	  [:br] [:br]
 	  "Huge thanks to " (link-to "http://www.bestinclass.dk/" "Lau Jensen")
 	  " for lot's of help with everything ranging from Gimp, to straight up CSS and HTML design tips."]]]
