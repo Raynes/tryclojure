@@ -69,7 +69,7 @@
 
 (def clojureroutes
      (app
-      (wrap-reload '(tryclojure.core))
+      ;(wrap-reload '(tryclojure.core))
       (wrap-file (System/getProperty "user.dir"))
       (wrap-params)
       (wrap-stacktrace)
