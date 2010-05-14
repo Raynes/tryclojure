@@ -9,7 +9,7 @@ $(document).ready(
 				  commandHandle:function(line){
 				      var data;
 				      jQuery.ajax({
-						      url: "magics" + "?code=" + line,
+						      url: "magics" + "?code=" + encodeURIComponent(line),
 						      success: function(result) {data = result;},
 						      async:   false
 						  }); 

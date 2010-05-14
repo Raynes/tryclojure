@@ -8,7 +8,8 @@
 	[clojure.stacktrace :only [root-cause]])
   (:import java.io.StringWriter
 	   org.apache.commons.lang.StringEscapeUtils
-	   java.util.concurrent.TimeoutException))
+	   java.util.concurrent.TimeoutException
+	   java.net.URLDecoder))
 
 (def sandbox-tester
      (extend-tester secure-tester 
@@ -73,11 +74,11 @@
    :body    fire-html})
 
 (defn div-handler [{qparams :query-params}]
-    (let [code (StringEscapeUtils/escapeHtml (if (seq (qparams "code")) (qparams "code") ""))
-	  result (StringEscapeUtils/escapeHtml (if (seq code) (execute-text (qparams "code")) ""))]
-      {:status  200
-       :headers {"Content-Type" "text/html"}
-       :body    result}))
+  (let [code (URLDecoder/decode (StringEscapeUtils/escapeHtml (if (seq (qparams "code")) (qparams "code") "")) "UTF-8")
+	result (StringEscapeUtils/escapeHtml (if (seq code) (execute-text (qparams "code")) ""))]
+    {:status  200
+     :headers {"Content-Type" "text/html"}
+     :body    result}))
 
 (def clojureroutes
      (app
