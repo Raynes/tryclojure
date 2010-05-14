@@ -40,7 +40,7 @@
 		   "/resources/public/javascript/tryclojure.js")
        [:title "TryClojure"]]
       [:body
-       [:h1 "Try Clojure"]
+       [:div {:style "text-align: center;"} [:h1 "Try Clojure"]]
        [:div#container [:div#console.console]
 	[:div.bottom
 	 [:p.bottom
