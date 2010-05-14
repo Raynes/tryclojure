@@ -33,32 +33,28 @@
 ;(defn gist-history [text]
 ;  (post-gist "history.clj" (.replaceAll text "<br />" "\n")))
 
-(defn omg-html [text]
-  (let [result (.replaceAll (if (seq text) text "") "\n" "<br />")
-	ftext (html [:p.primary result])]
-    (html
-     [:html4 doctype]
-     [:head
-      (include-css "/resources/public/css/tryclojure.css")]
-     [:script {:type "text/javascript;"} "function scrollDown() {
-var objDiv = document.getElementById(\"code\");
-objDiv.scrollTop = objDiv.scrollHeight;
-}"]
-     [:body {:onload "scrollDown()"}
-      [:div#code.scroll ftext]
-      (form-to [:post "/magics"]
-	       [:input#code_input {:name "code" :size 99}]
-	       [:br]
-	       (submit-button "Make Magic Happen"))
-      (form-to [:post "/magics?clear=true"]
-	       (submit-button "Clear REPL"))
-      [:script {:type "text/javascript"} "document.getElementById(\"code_input\").focus();"]])))
+(defn hist-text [text]
+  (html [:p.primary (.replaceAll (if (seq text) text "") "\n" "<br />")]))
+
+(def texta (html
+	    [:table {:border "1" :width "100%" :height "60" :cellpadding "0"}
+	     [:tr]
+	     [:td.arrow {:valign "top"} 
+	      [:p.arrow "=>"]]
+	     [:td {:valign "top"}
+	      [:textarea#code_input.primary]]
+	     [:script {:type "text/javascript"} 
+	      "setupInput(); grabFocus(); setupResize();"]]))
 
 (def fire-html
      (html
       (:html4 doctype)
       [:head
        (include-css "/resources/public/css/tryclojure.css")
+       (include-js "/resources/public/javascript/jquery-1.4.2.min.js"
+		   "/resources/public/javascript/tryclojure.js"
+		   "/resources/public/javascript/autoresize.jquery.min.js"
+		   "/resources/public/javascript/jquery.console.js")
        [:title "TryClojure"]]
       [:body
        [:tr]
@@ -78,8 +74,7 @@ objDiv.scrollTop = objDiv.scrollHeight;
 	 [:br] [:br]
 	 (format-links
 	  (link-to "http://github.com/Raynes/tryclojure" "This site's source code"))]
-	[:td.prime 
-	 [:iframe.prime {:src "/magics" :frameborder "0"} ""]]
+	[:td.primary [:div#console.console]]
 	[:td.right {:width "15%" :align "left"}
 	 [:p (str "This is a largely HTML based web application for executing Clojure code and seeing the result. "
 		  "Enter your code and press enter (or Make Magic Happen) and your code will be executed. "
@@ -97,27 +92,27 @@ objDiv.scrollTop = objDiv.scrollHeight;
    :headers {"Content-Type" "text/html"}
    :body    fire-html})
 
-(defn div-handler [{fparams :form-params qparams :query-params session :session}]
-    (let [code (StringEscapeUtils/escapeHtml (if (seq (fparams "code")) (fparams "code") ""))
-	  result (StringEscapeUtils/escapeHtml (if (seq code) (execute-text (fparams "code")) ""))
-	  sess-history (:history session)
-	  history (when-not (= "true" (qparams "clear"))
-		    (if (seq result) 
-		      (str sess-history "=> " code "<br />" result "<br />") 
-		      (when (seq sess-history) (str sess-history "<br />"))))]
+(defn clear-handler [{session :session}]
+  {:status 200
+   :headers {"Content-Type" "text/html"}
+   :body texta
+   :session nil})
+
+(defn div-handler [{qparams :query-params}]
+    (let [code (StringEscapeUtils/escapeHtml (if (seq (qparams "code")) (qparams "code") ""))
+	  result (StringEscapeUtils/escapeHtml (if (seq code) (execute-text (qparams "code")) ""))]
       {:status  200
        :headers {"Content-Type" "text/html"}
-       :body    (omg-html history)
-       :session {:history history}}))
+       :body    result}))
 
 (def clojureroutes
      (app
-      ;(wrap-reload '(tryclojure.core))
-      (wrap-session)
+      (wrap-reload '(tryclojure.core))
       (wrap-file (System/getProperty "user.dir"))
       (wrap-params)
       (wrap-stacktrace)
       ["magics"] div-handler
+      ["clear"] clear-handler
       [""] handler))
 
-(defn tryclj [] (run-jetty #'clojureroutes {:port 8801}))
+(defn tryclj [] (run-jetty #'clojureroutes {:port 8802}))
