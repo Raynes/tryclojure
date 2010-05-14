@@ -45,6 +45,8 @@
 	[:div.bottom
 	 [:p.bottom
 	  "This site is still under construction. I can't promise everything will work correctly."
+	  " You can find the site's source and such on it's " (link-to "http://github.com/Raynes/tryclojure" "github")
+	  " page."
 	  [:br] [:br]
 	  "TryClojure is written in Clojure and JavaScript, powered by " 
 	  (link-to "http://github.com/Licenser/clj-sandbox" "clj-sandbox")
