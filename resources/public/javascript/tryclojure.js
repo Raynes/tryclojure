@@ -1,7 +1,9 @@
 function setupLink(url) {
-    $.get(url, function(data) { $("#changer").html(data); });
+    return function(e) { $.get(url, function(data) { $("#changer").html(data); }); }
 }
 
+function getStep(n) { //TODO
+}
 $(document).ready(
     function() {
 	$("#console").console({
@@ -26,6 +28,13 @@ $(document).ready(
 	    promptHistory:true
 	});
 
-	$("#about").click(function(e) { setupLink("about"); });
-	$("#links").click(function(e) { setupLink("links"); });
+	$("#about").click(setupLink("about"));
+	$("#links").click(setupLink("links"));
+	
+	var step = 0;
+	$("#tutorial").click(function(e) { 
+	    $.get("tutorial", function(data) { $("#changer").html(data); });
+	    $("#continue").click(function(e) {
+		// TODO 
+	});
     });

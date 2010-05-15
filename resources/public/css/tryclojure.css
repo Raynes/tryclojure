@@ -7,11 +7,14 @@ h1 { font-size: 32pt; color: black;  border-bottom: 1px solid #333; font-family:
 table.bottom { width: 100%; border: 1px solid black;}
 div#changer { width: 100%; height: 100%; }
 div.buttons { background: transparent url('/resources/public/buttontdbg.png') no-repeat top left; 
-	      padding-left: 0.2em; padding-right: 0.2em; }
+	      padding-left: 0.2em; padding-right: 0.2em; text-align: center; }
 .buttons a.buttons { border-right: 1px solid #5F665F; color: black; padding-right: 0.3em; 
 		     font-family: verdana; font-size: 10pt; font-weight: bold; padding-left: 0.3em;}
+a.lbutton { color: black; font-family: verdana; font-size: 10pt; font-weight: bold; 
+	    padding-left: 0.3em; padding-right: 0.3em; }
 td.bholder { border: 1px solid black; }
-a.buttons:hover { color: white; }
+a.buttons:hover,a.lbutton:hover { color: white; }
+div.continue { width: 100%; text-align: center; }
 p.bottom
 {
     padding: 0;

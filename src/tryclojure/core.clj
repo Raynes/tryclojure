@@ -35,7 +35,9 @@
 	     (link-to "http://groups.google.com/group/clojure" "Clojure mailing list")
 	     (link-to "http://java.ociweb.com/mark/clojure/article.html" "A comprehensive Clojure tutorial")
 	     (link-to "http://joyofclojure.com/" "The Joy of Clojure: a book by Michael Fogus and Chris Houser")
-	     (link-to "http://www.pragprog.com/titles/shcloj/programming-clojure" "Programming Clojure, a book by Stuart Halloway")])))
+	     (link-to "http://www.pragprog.com/titles/shcloj/programming-clojure" "Programming Clojure, a book by Stuart Halloway")
+	     (link-to "http://disclojure.org" "Disclojure")
+	     (link-to "http://planet.clojure.in" "Planet Clojure")])))
 
 (def bottom-html
      (html [:p.bottom
@@ -50,6 +52,18 @@
 	    [:br] [:br]
 	    "Huge thanks to " (link-to "http://www.bestinclass.dk/" "Lau Jensen")
 	    " for lots of help with everything ranging from Gimp, to straight up CSS and HTML design tips."]))
+
+(def tutorial
+     (html
+      [:div#tuttext
+       [:p.bottom 
+	"This tutorial is intended for people who have never used Clojure before but are familiar"
+	" with at least one other programming language. It's not intended to be a comprehensive tutorial"
+	", but to get you started with Clojure, and interested enough to continue." [:br] [:br]
+	"Above, you have your REPL. I expect you to try out the examples as we go along, and to experiment"
+	" with stuff on your own. If you don't, you will promptly be IP banned from this website, and I will"
+	" murder you in your sleep." [:br] [:br] "Please try the examples. Don't make me kill you."]]
+      [:div.continue [:input#continue {:type "button" :value "Next"}]]))
 
 (def fire-html
      (html
@@ -66,8 +80,9 @@
 	[:table.bottom {:border "0"}
 	 [:tr]
 	 [:td.bholder [:div.buttons 
-		       [:a#about.buttons "about"]
-		       [:a#links.buttons "links"]]]
+		       [:a#tutorial.buttons "tutorial"]
+		       [:a#links.buttons "links"]
+		       [:a#about.lbutton "about"]]]
 	 [:tr]
 	 [:td [:div#changer "omg"]]]]
        [:div.footer [:p.footer "Copyright 2010 Anthony Simpson. All Rights Reserved."]]]))
@@ -92,12 +107,18 @@
    :headers {"Content-Type" "text/html"}
    :body links})
 
+(defn tutorial-handler [reg]
+  {:status 200
+   :headers {"Content-Type" "text/html"}
+   :body tutorial})
+
 (def clojureroutes
      (app
       (wrap-reload '(tryclojure.core))
       (wrap-file (System/getProperty "user.dir"))
       (wrap-params)
       (wrap-stacktrace)
+      ["tutorial"] tutorial-handler
       ["links"] link-handler
       ["about"] about-handler
       ["magics"] div-handler
