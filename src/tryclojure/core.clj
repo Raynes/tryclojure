@@ -28,7 +28,28 @@
 		(catch Exception e (str (root-cause e))))]
     (str writer result)))
 
-(defn format-links [& links] (interpose [:br] links))
+(def links
+     (html (unordered-list 
+	    [(link-to "http://clojure.org" "The official Clojure website")
+	     (link-to "http://www.assembla.com/wiki/show/clojure/Getting_Started" "Getting started with Clojure")
+	     (link-to "http://groups.google.com/group/clojure" "Clojure mailing list")
+	     (link-to "http://java.ociweb.com/mark/clojure/article.html" "A comprehensive Clojure tutorial")
+	     (link-to "http://joyofclojure.com/" "The Joy of Clojure: a book by Michael Fogus and Chris Houser")
+	     (link-to "http://www.pragprog.com/titles/shcloj/programming-clojure" "Programming Clojure, a book by Stuart Halloway")])))
+
+(def bottom-html
+     (html [:p.bottom
+	    "This site is still under construction. I can't promise everything will work correctly."
+	    " You can find the site's source and such on it's " (link-to "http://github.com/Raynes/tryclojure" "github")
+	    " page."
+	    [:br] [:br]
+	    "TryClojure is written in Clojure and JavaScript, powered by " 
+	    (link-to "http://github.com/Licenser/clj-sandbox" "clj-sandbox")
+	    " and Chris Done's "
+	    (link-to "http://github.com/chrisdone/jquery-console" "jquery-console") ""
+	    [:br] [:br]
+	    "Huge thanks to " (link-to "http://www.bestinclass.dk/" "Lau Jensen")
+	    " for lots of help with everything ranging from Gimp, to straight up CSS and HTML design tips."]))
 
 (def fire-html
      (html
@@ -42,20 +63,14 @@
       [:body
        [:div {:style "text-align: center;"} [:h1 "Try Clojure"]]
        [:div#container [:div#console.console]
-	[:div.bottom
-	 [:p.bottom
-	  "This site is still under construction. I can't promise everything will work correctly."
-	  " You can find the site's source and such on it's " (link-to "http://github.com/Raynes/tryclojure" "github")
-	  " page."
-	  [:br] [:br]
-	  "TryClojure is written in Clojure and JavaScript, powered by " 
-	  (link-to "http://github.com/Licenser/clj-sandbox" "clj-sandbox")
-	  " and Chris Done's "
-	  (link-to "http://github.com/chrisdone/jquery-console" "jquery-console") ""
-	  [:br] [:br]
-	  "Huge thanks to " (link-to "http://www.bestinclass.dk/" "Lau Jensen")
-	  " for lots of help with everything ranging from Gimp, to straight up CSS and HTML design tips."]]]
-	  [:div.footer [:p.footer "Copyright 2010 Anthony Simpson. All Rights Reserved."]]]))
+	[:table.bottom {:border "0"}
+	 [:tr]
+	 [:td.bholder [:div.buttons 
+		       [:a#about.buttons "about"]
+		       [:a#links.buttons "links"]]]
+	 [:tr]
+	 [:td [:div#changer "omg"]]]]
+       [:div.footer [:p.footer "Copyright 2010 Anthony Simpson. All Rights Reserved."]]]))
 
 (defn handler [req]
   {:status  200
@@ -67,12 +82,24 @@
    :headers {"Content-Type" "text/html"}
    :body    (StringEscapeUtils/escapeHtml (execute-text (qparams "code")))})
 
+(defn about-handler [req]
+  {:status 200
+   :headers {"Content-Type" "text/html"}
+   :body bottom-html})
+
+(defn link-handler [req]
+  {:status 200
+   :headers {"Content-Type" "text/html"}
+   :body links})
+
 (def clojureroutes
      (app
-      ;(wrap-reload '(tryclojure.core))
+      (wrap-reload '(tryclojure.core))
       (wrap-file (System/getProperty "user.dir"))
       (wrap-params)
       (wrap-stacktrace)
+      ["links"] link-handler
+      ["about"] about-handler
       ["magics"] div-handler
       [""] handler))
 

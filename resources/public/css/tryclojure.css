@@ -1,9 +1,17 @@
 body { background-color:white; }
-div#container { width: 600px; height: 400px; 
-		margin: 50px auto;}
+div#container { width: 600px; height: 800px; 
+		margin: 50px auto 50px auto; }
 h1 { font-size: 32pt; color: black;  border-bottom: 1px solid #333; font-family: arial black;}
 .bottom { background-color: white; color: #333; }
 .bottom a,a:visited { color: #111; }
+table.bottom { width: 100%; border: 1px solid black;}
+div#changer { width: 100%; height: 100%; }
+div.buttons { background: transparent url('/resources/public/buttontdbg.png') no-repeat top left; 
+	      padding-left: 0.2em; padding-right: 0.2em; }
+.buttons a.buttons { border-right: 1px solid #5F665F; color: black; padding-right: 0.3em; 
+		     font-family: verdana; font-size: 10pt; font-weight: bold; padding-left: 0.3em;}
+td.bholder { border: 1px solid black; }
+a.buttons:hover { color: white; }
 p.bottom
 {
     padding: 0;
@@ -16,9 +24,11 @@ p
     font-family:\"Times New Roman\";
     font-size:14px;
 }
-div.bottom { width: 600px;}
+div.bottom { width: 600px; }
 div.footer
 {
+    height: 100%;
+    border-top: 1px solid black;
     text-align:center;
 }
 div.console div.jquery-console-inner 
