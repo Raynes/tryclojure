@@ -84,7 +84,7 @@
 (defn div-handler [{qparams :query-params}]
   {:status  200
    :headers {"Content-Type" "text/html"}
-   :body    (StringEscapeUtils/escapeHtml (execute-text (qparams "code")))})
+   :body    (execute-text (qparams "code"))})
 
 (defn about-handler [req]
   {:status 200
@@ -97,6 +97,7 @@
    :body links})
 
 (defn tutorial-handler [{querys :query-params}]
+  (println (querys "step"))
   {:status 200
    :headers {"Content-Type" "text/html"}
    :body (get-tutorial (querys "step"))})
