@@ -2,8 +2,10 @@ function setupLink(url) {
     return function(e) { $.get(url, function(data) { $("#changer").html(data); }); }
 }
 
-function getStep(n) { //TODO
+function getStep(n) {
+    $.get("tutorial", { step: n }, function(data) { $("#tuttext").html(data); }); 
 }
+
 $(document).ready(
     function() {
 	$("#console").console({
@@ -30,11 +32,12 @@ $(document).ready(
 
 	$("#about").click(setupLink("about"));
 	$("#links").click(setupLink("links"));
-	
-	var step = 0;
-	$("#tutorial").click(function(e) { 
-	    $.get("tutorial", function(data) { $("#changer").html(data); });
+	$("#tutorial").click(function(e) {
+	    var step = 1;
+	    $.get("tutorial", {step: 1}, function(data) { $("#changer").html(data); });
 	    $("#continue").click(function(e) {
-		// TODO 
+		step += 1;
+		getStep(step);
+	    });
 	});
     });

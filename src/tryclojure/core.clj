@@ -5,7 +5,8 @@
 	[hiccup core form-helpers page-helpers]
 	[ring.middleware reload stacktrace params file session]
 	net.cgrand.moustache
-	[clojure.stacktrace :only [root-cause]])
+	[clojure.stacktrace :only [root-cause]]
+	tryclojure.tutorial)
   (:import java.io.StringWriter
 	   org.apache.commons.lang.StringEscapeUtils
 	   java.util.concurrent.TimeoutException
@@ -53,18 +54,6 @@
 	    "Huge thanks to " (link-to "http://www.bestinclass.dk/" "Lau Jensen")
 	    " for lots of help with everything ranging from Gimp, to straight up CSS and HTML design tips."]))
 
-(def tutorial
-     (html
-      [:div#tuttext
-       [:p.bottom 
-	"This tutorial is intended for people who have never used Clojure before but are familiar"
-	" with at least one other programming language. It's not intended to be a comprehensive tutorial"
-	", but to get you started with Clojure, and interested enough to continue." [:br] [:br]
-	"Above, you have your REPL. I expect you to try out the examples as we go along, and to experiment"
-	" with stuff on your own. If you don't, you will promptly be IP banned from this website, and I will"
-	" murder you in your sleep." [:br] [:br] "Please try the examples. Don't make me kill you."]]
-      [:div.continue [:input#continue {:type "button" :value "Next"}]]))
-
 (def fire-html
      (html
       (:html4 doctype)
@@ -107,14 +96,14 @@
    :headers {"Content-Type" "text/html"}
    :body links})
 
-(defn tutorial-handler [reg]
+(defn tutorial-handler [{querys :query-params}]
   {:status 200
    :headers {"Content-Type" "text/html"}
-   :body tutorial})
+   :body (get-tutorial (querys "step"))})
 
 (def clojureroutes
      (app
-      (wrap-reload '(tryclojure.core))
+      (wrap-reload '(tryclojure.core tryclojure.tutorial))
       (wrap-file (System/getProperty "user.dir"))
       (wrap-params)
       (wrap-stacktrace)
