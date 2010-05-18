@@ -24,12 +24,16 @@
        [:p.bottom
 	"Whoa! Something isn't right here, and I'm not talking about the fact that this website's black and white colors"
 	" are gloomier than a horror movie either! Hello World has been mangled! It's okay though, because we're smart "
-	"and we can figure out how to right this situation. Let's try some stuff out until we figure out how to fix it. "
+	"and we can figure out how to right this situation. If you're wondering why it printed the message AND 'nil' "
+	"it's because 'nil' (which essentially means 'nothing') is println's return value." 
+	"Let's try some stuff out until we figure out how to fix it. "
 	"Let's try the " (code "reverse") " function, and see if that will fix things. Type this into the REPL: "]
        (code "(reverse \"!dlrow ,olleH\")")
        [:p.bottom
 	"Hmm. It did indeed set it right, but this isn't what we were looking for! That doesn't even look like a string. "
-	"Reverse took our string, reversed it, and now we have a sequence of characters. We need a string though! "
+	"Reverse took our string, reversed it, and now we have a sequence of characters. You can tell this because each "
+	"character has a '\' beside it. Those are what Character literals look like in Clojure. "
+	"We need a string though! "
 	"What do we do when we need a string, but we have something else that isn't stringy? No, we don't go to the shop "
 	"and buy string cheese, but instead we use the lovely " (code "str") " function! Try this: "]
        (code "(str (reverse \"!dlrow ,olleH\"))")
