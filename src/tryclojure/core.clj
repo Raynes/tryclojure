@@ -8,14 +8,13 @@
 	[clojure.stacktrace :only [root-cause]]
 	tryclojure.tutorial)
   (:import java.io.StringWriter
-	   org.apache.commons.lang.StringEscapeUtils
-	   java.util.concurrent.TimeoutException
-	   java.net.URLDecoder))
+	   java.util.concurrent.TimeoutException))
 
 (def sandbox-tester
      (extend-tester secure-tester 
 		    (whitelist 
-		     (function-matcher 'println 'print 'pr 'prn 'var 'print-doc 'doc 'throw 'def 'def* 'dosync 'alter '.))))
+		     (function-matcher 'println 'print 'pr 'prn 'var 'print-doc 'doc 'throw 
+				       'def 'def* 'dosync 'alter '.))))
 
 
 (def state-tester
@@ -91,7 +90,15 @@
 		       [:a#links.buttons "links"]
 		       [:a#about.lbutton "about"]]]
 	 [:tr]
-	 [:td [:div#changer "omg"]]]]]))
+	 [:td [:div#changer [:p.bottom 
+			     "Welcome to TryClojure. Above, you have a Clojure REPL. You can type expressions and see "
+			     "they're results right here in your browser. We also have a brief tutorial to give you a "
+			     "taste of Clojure. Try it out!"]]]]]]
+      [:script {:type "text/javascript"}
+       "try {
+  var pageTracker = _gat._getTracker('UA-552543-3');
+  pageTracker._trackPageview();
+} catch(err) {}"]))
 
 (defn handler [{session :session}]
   {:status  200
@@ -119,7 +126,6 @@
    :body links})
 
 (defn tutorial-handler [{querys :query-params session :session}]
-  (println (querys "step"))
   {:status 200
    :headers {"Content-Type" "text/html"}
    :session session

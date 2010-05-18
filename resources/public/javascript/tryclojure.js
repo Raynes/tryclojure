@@ -37,12 +37,14 @@ $(document).ready(
 		$("#changer").html(data);
 		var step = 1;
 		$("#continue").click(function(e) {
-		    if(step < 2 ) { step += 1; }
-			getStep(step);
+		    if(step < 5 ) { step += 1; }
+		    getStep(step);
+		    $("#tuttext").scrollTop(0);
 		});
 		$("#back").click(function(e) {
 		    if(step > 1) { step -= 1; }
 		    getStep(step);
+		    $("#tuttext").scrollTop(0);
 		});
 	    });
 	});
