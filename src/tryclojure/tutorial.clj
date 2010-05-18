@@ -15,7 +15,9 @@
 (def tutorial
      (html
       tutorial1-text
-      [:div.continue [:input#continue {:type "button" :value "Next"}] [:input#back {:type "button" :value "Back"}]]))
+      [:div.continue
+       [:input#back {:type "button" :value "Back"}]
+       [:input#continue {:type "button" :value "Next"}]]))
 
 (defn get-tutorial [step]
   (condp = step
