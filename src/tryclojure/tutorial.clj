@@ -24,9 +24,9 @@
        (code "(println \"!dlrow ,olleH\")") 
        [:br] [:br]
        "Whoa! Something isn't right here, and I'm not talking about the fact that this website's black and white colors"
-       " are gloomier than a horror movie either! Hello World has been mangled! It's okay though, because I know how "
-       "to right this situation. Let's try some stuff out until we figure out how to fix it. Let's try the "
-       (code "reverse") " function, and see if that fixes things. Type this into the REPL: "
+       " are gloomier than a horror movie either! Hello World has been mangled! It's okay though, because we're smart "
+       "and we can figure out how to right this situation. Let's try some stuff out until we figure out how to fix it. "
+       "Let's try the " (code "reverse") " function, and see if that will fix things. Type this into the REPL: "
        [:br] [:br]
        (code "(reverse \"!dlrow ,olleH\")")
        [:br] [:br]
@@ -44,7 +44,7 @@
        "of the sequence, and pass them all to str? Do not fear, young Clojurian, for I have the answer. We use the "
        (code "apply") " function. " (code "apply") " takes a function and a sequence, and it 'unrolls the sequence "
        "and passes all of the elements of the sequence to the function individually. It basically takes the sequence "
-       "dumps out all of it's elements into the argument list of the supplied function. This is exactly what we need. "
+       "and dumps out all of it's elements into the argument list of the supplied function. This is exactly what we need. "
        "Let's see if it works. Try this: "
        [:br] [:br]
        (code "(apply str (reverse \"!dlrow ,olleH\"))")
@@ -54,7 +54,8 @@
        [:br] [:br]
        (code "(println (apply str (reverse \"!dlrow ,olleH\")))")
        [:br] [:br]
-       "Congratulations, you have passed step two. Press Next to continue."]))
+       "Congratulations, you have passed step two. Press Next to continue. Assuming you're interested, and still want to"
+       " live. ;)"]))
 
 (def tutorial
      (html
