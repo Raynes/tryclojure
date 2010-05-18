@@ -32,7 +32,7 @@
        [:p.bottom
 	"Hmm. It did indeed set it right, but this isn't what we were looking for! That doesn't even look like a string. "
 	"Reverse took our string, reversed it, and now we have a sequence of characters. You can tell this because each "
-	"character has a '\' beside it. Those are what Character literals look like in Clojure. "
+	"character has a  '\\' beside it. Those are what Character literals look like in Clojure. "
 	"We need a string though! "
 	"What do we do when we need a string, but we have something else that isn't stringy? No, we don't go to the shop "
 	"and buy string cheese, but instead we use the lovely " (code "str") " function! Try this: "]
