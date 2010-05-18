@@ -103,13 +103,15 @@
 (defn div-handler [{qparams :query-params session :session}]
   (print "qparams: ") (prn qparams)
   (print "session: ") (prn session)
-  (let [[result history] (execute-text (qparams "code") (or (:history session) [])) ]
-    (print "result: ") (prn result)
-    (print "history: ") (prn history)
-    {:status  200
-     :headers {"Content-Type" "text/html"}
-     :session {:history history}
-     :body    result}))
+  (let [[result history] (execute-text (qparams "code") (or (:history session) []))
+    _(print "result: ") _(prn result)
+    _(print "history: ") _(prn history)
+    response {:status  200
+	      :headers {"Content-Type" "text/txt"}
+	      :session {:history history}
+	      :body    result}
+    _(print "response: ") _(prn response)]
+  response))
 
 (defn about-handler [{session :session}]
   {:status 200
@@ -140,7 +142,7 @@
       ["tutorial"] tutorial-handler
       ["links"] link-handler
       ["about"] about-handler
-      ["magics"] (wrap-session div-handler)
-      [""] (wrap-session handler)))
+      ["magics"] div-handler
+      [""] handler))
 
-(defn tryclj [] (run-jetty #'clojureroutes {:port 8801}))
+(defn tryclj [] (run-jetty #'clojureroutes {:port 8801 :host "127.0.0.1"}))
