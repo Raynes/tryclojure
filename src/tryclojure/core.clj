@@ -19,20 +19,17 @@
 
 
 (def state-tester
-     (new-tester (whitelist (constantly '(true))) ; we want everything to be true
-		 (blacklist (function-matcher 'def 'def* ; basic declarations
-					      'ensure 'ref-set 'alter 'commute ; altering refs
-					      ; 'send 'send-off 'clear-agent-errors ; agent state changes commented out since agents should not be allowed for security reasons.
-					      'swap! 'compare-and-set! ; atom stuff
-					      ))))
+     (new-tester (whitelist (constantly '(true)))
+		 (blacklist (function-matcher 'def 'def* 
+					      'ensure 'ref-set 'alter 'commute 
+					      'swap! 'compare-and-set! ))))
 
 (defn has-state? [form]
      (not (state-tester form nil)))
 		 
 
 (defn execute-text [txt history]
-  (let [
-	sc (new-sandbox-compiler :tester sandbox-tester 
+  (let [sc (new-sandbox-compiler :tester sandbox-tester 
 				 :timeout 1000)
 	form (binding [*read-eval* false] (read-string txt))
 	result (try
@@ -94,8 +91,7 @@
 		       [:a#links.buttons "links"]
 		       [:a#about.lbutton "about"]]]
 	 [:tr]
-	 [:td [:div#changer "omg"]]]]
-       [:div.footer [:p.footer "Copyright 2010 Anthony Simpson. All Rights Reserved."]]]))
+	 [:td [:div#changer "omg"]]]]]))
 
 (defn handler [{session :session}]
   {:status  200
