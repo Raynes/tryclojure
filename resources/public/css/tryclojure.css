@@ -1,144 +1,54 @@
-body {
-    text-align:center;
-    background-color:#FFFFFF;
+body { background-color:white; }
+div#container { width: 600px; height: 800px; 
+		margin: 50px auto 50px auto; }
+h1 { font-size: 32pt; color: black;  border-bottom: 1px solid #333; font-family: arial black;}
+.bottom { background-color: white; color: #333; }
+.bottom a,a:visited { color: #111; }
+table.bottom { width: 100%; border: 1px solid black;}
+div#changer { width: 100%; height: 100%; }
+div.buttons { background: transparent url('/resources/public/buttontdbg.png') no-repeat top left; 
+	      padding-left: 0.2em; padding-right: 0.2em; text-align: center; }
+.buttons a.buttons { border-right: 1px solid #5F665F; color: black; padding-right: 0.3em; 
+		     font-family: verdana; font-size: 10pt; font-weight: bold; padding-left: 0.3em;}
+a.lbutton { color: black; font-family: verdana; font-size: 10pt; font-weight: bold; 
+	    padding-left: 0.3em; padding-right: 0.3em; }
+td.bholder { border: 1px solid black; }
+a.buttons:hover,a.lbutton:hover { color: white; }
+div.continue { width: 100%; text-align: center; }
+p.bottom
+{
+    padding: 0;
+    font-family: verdana;
+    font-size: 8pt;
 }
-
-p {
+p
+{
+    color:gray;
     font-family:\"Times New Roman\";
-    font-size:20px;
-}
-
-h1 {
-    color:#3D5A96;
-}
-
-
-p#note {
-    font-size: 12px;
-    text-align: left;
-}
-#header {
-    height: 100px;
-}
-#header #logo {
-    width: 100px;
-    height: 100px;
-    float: left;
-}
-
-#header #title {
-    width: 400px;
-    height: 100px;
-    float:left;
-}
-
-
-
-div.scroll {
-    text-align:left;
-    height:300px;
-    width:800px;
-    word-wrap:break-word;
-    margin-left:auto;
-    margin-right:auto;
-    overflow-y:scroll;
-    border: 1px solid #666;
-    background-color: #FFFFFF;
-    padding: 8px;
-}
-
- /* styles from tryhaskel.org for the console code. */ 
-:focus { outline: 0; } 
-div.console { 
-    /*height:200px*/
-    height:220px;
-    cursor:text;
-    text-align: left;
-}
-div.console {
-    border: 1px solid black;
-    background:#fff;
     font-size:14px;
-    position:relative;
 }
-div.console div.jquery-console-inner {
-    height:220px; 
-    overflow:auto;
-    background:white;
+div.bottom { width: 600px; }
+div.footer
+{
+    height: 100%;
+    border-top: 1px solid black;
+    text-align:center;
 }
-div.console div.jquery-console-prompt-box {
-    color:#437375;
-    font-family:monospace;
-    margin-top:0.5em;
-}
-div.console div.jquery-console-focus span.jquery-console-cursor {
-    background:#666;
-    color:#fff; 
-} 
-div.console div.jquery-console-message-error {
-    color:#ef0505;
-    font-family:sans-serif;
-    font-weight:bold;
-    padding-left:1em;
-    padding-top:0.25em;
-}
-div.console div.jquery-console-message-value {
-    color:#000;
-    font-family:monospace;
-    padding-left:1em;
-    padding-top:0.25em; 
-    font-weight: bold;
-}
-div.console div.jquery-console-message-type {
-    color:#382567; 
-    font-family:monospace;
-    padding-left:1em;
-    padding-top:0.25em;
-    font-size:.9em;
-}
-div.console span.jquery-console-prompt-label {
-    font-weight:bold;
-}
-div.console div.jquery-console-welcome {
-    font-family:"DejaVu Sans",sans-serif;
-}
-a.reset-btn {
-    float:left;
-    display:block;
-    width:59px;
-    height:24px;
-    background-position: -427px -18px;
-    background-repeat: no-repeat;
-}
-a.reset-btn span {
-    display:none;
-} 
-div.clear {
-    clear:both;
-}
-div.console-wrapper .notice {
-    position:absolute;
-    bottom:0;
-    right:0;
-    margin:10px;
-    background:#eee;
-    color:black;
-    padding:10px;
-    font-size:12px;
-    font-family:sans-serif; 
-    font-weight:bold;
-} 
-p.ajax-loader {
-    background:url(images/ajax-loader.gif);
-    width:16px; 
-    height:16px;
-    text-indent:-9999px;
-} 
-.notice a {
-    padding:3px;
-    background:#333;
-    color:white;
-}
-.notice .action {
-    text-align: right;
-} 
+div.console div.jquery-console-inner 
+{ width:595px; height:300px; background:#efefef; padding-left: 3px; padding-top: 3px;
+  overflow:auto; text-align:left; border: 1px solid black;
+  background: transparent url('/resources/public/wtf.png') no-repeat top left; }
+div.console div.jquery-console-message-value
+{ color:#0066FF; font-family:monospace;
+  padding:0.1em; }
+div.console div.jquery-console-prompt-box
+{ color:#444; font-family:monospace; }
+div.console div.jquery-console-focus span.jquery-console-cursor 
+{ background:#333; color:#eee; font-weight:bold }
+div.console div.jquery-console-message-error
+{ color:#ef0505; font-family:sans-serif; font-weight:bold;
+  padding:0.1em; }
+div.console div.jquery-console-message-success
+{ color:#187718; font-family:monospace;
+  padding:0.1em; }
+div.console span.jquery-console-prompt-label { font-weight:bold }

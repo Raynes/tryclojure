@@ -5,10 +5,12 @@
 	[hiccup core form-helpers page-helpers]
 	[ring.middleware reload stacktrace params file session]
 	net.cgrand.moustache
-	[clojure.contrib.json.write]
-	[clojure.stacktrace :only [root-cause]])
+	[clojure.stacktrace :only [root-cause]]
+	tryclojure.tutorial)
   (:import java.io.StringWriter
-	   java.util.concurrent.TimeoutException))
+	   org.apache.commons.lang.StringEscapeUtils
+	   java.util.concurrent.TimeoutException
+	   java.net.URLDecoder))
 
 (def sandbox-tester
      (extend-tester secure-tester 
@@ -18,95 +20,98 @@
 (def sc (stringify-sandbox (new-sandbox-compiler :tester sandbox-tester 
 						 :timeout 1000)))
 
-(defn execute-text [txt]  
-    (try
-     (let [writer (java.io.StringWriter.)
-	   r ((sc txt) {'*out* writer})]
-       {:result (str writer (pr-str r))
-	:type (if (nil? r) "nil" (str (type r)))
-	:expr txt})
-     (catch TimeoutException _ 
-       {:exception "Execution Timed Out!"})
-     (catch SecurityException e 
-       {:exception (str "Execution: " e)})
-     (catch Exception e
-       {:exception (str "Execution: " (.getMessage (root-cause e)))})))
+(defn execute-text [txt]
+  (let [writer (java.io.StringWriter.)
+	result (try
+		(pr-str ((sc txt) {'*out* writer}))
+		(catch TimeoutException _ "Execution Timed Out!")
+		(catch SecurityException _ "Disabled for security purposes.")
+		(catch Exception e (str (root-cause e))))]
+    (str writer result)))
 
-(defn str-join [stuff] (apply str (interpose "\n" stuff)))
+(def links
+     (html (unordered-list 
+	    [(link-to "http://clojure.org" "The official Clojure website")
+	     (link-to "http://www.assembla.com/wiki/show/clojure/Getting_Started" "Getting started with Clojure")
+	     (link-to "http://groups.google.com/group/clojure" "Clojure mailing list")
+	     (link-to "http://java.ociweb.com/mark/clojure/article.html" "A comprehensive Clojure tutorial")
+	     (link-to "http://joyofclojure.com/" "The Joy of Clojure: a book by Michael Fogus and Chris Houser")
+	     (link-to "http://www.pragprog.com/titles/shcloj/programming-clojure" "Programming Clojure, a book by Stuart Halloway")
+	     (link-to "http://disclojure.org" "Disclojure")
+	     (link-to "http://planet.clojure.in" "Planet Clojure")])))
 
-(def main-html (html
-   (:html5 doctype)
-   [:head
-    [:meta {:http-equiv "Content-Type" :content "text/html; charset=UTF-8"}]
-    [:title "TryClojure"]
-    (include-css "/resources/public/css/tryclojure.css")
-    (include-css "/resources/public/css/shCore.css")
-    (include-css "/resources/public/css/shThemeDefault.css")
-    (include-js "/resources/public/js/jquery.js")       
-    (include-js "/resources/public/js/jquery.console.js")
-    (include-js "/resources/public/js/shCore.js")
-    (include-js " resources/public/js/shBrushClojure.js")
-    (include-js "/resources/public/js/tryclojure.js")
-    ]
-   [:body
-    [:script  {:type "text/javascript"} "
-SyntaxHighlighter.config.gutter = false;
-SyntaxHighlighter.config.toolbar = false;
-SyntaxHighlighter.config.wraplines = false;
-SyntaxHighlighter.defaults['gutter'] = false;
-SyntaxHighlighter.defaults['toolbar'] = false;
-SyntaxHighlighter.defaults['wrap-lines'] = false;
-SyntaxHighlighter.config.tagName = 'div';
-"]
+(def bottom-html
+     (html [:p.bottom
+	    "This site is still under construction. I can't promise everything will work correctly."
+	    " You can find the site's source and such on it's " (link-to "http://github.com/Raynes/tryclojure" "github")
+	    " page."
+	    [:br] [:br]
+	    "TryClojure is written in Clojure and JavaScript, powered by " 
+	    (link-to "http://github.com/Licenser/clj-sandbox" "clj-sandbox")
+	    " and Chris Done's "
+	    (link-to "http://github.com/chrisdone/jquery-console" "jquery-console") ""
+	    [:br] [:br]
+	    "Huge thanks to " (link-to "http://www.bestinclass.dk/" "Lau Jensen")
+	    " for lots of help with everything ranging from Gimp, to straight up CSS and HTML design tips."]))
 
-    [:div#header 
-     [:div#logo 
-      [:a {:href "http://clojure.org"} [:img {:src "/resources/public/images/clojure-icon.gif" :alt "Clojure icon"}]]]
-     [:div#title [:h1 "Welcome to TryClojure!"]]
-     ]
-    [:div#console {:class "console"}]
-    [:p#note
-     "Many thanks to "
-     [:a {:href "http://tryhaskell.org/"} "tryhaskell"] 
-     " - their javascript for the repl console is great and we are using it as the base for try-clojure.org." [:br]
-     "Also many thanks to Raynes, " [:a {:href "http://tryclj.licenser.net/"} "his code"] " is what this version of try clojure is based on."]
-    [:script {:type "text/javascript"}
-	      "var gaJsHost = (('https:' == document.location.protocol) ? 'https://ssl.' : 'http://www.');
-document.write(unescape(\"%3Cscript src='\" + gaJsHost + \"google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E\"));"
-    ]
-   [:script {:type "text/javascript"}
-    "try {
-  var pageTracker = _gat._getTracker('UA-552543-3');
-  pageTracker._trackPageview();
-} catch(err) {}"]]))
+(def fire-html
+     (html
+      (:html4 doctype)
+      [:head
+       (include-css "/resources/public/css/tryclojure.css")
+       (include-js "/resources/public/javascript/jquery-1.4.2.min.js"
+		   "/resources/public/javascript/jquery.console.js"
+		   "/resources/public/javascript/tryclojure.js")
+       [:title "TryClojure"]]
+      [:body
+       [:div {:style "text-align: center;"} [:h1 "Try Clojure"]]
+       [:div#container [:div#console.console]
+	[:table.bottom {:border "0"}
+	 [:tr]
+	 [:td.bholder [:div.buttons 
+		       [:a#tutorial.buttons "tutorial"]
+		       [:a#links.buttons "links"]
+		       [:a#about.lbutton "about"]]]
+	 [:tr]
+	 [:td [:div#changer "omg"]]]]
+       [:div.footer [:p.footer "Copyright 2010 Anthony Simpson. All Rights Reserved."]]]))
 
-(defn fire-html []
-  main-html)
-
-(defn handler [_]
+(defn handler [req]
   {:status  200
    :headers {"Content-Type" "text/html"}
-   :body  (fire-html)})
+   :body    fire-html})
 
-(defn repl-handler [{params :query-params session :session uri :uri :as request}]
-  (let [expr (params "expr")
-	result (when (seq expr) (execute-text expr))]
-    {:status  200
-     :headers {"Content-Type" "text/json"}
-     :body    (json-str result)}))
+(defn div-handler [{qparams :query-params}]
+  {:status  200
+   :headers {"Content-Type" "text/html"}
+   :body    (execute-text (qparams "code"))})
+
+(defn about-handler [req]
+  {:status 200
+   :headers {"Content-Type" "text/html"}
+   :body bottom-html})
+
+(defn link-handler [req]
+  {:status 200
+   :headers {"Content-Type" "text/html"}
+   :body links})
+
+(defn tutorial-handler [{querys :query-params}]
+  (println (querys "step"))
+  {:status 200
+   :headers {"Content-Type" "text/html"}
+   :body (get-tutorial (querys "step"))})
 
 (def clojureroutes
      (app
-      ;(wrap-reload '(tryclojure.core))
-      (wrap-session)
+      (wrap-reload '(tryclojure.core tryclojure.tutorial))
       (wrap-file (System/getProperty "user.dir"))
       (wrap-params)
       (wrap-stacktrace)
-      [""] handler
-      ["clojure.json"] repl-handler))
+      ["tutorial"] tutorial-handler
+      ["links"] link-handler
+      ["about"] about-handler
+      ["magics"] div-handler
+      [""] handler))
 
-(defn tryclj [] (run-jetty #'clojureroutes {:port 8081 :encoding "utf-8"}))
-
-(def *server-thread* (Thread. (fn [] (tryclj))))
-
-(.start *server-thread*)
+(defn tryclj [] (run-jetty #'clojureroutes {:port 8801}))
