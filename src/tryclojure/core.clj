@@ -144,4 +144,4 @@
       ["magics"] div-handler
       [""] handler))
 
-(defn tryclj [] (run-jetty #'clojureroutes {:port 8801 :host "127.0.0.1"}))
+(defn tryclj [] (run-jetty #'clojureroutes {:port 8801}))
