@@ -11,7 +11,7 @@
 	"Above, you have your REPL. I expect you to try out the examples as we go along, and to experiment"
 	" with stuff on your own. If you don't, you will promptly be IP banned from this website, and I will"
 	" murder you in your sleep." [:br] [:br] "Please try the examples. Don't make me kill you."]]
-      [:div.continue [:input#continue {:type "button" :value "Next"}]]))
+      [:div.continue [:input#continue {:type "button" :value "Next"}] [:input#back {:type "button" :value "Back"}]]))
 
 (defn get-tutorial [step]
   (condp = step

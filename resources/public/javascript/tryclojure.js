@@ -33,11 +33,17 @@ $(document).ready(
 	$("#about").click(setupLink("about"));
 	$("#links").click(setupLink("links"));
 	$("#tutorial").click(function(e) {
-	    var step = 1;
-	    $.get("tutorial", {step: 1}, function(data) { $("#changer").html(data); });
-	    $("#continue").click(function(e) {
-		step += 1;
-		getStep(step);
+	    $.get("tutorial", {step: 1}, function(data) { 
+		$("#changer").html(data);
+		var step = 1;
+		$("#continue").click(function(e) {
+		    if(step < 2 ) { step += 1; }
+			getStep(step);
+		});
+		$("#back").click(function(e) {
+		    if(step > 1) { step -= 1; }
+		    getStep(step);
+		});
 	    });
 	});
     });
