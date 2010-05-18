@@ -33,7 +33,7 @@ $(document).ready(
 	$("#about").click(setupLink("about"));
 	$("#links").click(setupLink("links"));
 	$("#tutorial").click(function(e) {
-	    $.get("tutorial", {step: 1}, function(data) { 
+	    $.get("tutorial", {step: 0}, function(data) { 
 		$("#changer").html(data);
 		var step = 1;
 		$("#continue").click(function(e) {
