@@ -15,19 +15,37 @@
 (def sandbox-tester
      (extend-tester secure-tester 
 		    (whitelist 
-		     (function-matcher 'println 'print 'pr 'prn 'var 'print-doc 'doc 'throw))))
+		     (function-matcher 'println 'print 'pr 'prn 'var 'print-doc 'doc 'throw 'def 'def*))))
 
-(def sc (stringify-sandbox (new-sandbox-compiler :tester sandbox-tester 
-						 :timeout 1000)))
+(def state-tester
+     (new-tester (whitelist (constantly '(true))) ; we want everything to be true
+		 (blacklist (function-matcher 'def 'def*))))
 
-(defn execute-text [txt]
-  (let [writer (java.io.StringWriter.)
+(defn has-state? [form]
+     (not (state-tester form nil)))
+		 
+
+(defn execute-text [txt history]
+  (let [
+	sc (new-sandbox-compiler :tester sandbox-tester 
+				 :timeout 1000)
+	form (binding [*read-eval* false] (read-string txt))
 	result (try
-		(pr-str ((sc txt) {'*out* writer}))
-		(catch TimeoutException _ "Execution Timed Out!")
-		(catch SecurityException _ "Disabled for security purposes.")
-		(catch Exception e (str (root-cause e))))]
-    (str writer result)))
+		(loop [history history]
+		  (if (not (empty? history))
+		    (do
+		      (print "Executing history:")
+		      (prn (first history))
+		      ((sc (first history)))
+		      (recur (next history)))))
+		(with-open [writer (java.io.StringWriter.)]
+		  (let [r (pr-str ((sc form) {'*out* writer}))]
+		    [(str writer r)
+		     (if (has-state? form) (conj history form) history)]))
+		(catch TimeoutException _ ["Execution Timed Out!" history])
+		(catch SecurityException _ ["Disabled for security purposes."  history])
+		(catch Exception e [(str (root-cause e))  history]))]
+    result))
 
 (def links
      (html (unordered-list 
@@ -76,42 +94,53 @@
 	 [:td [:div#changer "omg"]]]]
        [:div.footer [:p.footer "Copyright 2010 Anthony Simpson. All Rights Reserved."]]]))
 
-(defn handler [req]
+(defn handler [{session :session}]
   {:status  200
    :headers {"Content-Type" "text/html"}
+   :session session
    :body    fire-html})
 
-(defn div-handler [{qparams :query-params}]
-  {:status  200
-   :headers {"Content-Type" "text/html"}
-   :body    (execute-text (qparams "code"))})
+(defn div-handler [{qparams :query-params session :session}]
+  (print "qparams: ") (prn qparams)
+  (print "session: ") (prn session)
+  (let [[result history] (execute-text (qparams "code") (or (:history session) [])) ]
+    (print "result: ") (prn result)
+    (print "history: ") (prn history)
+    {:status  200
+     :headers {"Content-Type" "text/html"}
+     :session {:history history}
+     :body    result}))
 
-(defn about-handler [req]
+(defn about-handler [{session :session}]
   {:status 200
    :headers {"Content-Type" "text/html"}
+   :session session
    :body bottom-html})
 
-(defn link-handler [req]
+(defn link-handler [{session :session}]
   {:status 200
    :headers {"Content-Type" "text/html"}
+   :session session
    :body links})
 
-(defn tutorial-handler [{querys :query-params}]
+(defn tutorial-handler [{querys :query-params session :session}]
   (println (querys "step"))
   {:status 200
    :headers {"Content-Type" "text/html"}
+   :session session
    :body (get-tutorial (querys "step"))})
 
 (def clojureroutes
      (app
-      (wrap-reload '(tryclojure.core tryclojure.tutorial))
+      (wrap-session)
+      ;(wrap-reload '(tryclojure.core tryclojure.tutorial))
       (wrap-file (System/getProperty "user.dir"))
       (wrap-params)
       (wrap-stacktrace)
       ["tutorial"] tutorial-handler
       ["links"] link-handler
       ["about"] about-handler
-      ["magics"] div-handler
-      [""] handler))
+      ["magics"] (wrap-session div-handler)
+      [""] (wrap-session handler)))
 
 (defn tryclj [] (run-jetty #'clojureroutes {:port 8801}))
