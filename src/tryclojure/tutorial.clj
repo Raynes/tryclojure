@@ -11,9 +11,9 @@
        ", but to get you started with Clojure, and interested enough to continue. It's a work in progress, and " 
        "not much of it has been written yet. Check back frequently for new additions." [:br] [:br]
        "Above, you have your REPL. I expect you to try out the examples as we go along, and to experiment"
-       " with stuff on your own. If you don't, you will promptly be IP banned from this website, and I will"
-       " murder you in your sleep." [:br] [:br] "Please try the examples. Don't make me kill you."]
-      [:p.bottom "Hit the pretty little 'Next' button to continue. If you want to live."]))
+       " with stuff on your own. If you don't, you will promptly be IP banned from this website, and a teddy "
+       "bear will eat your candies."[:br] [:br] "Please try the examples. Don't make teddy eat your candy."]
+      [:p.bottom "Hit the pretty little 'Next' button to continue. If you want your candy."]))
 
 (def tutorial1-text
      (html
