@@ -15,11 +15,16 @@
 (def sandbox-tester
      (extend-tester secure-tester 
 		    (whitelist 
-		     (function-matcher 'println 'print 'pr 'prn 'var 'print-doc 'doc 'throw 'def 'def*))))
+		     (function-matcher 'println 'print 'pr 'prn 'var 'print-doc 'doc 'throw 'def 'def* 'dosync 'alter '.))))
+
 
 (def state-tester
      (new-tester (whitelist (constantly '(true))) ; we want everything to be true
-		 (blacklist (function-matcher 'def 'def*))))
+		 (blacklist (function-matcher 'def 'def* ; basic declarations
+					      'ensure 'ref-set 'alter 'commute ; altering refs
+					      ; 'send 'send-off 'clear-agent-errors ; agent state changes commented out since agents should not be allowed for security reasons.
+					      'swap! 'compare-and-set! ; atom stuff
+					      ))))
 
 (defn has-state? [form]
      (not (state-tester form nil)))
@@ -34,8 +39,6 @@
 		(loop [history history]
 		  (if (not (empty? history))
 		    (do
-		      (print "Executing history:")
-		      (prn (first history))
 		      ((sc (first history)))
 		      (recur (next history)))))
 		(with-open [writer (java.io.StringWriter.)]
@@ -101,17 +104,11 @@
    :body    fire-html})
 
 (defn div-handler [{qparams :query-params session :session}]
-  (print "qparams: ") (prn qparams)
-  (print "session: ") (prn session)
-  (let [[result history] (execute-text (qparams "code") (or (:history session) []))
-    _(print "result: ") _(prn result)
-    _(print "history: ") _(prn history)
-    response {:status  200
-	      :headers {"Content-Type" "text/txt"}
-	      :session {:history history}
-	      :body    result}
-    _(print "response: ") _(prn response)]
-  response))
+  (let [[result history] (execute-text (qparams "code") (or (:history session) []))]
+    {:status  200
+     :headers {"Content-Type" "text/txt"}
+     :session {:history history}
+     :body    result}))
 
 (defn about-handler [{session :session}]
   {:status 200
