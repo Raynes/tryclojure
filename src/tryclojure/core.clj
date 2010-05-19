@@ -92,7 +92,7 @@
 	 [:tr]
 	 [:td [:div#changer [:p.bottom 
 			     "Welcome to TryClojure. Above, you have a Clojure REPL. You can type expressions and see "
-			     "they're results right here in your browser. We also have a brief tutorial to give you a "
+			     "their results right here in your browser. We also have a brief tutorial to give you a "
 			     "taste of Clojure. Try it out!"]]]]]]
       [:script {:type "text/javascript"}
        "try {
