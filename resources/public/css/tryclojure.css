@@ -1,6 +1,6 @@
-body { background-color:white; }
-div#container { width: 600px; height: 700px; 
-		margin: 50px auto 50px auto; }
+body { background-color: white; }
+div#container { width: 600px; height: 100%; 
+		margin: 50px auto 50px auto; background-color: white;}
 h1 { font-size: 32pt; color: black;  border-bottom: 1px solid #333; font-family: arial;}
 .bottom { background-color: white; color: #333; }
 .bottom a,a:visited { color: #111; }
@@ -16,7 +16,7 @@ td.bholder { border: 1px solid black; }
 div#tuttext { overflow-y: auto; max-height: 300px; }
 a.buttons:hover,a.lbutton:hover { color: white; }
 div.continue { width: 100%; text-align: center; padding-top: 0.5em; }
-code.code { color: black; font-family: "DejaVu Sans Mono"; background-color: #949494; 
+code.code { color: black; font-family: "DejaVu Sans Mono"; background-color: #C4C4C4; 
 	    padding: 0.1em; font-size: 10pt;}
 p.bottom
 {
