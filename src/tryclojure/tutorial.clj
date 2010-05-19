@@ -35,7 +35,7 @@
 	"character has a  '\\' (backslash in layman's terms) preceeding it.  Clojure uses those to denote Character (big 'C' character) literals.  "
 	"We need a string though! "
 	"What do we do when we need a string, but we have something else that isn't stringy (a highly technical term)?  No, we don't go to the shop "
-	"and buy string cheese (not to disparage string sheese mind you), but instead we use the lovely " (code "str") " function!  Try this: "]
+	"and buy string cheese (not to disparage string cheese mind you), but instead we use the lovely " (code "str") " function!  Try this: "]
        (code "(str (reverse \"!dlrow ,olleH\"))")
        [:p.bottom
 	"Ooh! So close.  It appears that the str function is making the entire sequence a string!  Sequences can be made to "
@@ -113,6 +113,69 @@
        "Clojure has all sorts of other data structures as well.  Sets, lists, queues, zippers, etc.  We'll talk about some of "
        "those later on.  For now, lets move on to step four.  Press Next to continue."]))
 
+(def tutorial4-text
+     (html 
+      [:p.bottom
+       "We've learned a little about Clojure's sequences, so let's use them to do some stuff.  I've been wondering how "
+       "vowels are in the word \"teddybear\".  Aren't you wondering the same thing? It's absolutely agonizing not "
+       "knowing! We're programmers, you and I, so we shouldn't have to count those vowels ourselves.  Indeed, we don't "
+       "We can use Clojure to count them for us!"]
+      [:p.bottom
+       "Okay, we'll start with the string \"teddybear\".  We're going to be using this string a lot, and we don't want "
+       "to have to keep typing it over and over again, do we?  Luckily, Clojure can help us here.  Type this into the "
+       "REPL: " (code "(def teddy \"teddybear\")") ".  What def does is pretty simple: it simply gives a name to a "
+       "value so that we can refer to it by that name later.  Don't worry about what the REPL printed when you typed "
+       "that, it's just trying to show you exactly where the var is mapped (in this case, a sandbox generated namespace.  "
+       "We need to make sure it worked.  Type this into the REPL: " (code "teddy") ".  Cool huh?"]
+      [:p.bottom
+       "Now that we are armed with a loaded teddybear, we can start figuring out how to find out the number of vowels.  "
+       "For this, we need to introduce a new collection type: sets.  A literal set looks like this: " (code "#{3 4 5 \"x\" \\y}")
+       ".  A set can hold anything, but it can't hold any two of the same thing.  In a set, there can be no duplicate objects.  "
+       "Another important fact about sets is that they, like maps, are also functions. A set is a function that takes  "
+       "an argument and looks inside itself to see if that same object is inside of it.  If this is true, it returns the "
+       "object, or returns nil.  Let's try this out for ourselves: "]
+      (code "(#{1 2 3} 3)\n(#{\"abc\" \\e} \\e)\n(#{3 4 \\x} 5)")
+      [:p.bottom
+       "Okay, so how is this useful?  It really isn't. Not alone, anyway.  However, when it's combined with other sequence "
+       "functions, it can be used to make a really elegant solution to a problem like this."]
+      [:p.bottom
+       "Okay, so we have a way to test if a character is a vowel. We can simply do this: " (code "(#{\\a \\e \\i \\o \\u} e)")
+       ".  Since we're going to be using the set of vowels a lot, go ahead and give it a name in the REPL: "
+       (code "(def vowels #{\\a \\e \\i \\o \\u})") ".  Now we can use " (code "vowels") " to refer to the set of vowels.  "]
+      [:p.bottom
+       "Now, we have a way to find out if a character is a vowel, now we just need a way to remove everything that isn't "
+       "a vowel from our teddybear string.  I have just the function!  We need " (code "filter") ".  Filter takes what "
+       "is called a 'predicate', that is, a function that returns true or false, and it applies this function to each "
+       "element of a sequence in turn. If the predicate function returns false or nil for an element, that element is "
+       "removed from the sequence. If the predicate function returns anything that isn't false or nil for an element, "
+       "that element is left alone.  In Clojure, anything that isn't false or nil is considered a true value."]
+      [:p.bottom
+       "Let's try filter out a bit.  Let's try to filter out all odd numbers from a sequence of numbers.  Clojure has "
+       "a function called " (code "odd?") " that we can use.  Putting a question mark at the end is a Clojure naming convention "
+       "for functions that are predicates (return either true or false).  Try it out in the REPL:"]
+      (code "(odd? 1)\n(odd? 2)")
+      [:p.bottom 
+       "Okay, now we need a sequence of numbers.  We could type these out by hand, but that's tedious, and as Clojure "
+       "programmers, we do not tolerate 'tedious'.  We can use Clojure's range function to generate these numbers for us.  "
+       (code "range") ", if given one integer, will generate a sequence of numbers from 0 to the integer that you passed to "
+       "it. Try this: " (code "(range 10)") ".  We have a sequence of numbers from 0 to 9.  Apparently, the upper-bound "
+       "(the number you passed to range) is 'inclusive', meaning it's not included in the resulting range.  If we really "
+       "wanted a sequence of numbers from 0 to 10, we'd do this: " (code "(range 11)") "."]
+      [:p.bottom
+       "We don't really want the zero, so let's give range a lower-bound, along with an upper-bound.  It can take two "
+       "arguments: " (code "(range 1 11)") ".  There we go! We have all of the numbers from 1 to 10.  Now, let's use "
+       "filter and the odd? function to get all of the odd numbers out of the sequence.  Try this: "
+       (code "(filter odd? (range 1 11))") ".  Ka-chow!  That's magic, isn't it?  Work of art, that is."]
+      [:p.bottom
+       "Now that we know how to use filter, we can now use it to filter out all of the vowels in our teddy string.  "
+       "We have our string defined in teddy, and our set of vowels in vowels, so we should try this:  "
+       (code "(filter vowels teddy)") 
+       ".  That was easy enough.  Now we have a sequence of characters.  But we still need to count them! Luckily, "
+       "Clojure has just the function for that: " (code "count") "!  It takes a sequence and counts (whoda thunk it) the "
+       "number of elements in the sequence.  Let's try it out: " (code "(count (filter vowels teddy))") ". Yeehaw!"
+       "  You did it!  Once again, you never cease to amaze me.  You're catching on quickly."]
+      [:p.bottom "That's the end of step 4. Press Next to move on."]))
+
 (def tutorial
      (html
       [:div#tuttext
@@ -128,4 +191,5 @@
     "2" tutorial1-text
     "3" tutorial2-text
     "4" tutorial3-text
-    "5" "TODO!"))
+    "5" tutorial4-text
+    "6" "TODO!"))

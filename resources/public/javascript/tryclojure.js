@@ -37,7 +37,7 @@ $(document).ready(
 		$("#changer").html(data);
 		var step = 1;
 		$("#continue").click(function(e) {
-		    if(step < 5 ) { step += 1; }
+		    if(step < 6 ) { step += 1; }
 		    getStep(step);
 		    $("#tuttext").scrollTop(0);
 		});

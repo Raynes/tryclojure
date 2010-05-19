@@ -8,7 +8,6 @@
 		 [clj-sandbox "0.3.7"]
 		 [hiccup "0.2.3"]
 		 [clj-gist "1.0.0-SNAPSHOT"]]
-  :dev-dependencies [[swank-clojure "1.2.0-SNAPSHOT"]
-		     [leiningen/lein-swank "1.1.0"]
+  :dev-dependencies [[swank-clojure "1.2.1"]
 		     [lein-search "0.3.0-SNAPSHOT"]
 		     [ring/ring-devel "0.2.0"]])
