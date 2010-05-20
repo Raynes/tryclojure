@@ -1,20 +1,13 @@
 (ns tryclojure.tutorial
   (:use hiccup.core
-	clj-highlight.core))
+	clj-highlight.core
+	clj-highlight.syntax.clojure
+	clj-highlight.output.hiccup))
 
-(def clj-tokenizer
-     (mangle-tokens
-      :space
-      (fn [k t s]
-	[k (.replace t "\n" "<br/>") s])
-      (mangle-tokens 
-       nil
-       (fn [k t s]
-	 [k (escape-html t) s])
-       (tokenizer clj-syntax))))
+(def clj-highlighter (highlighter clj-syntax (to-hiccup) html-escape-mangler newline-to-br-mangler))
 
 (defn highlight [code]
-  (html (to-html default-stype-map "code" (clj-tokenizer code))))
+  (html (clj-highlighter code)))
 
 (defn code [s] (highlight s))
 
