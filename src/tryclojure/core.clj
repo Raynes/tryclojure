@@ -15,8 +15,6 @@
 		    (whitelist 
 		     (function-matcher 'println 'print 'pr 'prn 'var 'print-doc 'doc 'throw 
 				       'def 'def* 'dosync 'alter '.))))
-
-
 (def state-tester
      (new-tester (whitelist (constantly '(true)))
 		 (blacklist (function-matcher 'def 'def* 
@@ -39,7 +37,7 @@
 		      (recur (next history)))))
 		(with-open [writer (java.io.StringWriter.)]
 		  (let [r (pr-str ((sc form) {'*out* writer}))]
-		    [(str writer r)
+		    [(str (.replace (escape-html writer) "\n" "<br/>") (highlight (str r)))
 		     (if (has-state? form) (conj history form) history)]))
 		(catch TimeoutException _ ["Execution Timed Out!" history])
 		(catch SecurityException _ ["Disabled for security purposes."  history])
