@@ -6,6 +6,7 @@
                  [ring/ring-jetty-adapter "0.2.0"]
 		 [commons-lang/commons-lang "2.5"]
 		 [clj-sandbox "0.3.7"]
+                 [clj-highlight "0.1.0-SNAPSHOT"]
 		 [hiccup "0.2.3"]
 		 [clj-gist "1.0.0-SNAPSHOT"]]
   :dev-dependencies [[swank-clojure "1.2.1"]

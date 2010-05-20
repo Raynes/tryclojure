@@ -1,7 +1,22 @@
 (ns tryclojure.tutorial
-  (:use hiccup.core))
+  (:use hiccup.core
+	clj-highlight.core))
 
-(defn code [s] (html [:code.code s]))
+(def clj-tokenizer
+     (mangle-tokens
+      :space
+      (fn [k t s]
+	[k (.replace t "\n" "<br/>") s])
+      (mangle-tokens 
+       nil
+       (fn [k t s]
+	 [k (escape-html t) s])
+       (tokenizer clj-syntax))))
+
+(defn highlight [code]
+  (html (to-html default-stype-map "code" (clj-tokenizer code))))
+
+(defn code [s] (highlight s))
 
 (def tutorial0-text
      (html

@@ -392,7 +392,7 @@
         function message(msg,className) {
             var mesg = $('<div class="jquery-console-message"></div>');
             if (className) mesg.addClass(className);
-            mesg.filledText(msg).hide();
+            mesg.html(msg).hide();
             inner.append(mesg);
             mesg.show();
         };
