@@ -143,7 +143,7 @@ table.code td { padding: 2px 4px; vertical-align: top; }
 .rx .mod { color:#C2C }
 .rx .fu  { color:#404; font-weight: bold }
 
-.s { background-color:hsla(0,100%,50%,0.1); color: #D20; }
+.s { color: #D20; }
 .s .k { }
 .s .ch { color: #b0b; }
 .s .dl { color: #710; }
