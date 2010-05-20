@@ -6,10 +6,8 @@
 
 (def clj-highlighter (highlighter clj-syntax (to-hiccup) html-escape-mangler newline-to-br-mangler))
 
-(defn highlight [code]
+(defn code [code]
   (html (clj-highlighter code)))
-
-(defn code [s] (highlight s))
 
 (def tutorial0-text
      (html

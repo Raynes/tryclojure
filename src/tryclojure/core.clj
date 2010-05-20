@@ -37,7 +37,7 @@
 		      (recur (next history)))))
 		(with-open [writer (java.io.StringWriter.)]
 		  (let [r (pr-str ((sc form) {'*out* writer}))]
-		    [(str (.replace (escape-html writer) "\n" "<br/>") (highlight (str r)))
+		    [(str (.replace (escape-html writer) "\n" "<br/>") (code (str r)))
 		     (if (has-state? form) (conj history form) history)]))
 		(catch TimeoutException _ ["Execution Timed Out!" history])
 		(catch SecurityException _ ["Disabled for security purposes."  history])
