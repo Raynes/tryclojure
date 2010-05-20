@@ -59,15 +59,19 @@
      (html [:p.bottom
 	    "This site is still under construction. I can't promise everything will work correctly."
 	    " You can find the site's source and such on it's " (link-to "http://github.com/Raynes/tryclojure" "github")
-	    " page."
-	    [:br] [:br]
+	    " page."]
+	   [:p.bottom
 	    "TryClojure is written in Clojure and JavaScript, powered by " 
 	    (link-to "http://github.com/Licenser/clj-sandbox" "clj-sandbox")
 	    " and Chris Done's "
-	    (link-to "http://github.com/chrisdone/jquery-console" "jquery-console") ""
-	    [:br] [:br]
+	    (link-to "http://github.com/chrisdone/jquery-console" "jquery-console")]
+	   [:p.bottom
 	    "Huge thanks to " (link-to "http://www.bestinclass.dk/" "Lau Jensen")
-	    " for lots of help with everything ranging from Gimp, to straight up CSS and HTML design tips."]))
+	    " for lots of help with everything ranging from Gimp, to straight up CSS and HTML design tips."]
+	   [:p.bottom
+	    "Also thanks to my buddy Heinz (Licenser) for all the help with this site. This site is hosted on"
+	    " his server, with his domain name. He completely funds this project and it wouldn't be possible without"
+	    " him. Not to mention his wonderful clj-sandbox and clj-highlight libraries make this site possible!"]))
 
 (def fire-html
      (html
