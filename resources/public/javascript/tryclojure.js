@@ -1,9 +1,13 @@
 function setupLink(url) {
-    return function(e) { $.get(url, function(data) { $("#changer").html(data); }); }
+    return function(e) { $("#changer").load(url, function(data) { $("#changer").html(data); }); }
 }
 
 function getStep(n) {
-    $.get("tutorial", { step: n }, function(data) { $("#tuttext").html(data); }); 
+    $("#tuttext").load("tutorial", { step: n });
+}
+
+function setupExamples() {
+    $("span").click(function(e) { alert($("this").html()); });
 }
 
 $(document).ready(
@@ -33,13 +37,13 @@ $(document).ready(
 	$("#about").click(setupLink("about"));
 	$("#links").click(setupLink("links"));
 	$("#tutorial").click(function(e) {
-	    $.get("tutorial", {step: 0}, function(data) { 
-		$("#changer").html(data);
+	    $("#changer").load("tutorial", {step: 0}, function(data) { 
 		var step = 1;
 		$("#continue").click(function(e) {
 		    if(step < 6 ) { step += 1; }
 		    getStep(step);
 		    $("#tuttext").scrollTop(0);
+		    //setupExamples();
 		});
 		$("#back").click(function(e) {
 		    if(step > 1) { step -= 1; }

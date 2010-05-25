@@ -134,11 +134,11 @@
    :session session
    :body links})
 
-(defn tutorial-handler [{querys :query-params session :session}]
+(defn tutorial-handler [{formps :form-params session :session :as req}]
   {:status 200
    :headers {"Content-Type" "text/html"}
    :session session
-   :body (get-tutorial (querys "step"))})
+   :body (get-tutorial (formps "step"))})
 
 (def clojureroutes
      (app
