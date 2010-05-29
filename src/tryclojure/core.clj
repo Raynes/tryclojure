@@ -23,25 +23,36 @@
 
 (defn has-state? [form]
      (not (state-tester form nil)))
-		 
 
 (defn execute-text [txt history]
   (let [sc (new-sandbox-compiler :tester sandbox-tester 
 				 :timeout 1000)
-	form (binding [*read-eval* false] (read-string txt))
 	result (try
 		(loop [history history]
 		  (if (not (empty? history))
 		    (do
 		      ((sc (first history)))
 		      (recur (next history)))))
-		(with-open [writer (java.io.StringWriter.)]
-		  (let [r (pr-str ((sc form) {'*out* writer}))]
-		    [(str (.replace (escape-html writer) "\n" "<br/>") (code (str r)))
-		     (if (has-state? form) (conj history form) history)]))
+		(let [form (binding [*read-eval* false] (read-string txt))]
+		  (with-open [writer (java.io.StringWriter.)]
+		    (let [r (pr-str ((sc form) {'*out* writer}))]
+		      [(str (.replace (escape-html writer) "\n" "<br/>") (code (str r)))
+		       (if (has-state? form) (conj history form) history)])))
 		(catch TimeoutException _ ["Execution Timed Out!" history])
-		(catch SecurityException _ ["Disabled for security purposes."  history])
-		(catch Exception e [(str (root-cause e))  history]))]
+		(catch SecurityException e
+		  [(if (.startsWith
+			(.getMessage e)
+			"Code did not pass sandbox guidelines: ")
+		     (str e
+			  "<br /><br />This error was caused because you tried to use a function that "
+			  " isn't whitelisted in the sandbox. The sandbox's whitelist is probably missing some"
+			  " useful functions that should be whitelisted. If you think the function you tried to "
+			  "use is safe and should be whitelisted, please file an issue at "
+			  "http://github.com/Raynes/tryclojure/issues or mention it to Raynes on the "
+			  "#clojure or #clojure-casual IRC channels on the FreeNode network.")
+		     (str e))
+			history])
+		(catch Exception e [(str (root-cause e)) history]))]
     result))
 
 (def links
