@@ -19,6 +19,13 @@
        "Above, you have your REPL.  Please try the examples as we go along, and by all means experiment"
        " with concepts indpendently.  Should you refuse, you will promptly be IP banned from this website, and a teddy "
        "bear will eat your candies. ;-)"[:br] [:br] "Don't make teddy eat your candy."]
+      [:p.bottom
+       "All of the examples (pretty colored text) are clickable. If you click them, they will be copied"
+       " into the REPL prompt above. This is for convenience, so you don't have to type tedious things like a "
+       "backwards string (you'll see). Copy and pasting is not allowed in the REPL, because I and the creator of "
+       "JQuery-console, which powers the REPL above, believe that copying and pasting isn't so great for learning."
+       " While these examples are clickable, I urge you to type out the examples by hand. If you type them out, "
+       "they will sink in better. Enjoy the tutorial."]
       [:p.bottom "Hit the pretty little 'Next' button to continue for the love of Pete!"]))
 
 (def tutorial1-text

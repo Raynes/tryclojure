@@ -2,17 +2,19 @@ function setupLink(url) {
     return function(e) { $("#changer").load(url, function(data) { $("#changer").html(data); }); }
 }
 
-function getStep(n) {
-    $("#tuttext").load("tutorial", { step: n });
+function setupExamples(controller) {
+    $(".code").click(function(e) {
+	controller.promptText($(this).html().replace(/<\/?([^>]+)>/g, ""));
+    });
 }
 
-function setupExamples() {
-    $("span").click(function(e) { alert($("this").html()); });
+function getStep(n, controller) {
+    $("#tuttext").load("tutorial", { step: n }, function() { setupExamples(controller); });
 }
 
 $(document).ready(
     function() {
-	$("#console").console({
+	var controller = $("#console").console({
 	    promptLabel: 'Clojure> ',
 	    commandValidate:function(line){
 		if (line == "") return false;
@@ -41,13 +43,12 @@ $(document).ready(
 		var step = 1;
 		$("#continue").click(function(e) {
 		    if(step < 6 ) { step += 1; }
-		    getStep(step);
+		    getStep(step, controller);
 		    $("#tuttext").scrollTop(0);
-		    //setupExamples();
 		});
 		$("#back").click(function(e) {
 		    if(step > 1) { step -= 1; }
-		    getStep(step);
+		    getStep(step, controller);
 		    $("#tuttext").scrollTop(0);
 		});
 	    });
