@@ -4,7 +4,7 @@ function setupLink(url) {
 
 function setupExamples(controller) {
     $(".code").click(function(e) {
-	controller.promptText($(this).html().replace(/<\/?([^>]+)>/g, ""));
+	controller.promptText($(this).text());
     });
 }
 

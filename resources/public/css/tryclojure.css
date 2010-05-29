@@ -14,10 +14,9 @@ a.lbutton { color: black; font-family: verdana; font-size: 10pt; font-weight: bo
 	    padding-left: 0.3em; padding-right: 0.3em; }
 td.bholder { border: 1px solid black; }
 div#tuttext { overflow-y: auto; max-height: 300px; }
-a.buttons:hover,a.lbutton:hover { color: white; }
+a.buttons:hover,a.lbutton:hover { color: white; cursor: pointer; }
 div.continue { width: 100%; text-align: center; padding-top: 0.5em; }
-code.code { color: black; font-family: "DejaVu Sans Mono"; background-color: #C4C4C4; 
-	    padding: 0.1em; font-size: 10pt;}
+
 p.bottom
 {
     padding: 0;
@@ -61,6 +60,7 @@ div.console span.jquery-console-prompt-label { font-weight:bold }
 .code pre { margin: 0px; }
 
 span.code { white-space: pre; border: 0px; padding: 2px; }
+span.code:hover { cursor: pointer; }
 
 table.code { border-collapse: collapse; width: 100%; padding: 2px; }
 table.code td { padding: 2px 4px; vertical-align: top; }
