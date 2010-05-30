@@ -74,7 +74,10 @@
        "Alright.  We have greeted the world.  Now what?  Math?  Clojure is great at math.  Thanks to the uniformity of "
        "prefix notation, we don't have to worry about precedence rules; which we kinda loathe anyway.  This goes before that, and that goes before that other thing... blah!  In Clojure, mathematical operators work like any other function."
        "  The common operators are +, -, *, and /.  Let's try them out: "]
-      (code "(+ 2 2)\n(- 3 2)\n(* 5 5)\n(/ 4 3)")
+      (code "(+ 2 2)\n")
+      (code "(- 3 2)\n")
+      (code "(* 5 5)\n")
+      (code "(/ 4 3)\n")
       [:p.bottom
        "So, that was great.  But that last one doesn't quite look right.  The problem is that Clojure has a built in "
        "Ratio type.  You can confirm this by doing this: " (code "(class (/ 4 3))") "."]
@@ -147,7 +150,9 @@
        "Another important fact about sets is that they, like maps, are also functions. A set is a function that takes  "
        "an argument and looks inside itself to see if that same object is inside of it.  If this is true, it returns the "
        "object, or returns nil.  Let's try this out for ourselves: "]
-      (code "(#{1 2 3} 3)\n(#{\"abc\" \\e} \\e)\n(#{3 4 \\x} 5)")
+      (code "(#{1 2 3} 3)\n")
+      (code "(#{\"abc\" \\e} \\e)\n")
+      (code "(#{3 4 \\x} 5)")
       [:p.bottom
        "Okay, so how is this useful?  It really isn't. Not alone, anyway.  However, when it's combined with other sequence "
        "functions, it can be used to make a really elegant solution to a problem like this."]
@@ -166,7 +171,8 @@
        "Let's try filter out a bit.  Let's try to filter out all odd numbers from a sequence of numbers.  Clojure has "
        "a function called " (code "odd?") " that we can use.  Putting a question mark at the end is a Clojure naming convention "
        "for functions that are predicates (return either true or false).  Try it out in the REPL:"]
-      (code "(odd? 1)\n(odd? 2)")
+      (code "(odd? 1)\n")
+      (code "(odd? 2)")
       [:p.bottom 
        "Okay, now we need a sequence of numbers.  We could type these out by hand, but that's tedious, and as Clojure "
        "programmers, we do not tolerate 'tedious'.  We can use Clojure's range function to generate these numbers for us.  "

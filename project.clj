@@ -5,7 +5,7 @@
 		 [net.cgrand/moustache "1.0.0-SNAPSHOT"]
                  [ring/ring-jetty-adapter "0.2.0"]
 		 [commons-lang/commons-lang "2.5"]
-		 [clj-sandbox "0.3.7"]
+		 [clj-sandbox "0.3.8"]
                  [clj-highlight "0.1.1-SNAPSHOT"]
 		 [hiccup "0.2.3"]
 		 [clj-gist "1.0.0-SNAPSHOT"]]
