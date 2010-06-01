@@ -118,7 +118,11 @@
 	 [:td [:div#changer [:p.bottom 
 			     "Welcome to TryClojure. Above, you have a Clojure REPL. You can type expressions and see "
 			     "their results right here in your browser. We also have a brief tutorial to give you a "
-			     "taste of Clojure. Try it out!"]]]]]]))
+			     "taste of Clojure. Try it out!"]]]]]
+       [:div.footer
+	[:p.bottom "©2010 Anthony Simpson (Raynes)"]
+	[:p.bottom "Domain and hosting kindly provided by "
+	 (link-to "http://blog.licenser.net" "Heinz N. Gies") "."]]]))
 
 (defn handler [{session :session}]
   {:status  200
