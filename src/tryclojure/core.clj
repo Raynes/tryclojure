@@ -10,6 +10,8 @@
   (:import java.io.StringWriter
 	   java.util.concurrent.TimeoutException))
 
+(enable-security-manager)
+
 (def sandbox-tester
      (extend-tester secure-tester 
 		    (whitelist 
@@ -50,7 +52,7 @@
 			  "use is safe and should be whitelisted, please file an issue at "
 			  "http://github.com/Raynes/tryclojure/issues or mention it to Raynes on the "
 			  "#clojure or #clojure-casual IRC channels on the FreeNode network.")
-		     (str e))
+		     (str (root-cause e)))
 			history])
 		(catch Exception e [(str (root-cause e)) history]))]
     result))
