@@ -40,7 +40,7 @@
 				 :timeout 1000)
 	result (try
 		(loop [history history]
-		  (if (not (empty? history))
+		  (when (not (empty? history))
 		    (do
 		      ((sc (first history)))
 		      (recur (next history)))))
@@ -49,6 +49,7 @@
 		    (let [r (pr-str ((sc form) {'*out* writer}))]
 		      [(str (.replace (escape-html writer) "\n" "<br/>") (code (str r)))
 		       (if (has-state? form) (conj history form) history)])))
+                (catch OutOfMemoryError _ ["Out of memory error was thrown. Cleaning up all defs." nil])
 		(catch TimeoutException _ ["Execution Timed Out!" history])
 		(catch SecurityException e
 		  [(if (.startsWith
