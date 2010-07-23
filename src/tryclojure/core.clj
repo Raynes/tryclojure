@@ -16,12 +16,21 @@
      (extend-tester secure-tester 
 		    (whitelist 
 		     (function-matcher 'println 'print 'pr 'prn 'var 'print-doc 'doc 'throw 
-				       'def 'def* 'dosync 'alter '.))))
+				       'def 'def* 'dosync 'alter '. 'finally '*math-context*)
+                     (class-matcher java.io.StringWriter String Byte Character StrictMath StringBuffer
+				    java.net.URL java.net.URI java.math.MathContext))))
+
+(def my-obj-tester
+     (extend-tester default-obj-tester
+		    (whitelist
+		     (class-matcher java.io.StringWriter String Byte Character StrictMath StringBuffer
+				    java.net.URL java.net.URI java.math.MathContext))))
+
 (def state-tester
      (new-tester (whitelist (constantly '(true)))
 		 (blacklist (function-matcher 'def 'def* 
 					      'ensure 'ref-set 'alter 'commute 
-					      'swap! 'compare-and-set! ))))
+					      'swap! 'compare-and-set!))))
 
 (defn has-state? [form]
      (not (state-tester form nil)))
@@ -73,6 +82,12 @@
 	    "This site is still under construction. I can't promise everything will work correctly."
 	    " You can find the site's source and such on it's " (link-to "http://github.com/Raynes/tryclojure" "github")
 	    " page."]
+           [:p.bottom
+            "This website is mostly going to be useful for beginners. All of the code that is ran is ran"
+            " server side. This means it *has* to be sandboxed. This also means that this web REPL is NOT"
+            " ever going to be as useful as a normal REPL ran on your computer. I'm considering throwing up"
+            " another site that runs a pretty Clojure REPL through a typical Java applet. That one would be"
+            " client-side, and would not be sandboxed."]
 	   [:p.bottom
 	    "TryClojure is written in Clojure and JavaScript, powered by " 
 	    (link-to "http://github.com/Licenser/clj-sandbox" "clj-sandbox")
