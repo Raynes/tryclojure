@@ -114,7 +114,8 @@
         [:div#content
          [:div#header
           [:h1 
-           [:span.logo-try "Try"] 
+           [:span.logo-try "Try"]
+           " "
            [:span.logo-clojure "Clo" [:em "j"] "ure"]]]
          [:div#container
           [:div#console.console]
@@ -124,7 +125,7 @@
            [:a#about.buttons.last "about"]]
           [:div#changer
            [:p.bottom 
-            "Welcome to TryClojure. Above, you have a Clojure REPL. You can type expressions and see "
+            "Welcome to Try Clojure. Above, you have a Clojure REPL. You can type expressions and see "
             "their results right here in your browser. We also have a brief tutorial to give you a "
             "taste of Clojure. Try it out!"]]]
          [:div.footer

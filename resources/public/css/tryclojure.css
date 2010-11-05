@@ -36,19 +36,22 @@ body {
 }
 
 #console {
+ height: 320px;
+ background: #efefef;
  margin-top: 24px;
+ border-radius: 5px;
+ -moz-border-radius: 5px;
+ margin-left: auto;
+ margin-right: auto;
 }
 
 #console div.jquery-console-inner { 
- width:595px;
+ width:580px;
  height:300px; 
- background:#efefef; 
- padding-left: 3px; 
- padding-top: 3px;
+ margin: 10px 10px;
+ padding: 10px 0;
  overflow:auto; 
  text-align:left;
- border: 1px solid black;
- background: transparent;
 }
 #console div.jquery-console-message-value {
   color:#0066FF; 
@@ -59,7 +62,7 @@ body {
  color:#444; font-family:monospace; 
 }
 #console div.jquery-console-focus span.jquery-console-cursor {
- background:#333; color:#eee; font-weight:bold 
+ background:#333; color:#eee; font-weight:bold;
 }
 #console div.jquery-console-message-error {
  color:#ef0505; font-family:sans-serif; font-weight:bold;
@@ -70,7 +73,7 @@ body {
  padding:0.1em; 
 }
 #console span.jquery-console-prompt-label { 
- font-weight:bold 
+ font-weight:bold;
 }
 
 .bottom { 
@@ -101,6 +104,8 @@ div#changer {
  font-size: 16px; 
  font-weight: bold;
  background: #90b4fe;
+ border-radius: 5px;
+ -moz-border-radius: 5px;
 }
 #buttons a.last {
  margin-right: 0;
@@ -112,11 +117,15 @@ div#changer {
 
 #changer { 
  margin-top: 10px;
- padding: 10px;
+ padding-top: 5px;
  background: #EDF1FA;
+ border-radius: 5px;
+ -moz-border-radius: 5px;
 }
 
 #changer p {
+ margin-left: 10px;
+ margin-right: 10px;
  background: transparent;
  line-height: 1.3em;
  font-family: Arial, serif;
@@ -124,7 +133,7 @@ div#changer {
  color: #555;
 }
 
-div#tuttext { 
+div#tuttext {
 }
 
 div.continue {
