@@ -1,30 +1,28 @@
 (ns tryclojure.core
   (:use ring.adapter.jetty
-	net.licenser.sandbox
 	[net.licenser.sandbox tester matcher]
 	[hiccup core form-helpers page-helpers]
 	[ring.middleware reload stacktrace params file session]
 	net.cgrand.moustache
 	[clojure.stacktrace :only [root-cause]]
 	tryclojure.tutorial)
+  (:require [net.licenser.sandbox :as sb])
   (:import java.io.StringWriter
 	   java.util.concurrent.TimeoutException))
 
-(enable-security-manager)
+(sb/enable-security-manager)
 
 (def sandbox-tester
-     (extend-tester secure-tester 
-		    (whitelist 
-		     (function-matcher 'println 'print 'pr 'prn 'var 'print-doc 'doc 'throw 
-				       'def 'def* 'dosync 'alter '. 'finally '*math-context*)
-                     (class-matcher java.io.StringWriter String Byte Character StrictMath StringBuffer
-				    java.net.URL java.net.URI java.math.MathContext))))
+     (new-tester
+      (whitelist)
+      (blacklist
+       (function-matcher 'alter-var-root 'intern 'eval 'catch
+                         'load-string 'load-reader 'clojure.core/addMethod
+                         'ns-resolve))))
 
 (def my-obj-tester
-     (extend-tester default-obj-tester
-		    (whitelist
-		     (class-matcher java.io.StringWriter String Byte Character StrictMath StringBuffer
-				    java.net.URL java.net.URI java.math.MathContext))))
+     (extend-tester sb/default-obj-tester
+		    (whitelist)))
 
 (def state-tester
      (new-tester (whitelist (constantly '(true)))
@@ -33,11 +31,11 @@
 					      'swap! 'compare-and-set!))))
 
 (defn has-state? [form]
-     (not (state-tester form nil)))
+  (not (state-tester form nil)))
 
 (defn execute-text [txt history]
-  (let [sc (new-sandbox-compiler :tester sandbox-tester 
-				 :timeout 1000)
+  (let [sc (sb/new-sandbox-compiler :tester sandbox-tester 
+                                    :timeout 1000)
 	result (try
 		(loop [history history]
 		  (when (not (empty? history))
