@@ -1,54 +1,141 @@
-body { background-color: white; }
-div#container { width: 600px; height: 100%; 
-		margin: 50px auto 50px auto; background-color: white;}
-h1 { font-size: 32pt; color: black;  border-bottom: 1px solid #333; font-family: arial;}
-.bottom { background-color: white; color: #333; }
-.bottom a,a:visited { color: #111; }
-table.bottom { width: 100%; border: 1px solid black;}
-div#changer { width: 100%; height: 100%; }
-div.buttons { background: transparent url('/resources/public/buttontdbg.png') no-repeat top left; 
-	      padding-left: 0.2em; padding-right: 0.2em; text-align: center; }
-.buttons a.buttons { border-right: 1px solid #5F665F; color: black; padding-right: 0.3em; 
-		     font-family: verdana; font-size: 10pt; font-weight: bold; padding-left: 0.3em;}
-a.lbutton { color: black; font-family: verdana; font-size: 10pt; font-weight: bold; 
-	    padding-left: 0.3em; padding-right: 0.3em; }
-td.bholder { border: 1px solid black; }
-div#tuttext { overflow-y: auto; max-height: 300px; }
-a.buttons:hover,a.lbutton:hover { color: white; cursor: pointer; }
-div.continue { width: 100%; text-align: center; padding-top: 0.5em; }
+body {
+ background: #fff;
+ text-align: center;
+}
 
-p.bottom
-{
-    padding: 0;
-    font-family: verdana;
-    font-size: 10pt;
+#wrapper {
+ text-align: left;
+ width: 600px;
+ margin: 0 auto;
 }
-p
-{
-    color:gray;
-    font-family:\"Times New Roman\";
-    font-size:14px;
+
+#header {
+ background: #fff;
+ margin-top: 24px;
 }
-div.bottom { width: 600px; }
-div.footer { width: 100%; border-top: 1px solid black; text-align: center; }
-div.console div.jquery-console-inner 
-{ width:595px; height:300px; background:#efefef; padding-left: 3px; padding-top: 3px;
-  overflow:auto; text-align:left; border: 1px solid black;
-  background: transparent url('/resources/public/wtf.png') no-repeat top left; }
-div.console div.jquery-console-message-value
-{ color:#0066FF; font-family:monospace;
-  padding:0.1em; }
-div.console div.jquery-console-prompt-box
-{ color:#444; font-family:monospace; }
-div.console div.jquery-console-focus span.jquery-console-cursor 
-{ background:#333; color:#eee; font-weight:bold }
-div.console div.jquery-console-message-error
-{ color:#ef0505; font-family:sans-serif; font-weight:bold;
-  padding:0.1em; }
-div.console div.jquery-console-message-success
-{ color:#187718; font-family:monospace;
-  padding:0.1em; }
-div.console span.jquery-console-prompt-label { font-weight:bold }
+
+#header h1 {
+ height: 72px;
+ width: 72px;
+ line-height: 72px;
+ background: url(/resources/public/clojure-logo.png) no-repeat;
+ margin: 0;
+ padding: 0;
+ padding-left: 75px;
+ font-family: Arial, sans-serif;
+ font-weight: normal;
+ font-size: 48px;
+}
+
+#header h1 span.logo-try {
+ color: #63b132;
+}
+
+#header h1 span.logo-clojure {
+ color: #5881d8;
+}
+
+#console {
+ margin-top: 24px;
+}
+
+#console div.jquery-console-inner { 
+ width:595px;
+ height:300px; 
+ background:#efefef; 
+ padding-left: 3px; 
+ padding-top: 3px;
+ overflow:auto; 
+ text-align:left;
+ border: 1px solid black;
+ background: transparent;
+}
+#console div.jquery-console-message-value {
+  color:#0066FF; 
+  font-family:monospace;
+  padding:0.1em; 
+}
+#console div.jquery-console-prompt-box {
+ color:#444; font-family:monospace; 
+}
+#console div.jquery-console-focus span.jquery-console-cursor {
+ background:#333; color:#eee; font-weight:bold 
+}
+#console div.jquery-console-message-error {
+ color:#ef0505; font-family:sans-serif; font-weight:bold;
+ padding:0.1em; 
+}
+#console div.jquery-console-message-success {
+ color:#187718; font-family:monospace;
+ padding:0.1em; 
+}
+#console span.jquery-console-prompt-label { 
+ font-weight:bold 
+}
+
+.bottom { 
+ background-color: white; color: #333; 
+}
+.bottom a,a:visited { 
+ color: #111; 
+}
+table.bottom { 
+ width: 100%; border: 1px solid black;
+}
+div#changer { 
+ width: 100%;
+ height: 100%; 
+}
+
+#buttons {
+ background: transparent;
+ text-align: center;
+ margin-top: 10px;
+}
+#buttons a { 
+/* color: #4881d8;*/
+ color: #3D5B99;
+ padding: .3em 1em;
+ margin-right: .7em;
+ font-family: Helvetica, sans-serif;
+ font-size: 16px; 
+ font-weight: bold;
+ background: #90b4fe;
+}
+#buttons a.last {
+ margin-right: 0;
+}
+#buttons a:hover {
+ color: #5881d8;
+ cursor: pointer; 
+}
+
+#changer { 
+ margin-top: 10px;
+ padding: 10px;
+ background: #EDF1FA;
+}
+
+#changer p {
+ background: transparent;
+ line-height: 1.3em;
+ font-family: Arial, serif;
+ font-size: 16px;
+ color: #555;
+}
+
+div#tuttext { 
+}
+
+div.continue {
+ width: 100%;
+ text-align: center;
+ padding-top: 0.5em; 
+}
+
+div.footer { 
+ text-align: center; 
+}
 
 /* Coderay alpha style */
 

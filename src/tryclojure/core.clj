@@ -31,7 +31,7 @@
 					      'swap! 'compare-and-set!))))
 
 (defn has-state? [form]
-  (not (state-tester form nil)))
+ (not (state-tester form nil)))
 
 (defn execute-text [txt history]
   (let [sc (sb/new-sandbox-compiler :tester sandbox-tester 
@@ -110,35 +110,36 @@
 		   "/resources/public/javascript/tryclojure.js")
        [:title "TryClojure"]]
       [:body
-       [:script {:type "text/javascript"}
-       "
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-552543-3']);
-  _gaq.push(['_trackPageview']);
-
+       [:div#wrapper
+        [:div#content
+         [:div#header
+          [:h1 
+           [:span.logo-try "Try"] 
+           [:span.logo-clojure "Clo" [:em "j"] "ure"]]]
+         [:div#container
+          [:div#console.console]
+          [:div#buttons
+           [:a#tutorial.buttons "tutorial"]
+           [:a#links.buttons "links"]
+           [:a#about.buttons.last "about"]]
+          [:div#changer
+           [:p.bottom 
+            "Welcome to TryClojure. Above, you have a Clojure REPL. You can type expressions and see "
+            "their results right here in your browser. We also have a brief tutorial to give you a "
+            "taste of Clojure. Try it out!"]]]
+         [:div.footer
+          [:p.bottom "©2010 Anthony Simpson (Raynes)"]
+          [:p.bottom "Domain and hosting kindly provided by "
+           (link-to "http://blog.licenser.net" "Heinz N. Gies") "."]]]
+        [:script {:type "text/javascript"}
+         "var _gaq = _gaq || []; _gaq.push(['_setAccount', 'UA-552543-3']); _gaq.push(['_trackPageview']);
   (function() {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 "]
-       [:div {:style "text-align: center;"} [:h1 "Try Clojure"]]
-       [:div#container [:div#console.console]
-	[:table.bottom {:border "0"}
-	 [:tr]
-	 [:td.bholder [:div.buttons 
-		       [:a#tutorial.buttons "tutorial"]
-		       [:a#links.buttons "links"]
-		       [:a#about.lbutton "about"]]]
-	 [:tr]
-	 [:td [:div#changer [:p.bottom 
-			     "Welcome to TryClojure. Above, you have a Clojure REPL. You can type expressions and see "
-			     "their results right here in your browser. We also have a brief tutorial to give you a "
-			     "taste of Clojure. Try it out!"]]]]]
-       [:div.footer
-	[:p.bottom "©2010 Anthony Simpson (Raynes)"]
-	[:p.bottom "Domain and hosting kindly provided by "
-	 (link-to "http://blog.licenser.net" "Heinz N. Gies") "."]]]))
+]]))
 
 (defn handler [{session :session}]
   {:status  200
@@ -147,11 +148,11 @@
    :body    fire-html})
 
 (defn div-handler [{qparams :query-params session :session}]
-  (let [[result history] (execute-text (qparams "code") (or (:history session) []))]
-    {:status  200
-     :headers {"Content-Type" "text/txt"}
-     :session {:history history}
-     :body    result}))
+ (let [[result history] (execute-text (qparams "code") (or (:history session) []))]
+   {:status  200
+    :headers {"Content-Type" "text/txt"}
+    :session {:history history}
+    :body    result}))
 
 (defn about-handler [{session :session}]
   {:status 200
