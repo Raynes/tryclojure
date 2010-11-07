@@ -146,12 +146,10 @@ div.footer {
 }
 
 /* Coderay alpha style */
-
 .code {
-  #999;
-  border-radius: 2px;
-  -moz-border-radius: 1px;
-  color: #000;
+ border-radius: 2px;
+ -moz-border-radius: 1px;
+ color: #000;
 }
 .code pre { margin: 0px; }
 
@@ -168,38 +166,38 @@ table.code td { padding: 2px 4px; vertical-align: top; }
 }
 
 /* keywords */
-.code span.r {
+#changer .code span.r {
  color: #0000ff;
  font-weight: bold;
 }
 
 /* symbols */
-.code span.sy {
+#changer .code span.sy {
  color: #318495;
 }
 
 /* strings */
-.code span.s {
- color: #666666;
+#changer .code span.s {
+ color: #008800;
 }
 
 /* paren */
-.code span.of {
- color: #70727E;
+#changer .code span.of {
+ color: #222;
  font-weight: bold;
 }
 
 /* comment */
-.code span.c {
+#changer .code span.c {
  color: #ccc;
 }
 
 /* operator */
-.code span.cl {
+#changer .code span.cl {
  
 }
 
 /* number */
-.code span.i {
+#changer .code span.i {
  color: #ff0000;
 }
