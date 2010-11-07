@@ -52,7 +52,6 @@ body {
  width:580px;
  height:200px; 
  margin: 10px 10px;
- padding: 10px 0;
  overflow:auto; 
  text-align:left;
 }
@@ -117,10 +116,10 @@ table.bottom {
 #changer { 
  margin: 10px;
  padding: 1px 0;
- background: #EDF1FA;
+ background: #EAF2F5;
  border-radius: 5px;
  -moz-border-radius: 5px;
- border: 1px solid #90b4fe;
+ border: 1px solid #BEDCE7;
 }
 
 #changer p {
