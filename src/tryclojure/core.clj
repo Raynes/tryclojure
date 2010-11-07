@@ -108,14 +108,13 @@
        (include-js "/resources/public/javascript/jquery-1.4.2.min.js"
 		   "/resources/public/javascript/jquery.console.js"
 		   "/resources/public/javascript/tryclojure.js")
-       [:title "TryClojure"]]
+       [:title "Try Clojure"]]
       [:body
        [:div#wrapper
         [:div#content
          [:div#header
           [:h1 
-           [:span.logo-try "Try"]
-           " "
+           [:span.logo-try "Try"] " "
            [:span.logo-clojure "Clo" [:em "j"] "ure"]]]
          [:div#container
           [:div#console.console]
