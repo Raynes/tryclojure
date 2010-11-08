@@ -10,6 +10,10 @@ Many thanks to Licenser for giving me a place to put it.
 
 If you want to run it, refer to https://github.com/Raynes/tryclojure/wiki/Running-Tryclojure
 
+## Credits
+
+apgwoz: Design
+
 ## License
 
 Licensed under the same thing Clojure is licensed under: the EPL, of which you can find a copy at the root of this directory.
