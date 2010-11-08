@@ -128,7 +128,7 @@
             "their results right here in your browser. We also have a brief tutorial to give you a "
             "taste of Clojure. Try it out!"]]]
          [:div.footer
-          [:p.bottom "©2010 Anthony Simpson (Raynes)"]
+          [:p.bottom "©2010 Anthony Simpson (Raynes) and contributors"]
           [:p.bottom "Domain and hosting kindly provided by "
            (link-to "http://blog.licenser.net" "Heinz N. Gies") "."]]]
         [:script {:type "text/javascript"}
