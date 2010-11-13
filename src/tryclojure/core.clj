@@ -5,64 +5,36 @@
 	[ring.middleware reload stacktrace params file session]
 	net.cgrand.moustache
 	[clojure.stacktrace :only [root-cause]]
-	tryclojure.tutorial)
-  (:require [net.licenser.sandbox :as sb])
+        [clojail core testers]
+	tryclojure.tutorial
+        [clojure.set :only [difference]])
   (:import java.io.StringWriter
 	   java.util.concurrent.TimeoutException))
 
-(sb/enable-security-manager)
+(def sb-tester (difference secure-tester #{'def}))
 
-(def sandbox-tester
-     (new-tester
-      (whitelist)
-      (blacklist
-       (function-matcher 'alter-var-root 'intern 'eval 'catch
-                         'load-string 'load-reader 'clojure.core/addMethod
-                         'ns-resolve))))
-
-(def my-obj-tester
-     (extend-tester sb/default-obj-tester
-		    (whitelist)))
-
-(def state-tester
-     (new-tester (whitelist (constantly '(true)))
-		 (blacklist (function-matcher 'def 'def* 
-					      'ensure 'ref-set 'alter 'commute 
-					      'swap! 'compare-and-set!))))
+(def state-tester #{'def 'def* 'ensure 'ref-set 'alter 'commute 'swap! 'compare-and-set!})
 
 (defn has-state? [form]
- (not (state-tester form nil)))
+  (check-form form state-tester))
 
 (defn execute-text [txt history]
-  (let [sc (sb/new-sandbox-compiler :tester sandbox-tester 
-                                    :timeout 1000)
+  (let [sb (sandbox sb-tester :timeout 3000)
+        history (if (= 5 (count history)) (drop 1 history) history)
 	result (try
-		(loop [history history]
-		  (when (not (empty? history))
-		    (do
-		      ((sc (first history)))
-		      (recur (next history)))))
-		(let [form (binding [*read-eval* false] (read-string txt))]
-		  (with-open [writer (java.io.StringWriter.)]
-		    (let [r (pr-str ((sc form) {'*out* writer}))]
-		      [(str (.replace (escape-html writer) "\n" "<br/>") (code (str r)))
-		       (if (has-state? form) (conj history form) history)])))
-                (catch OutOfMemoryError _ ["Out of memory error was thrown. Cleaning up all defs." nil])
-		(catch TimeoutException _ ["Execution Timed Out!" history])
-		(catch SecurityException e
-		  [(if (.startsWith
-			(.getMessage e)
-			"Code did not pass sandbox guidelines: ")
-		     (str e
-			  "<br /><br />This error was caused because you tried to use a function that "
-			  " isn't whitelisted in the sandbox. The sandbox's whitelist is probably missing some"
-			  " useful functions that should be whitelisted. If you think the function you tried to "
-			  "use is safe and should be whitelisted, please file an issue at "
-			  "http://github.com/Raynes/tryclojure/issues or mention it to Raynes on the "
-			  "#clojure or #clojure-casual IRC channels on the FreeNode network.")
-		     (str (root-cause e)))
-			history])
-		(catch Exception e [(str (root-cause e)) history]))]
+                 (loop [history history]
+                   (when (not (empty? history))
+                     (do
+                       (sb (first history))
+                       (recur (next history)))))
+                 (let [form (binding [*read-eval* false] (read-string txt))]
+                   (with-open [writer (java.io.StringWriter.)]
+                     (let [r (pr-str (sb form {#'*out* writer}))]
+                       [(str (.replace (escape-html writer) "\n" "<br/>") (code (str r)))
+                        (if (has-state? form) (conj history form) history)])))
+                 (catch OutOfMemoryError _ ["Out of memory error was thrown. Cleaning up all defs." nil])
+                 (catch TimeoutException _ ["Execution Timed Out!" history])
+                 (catch Exception e [(str (root-cause e)) history]))]
     result))
 
 (def links
