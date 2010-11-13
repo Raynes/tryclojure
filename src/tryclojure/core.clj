@@ -54,14 +54,12 @@
 	    " You can find the site's source and such on it's " (link-to "http://github.com/Raynes/tryclojure" "github")
 	    " page."]
            [:p.bottom
-            "This website is mostly going to be useful for beginners. All of the code that is ran is ran"
-            " server side. This means it *has* to be sandboxed. This also means that this web REPL is NOT"
-            " ever going to be as useful as a normal REPL ran on your computer. I'm considering throwing up"
-            " another site that runs a pretty Clojure REPL through a typical Java applet. That one would be"
-            " client-side, and would not be sandboxed."]
+            "Please note that this REPL is sandboxed, so you wont be able to do everything in it "
+            "that you would in a local unsandboxed REPL. Keep in mind that this site is designed for "
+            "beginners to try out Clojure and not necessarily as a general-purpose server-side REPL."]
 	   [:p.bottom
 	    "TryClojure is written in Clojure and JavaScript, powered by " 
-	    (link-to "http://github.com/Licenser/clj-sandbox" "clj-sandbox")
+	    (link-to "http://github.com/Raynes/clojail" "clojail")
 	    " and Chris Done's "
 	    (link-to "http://github.com/chrisdone/jquery-console" "jquery-console")]
 	   [:p.bottom
@@ -69,8 +67,7 @@
 	    " for lots of help with everything ranging from Gimp, to straight up CSS and HTML design tips."]
 	   [:p.bottom
 	    "Also thanks to my buddy Heinz (Licenser) for all the help with this site. This site is hosted on"
-	    " his server, with his domain name. He completely funds this project and it wouldn't be possible without"
-	    " him. Not to mention his wonderful clj-sandbox and clj-highlight libraries make this site possible!"]))
+	    " his server, with his domain name. He completely funds this project and it wouldn't be possible without him."]))
 
 (def fire-html
      (html
