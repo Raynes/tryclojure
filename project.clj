@@ -5,7 +5,7 @@
 		 [net.cgrand/moustache "1.0.0-SNAPSHOT"]
                  [ring "0.3.3"]
 		 [commons-lang/commons-lang "2.5"]
-                 [clojail "0.2.0-SNAPSHOT"]
+                 [clojail "0.2.2-SNAPSHOT"]
 		 [org.clojars.rayne/clj-sandbox "0.4.2-SNAPSHOT"]
                  [org.clojars.rayne/clj-highlight "1.1.1-SNAPSHOT"]
 		 [hiccup "0.2.7"]]
