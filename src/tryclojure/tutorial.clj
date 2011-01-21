@@ -133,7 +133,7 @@
      (html 
       [:p.bottom
        "We've learned a little about Clojure's sequences, so let's use them to do some stuff.  I've been wondering how "
-       "vowels are in the word \"teddybear\".  Aren't you wondering the same thing? It's absolutely agonizing not "
+       "many vowels are in the word \"teddybear\".  Aren't you wondering the same thing? It's absolutely agonizing not "
        "knowing! We're programmers, you and I, so we shouldn't have to count those vowels ourselves.  Indeed, we don't "
        "We can use Clojure to count them for us!"]
       [:p.bottom
