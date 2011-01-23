@@ -1,6 +1,5 @@
 (ns tryclojure.core
   (:use ring.adapter.jetty
-	[net.licenser.sandbox tester matcher]
 	[hiccup core form-helpers page-helpers]
 	[ring.middleware reload stacktrace params file session]
 	net.cgrand.moustache
