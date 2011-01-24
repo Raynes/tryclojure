@@ -138,6 +138,10 @@ $(document).ready(
 
 	$("#about").click(setupLink("about"));
 	$("#links").click(setupLink("links"));
+        $("#tutorial").click(function(e) {
+            showPage(0);
+        });
+  /*
 	$("#tutorial").click(function(e) {
 	    $("#changer").load("tutorial", {step: 0}, function(data) { 
 		var step = 1;
@@ -153,4 +157,5 @@ $(document).ready(
 		});
 	    });
 	});
+  */
     });
