@@ -138,6 +138,13 @@ table.bottom {
  color: #555;
 }
 
+#changer p code {
+  background-color: #eee;
+  border: 1px solid #aaa;
+  font-family: courier, monospace;
+  padding: 0.1em 0.25em 0.1em 0.25em;
+}
+
 div#tuttext {
 }
 

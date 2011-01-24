@@ -99,7 +99,7 @@
            [:p.bottom 
             "Welcome to Try Clojure. Above, you have a Clojure REPL. You can type expressions and see "
             "their results right here in your browser. We also have a brief tutorial to give you a "
-            "taste of Clojure. Try it out!"]]]
+            "taste of Clojure. Try it out by typing <code>tutorial</code> in the console!"]]]
          [:div.footer
           [:p.bottom "©2010 Anthony Simpson (Raynes) and contributors"]
           [:p.bottom "Domain and hosting kindly provided by "
