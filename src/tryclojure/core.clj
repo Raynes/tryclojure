@@ -6,7 +6,8 @@
 	[clojure.stacktrace :only [root-cause]]
         [clojail core testers]
 	tryclojure.tutorial
-        [clojure.set :only [difference]])
+  [clojure.set :only [difference]])
+  (:require [clojure.contrib.json :as json])
   (:import java.io.StringWriter
 	   java.util.concurrent.TimeoutException))
 
@@ -17,24 +18,28 @@
 (defn has-state? [form]
   (check-form form state-tester))
 
-(defn execute-text [txt history]
-  (let [sb (sandbox sb-tester :timeout 3000)
-        history (if (= 5 (count history)) (drop 1 history) history)
-	result (try
-                 (loop [history history]
-                   (when (not (empty? history))
-                     (do
-                       (sb (first history))
-                       (recur (next history)))))
-                 (let [form (binding [*read-eval* false] (read-string txt))]
-                   (with-open [writer (java.io.StringWriter.)]
-                     (let [r (pr-str (sb form {#'*out* writer}))]
-                       [(str (.replace (escape-html writer) "\n" "<br/>") (code (str r)))
-                        (if (has-state? form) (conj history form) history)])))
-                 (catch OutOfMemoryError _ ["Out of memory error was thrown. Cleaning up all defs." nil])
-                 (catch TimeoutException _ ["Execution Timed Out!" history])
-                 (catch Exception e [(str (root-cause e)) history]))]
-    result))
+(defn eval-form [form sbox]
+  (with-open [out (java.io.StringWriter.)]
+    {:expr form
+     :result (sbox form {#'*out* out})}))
+
+(defn eval-string [expr sbox]
+  (let [form (binding [*read-eval* false] (read-string expr))]
+    (eval-form form sbox)))
+
+(defn eval-request [{params :params {history :history} :session}]
+  (let [sbox (sandbox sb-tester :timeout 3000)]
+    (try
+      ;; re-eval history forms
+      (doseq [form history] (eval-form form sbox))
+      ;; eval request parameter
+      (eval-string (params "expr") sbox)
+      (catch OutOfMemoryError _
+        {:error true :message "Out of memory error was thrown. Cleaning up all defs."})
+      (catch TimeoutException _
+        {:error true :message "Execution Timed Out!"})
+      (catch Exception e
+        {:error true :message (.getMessage (root-cause e))}))))
 
 (def links
      (html (unordered-list 
@@ -115,13 +120,6 @@
    :session session
    :body    fire-html})
 
-(defn div-handler [{qparams :query-params session :session}]
- (let [[result history] (execute-text (qparams "code") (or (:history session) []))]
-   {:status  200
-    :headers {"Content-Type" "text/txt"}
-    :session {:history history}
-    :body    result}))
-
 (defn about-handler [{session :session}]
   {:status 200
    :headers {"Content-Type" "text/html"}
@@ -140,9 +138,41 @@
    :session session
    :body (get-tutorial (formps "step"))})
 
+(def ^{:private true}
+  eval-response-defaults
+  {:status 200
+   :headers {"Content-Type" "application/json"}})
+
+(defn eval-handler [request]
+  (let [{:keys [expr result error] :as res} (eval-request request)
+        history (get-in request [:session :history] [])]
+    (if error
+      (merge eval-response-defaults
+             {:session (:session request)
+              :body (json/json-str res)})
+      (merge eval-response-defaults
+             {:session {:history (conj history expr)}
+              :body (json/json-str {:expr (pr-str expr)
+                                    :result (pr-str result)})}))))
+
+(defn- max-history [max history]
+  (if (> (count history) max)
+    (drop 1 history)
+    history))
+
+(defn wrap-post-history [handler]
+  (fn [request]
+    (let [response (handler request)]
+      (->> (get-in response [:session :history] [])
+           (max-history 5)
+           (filter has-state?)
+           (vec)
+           (assoc-in response [:session :history])))))
+
 (def clojureroutes
      (app
       (wrap-session)
+      (wrap-post-history)
       ;(wrap-reload '(tryclojure.core tryclojure.tutorial))
       (wrap-file (System/getProperty "user.dir"))
       (wrap-params)
@@ -150,7 +180,7 @@
       ["tutorial"] tutorial-handler
       ["links"] link-handler
       ["about"] about-handler
-      ["magics"] div-handler
+      ["eval.json"] eval-handler
       [""] handler))
 
 (defn tryclj [] (run-jetty #'clojureroutes {:port 8801}))

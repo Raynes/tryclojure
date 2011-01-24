@@ -122,6 +122,12 @@ table.bottom {
  border: 1px solid #BEDCE7;
 }
 
+#changer h3 {
+  color: #555;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
 #changer p {
  margin-left: 10px;
  margin-right: 10px;
