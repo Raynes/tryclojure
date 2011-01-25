@@ -33,8 +33,13 @@ function showPage(n) {
     if (res) {
         pageNum = n;
         page = res;
-        $("#changer").html(res.text);
-        changerUpdated();
+
+        var block = $("#changer");
+        block.fadeOut(function(e) {
+            block.html(res.text);
+            block.fadeIn();
+            changerUpdated();
+        });
     }
 }
 
