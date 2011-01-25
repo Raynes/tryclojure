@@ -115,7 +115,7 @@ table.bottom {
 
 #changer { 
  margin: 10px;
- padding: 1px 0;
+ padding: 0.25em 0.5em 0.25em 0.5em;
  background: #EAF2F5;
  border-radius: 5px;
  -moz-border-radius: 5px;
@@ -124,13 +124,9 @@ table.bottom {
 
 #changer h3 {
   color: #555;
-  margin-left: 10px;
-  margin-right: 10px;
 }
 
 #changer p {
- margin-left: 10px;
- margin-right: 10px;
  background: transparent;
  line-height: 1.3em;
  font-family: Arial, serif;
@@ -138,9 +134,10 @@ table.bottom {
  color: #555;
 }
 
-#changer p code {
+#changer code {
   background-color: #eee;
   border: 1px solid #aaa;
+  color: #555;
   font-family: courier, monospace;
   padding: 0.1em 0.25em 0.1em 0.25em;
 }

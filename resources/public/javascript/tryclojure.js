@@ -2,28 +2,23 @@ var pageNum = -1;
 var page = null;
 var pages = [
     {
-        text: "<h3>Welcome to the first page of the interactive tutorial!</h3>\n" +
-            "<p>In order to move on to the next page please type <code>(+ 1 2)</code>.</p>",
-        verify: function(data) {
-            // strictly validate by expression and result
-            // otherwise the user could just type '3' to move on.
-            return (data.expr == "(+ 1 2)" && data.result == "3");
-        }
+        url: "/resources/public/tutorial/page1.html",
+        verify: function(data) { return false; }
     },
     {
-        text: "<h3>This is page two!</h3>\n" + 
-            "<p>Wow you did it! Looks like you have a talent for this!</p>\n" + 
-            "<p>I'm going to have to try something harder for you. In order to make it to " + 
-            "the next page type: <code>(map inc [1 2 3 4])</code>.</p>\n",
-        verify: function(data) {
-            // being lazy and just verifying on result
-            return (data.result == "(2 3 4 5)");
-        }
+        url: "/resources/public/tutorial/page2.html",
+        verify: function(data) { return false; }
     },
     {
-        text: "<h3>Third and final page!</h3>\n" + 
-            "<p>Your intelligence is too great for this lame tutorial. It's time for you to " +
-            "contribute to some open source Clojure projects. Have fun.</p>",
+        url: "/resources/public/tutorial/page3.html",
+        verify: function(data) { return false; }
+    },
+    {
+        url: "/resources/public/tutorial/page4.html",
+        verify: function(data) { return false; }
+    },
+    {
+        url: "/resources/public/tutorial/page5.html",
         verify: function(data) { return false; }
     }
 ];
@@ -36,9 +31,10 @@ function showPage(n) {
 
         var block = $("#changer");
         block.fadeOut(function(e) {
-            block.html(res.text);
-            block.fadeIn();
-            changerUpdated();
+            block.load(res.url, function() {
+                block.fadeIn();
+                changerUpdated();
+            });
         });
     }
 }
@@ -90,6 +86,14 @@ function doCommand(input, report) {
         } else {
             return false;
         }
+    case 'next':
+        if (pageNum >= 0 && pageNum < pages.length - 1) {
+            showPage(pageNum + 1);
+            report();
+            return true;
+        } else {
+            return false;
+        }
     case 'restart':
         if (pageNum > 0) {
             showPage(0);
@@ -135,7 +139,7 @@ function onHandle(line, report) {
  * Currently this is just to make the code elements clickable.
  */
 function changerUpdated() {
-    $("#changer code").each(function() {
+    $("#changer code.expr").each(function() {
         $(this).css("cursor", "pointer");
         $(this).attr("title", "Click to insert '" + $(this).text() + "' into the console.");
         $(this).click(function(e) {

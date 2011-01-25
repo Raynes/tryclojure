@@ -1,0 +1,35 @@
+<p>
+  Alright. We have greeted the world. Now what? Math? Clojure is great at math. Thanks
+  to the uniformity of prefix notation, we don't have to worry about precedence rules;
+  which we kinda loathe anyway. This goes before that, and that goes before that other 
+  thing... blah! In Clojure, mathematical operators work like any other function. The
+  common operators are +, -, *, and /. Let's try them out:
+</p>
+
+<p><code class="expr">(+ 2 2)</code></p>
+<p><code class="expr">(- 3 2)</code></p>
+<p><code class="expr">(* 5 5)</code></p>
+<p><code class="expr">(/ 4 3)</code></p>
+
+<p>
+  So, that was great. But that last one doesn't quite look right. The problem is that Clojure
+  has a built-in Ratio type. You can confirm this by doing this: <code class="expr">(class (/ 4 3))</code>.
+</p>
+
+<p>
+  So how do we perform division that we are familiar with? If you want decimal division, use
+  a floating-point literal for either the numerator or denominator:
+  <code class="expr">(/ 4.0 3)</code>. If you want to stick to integer math, you can use the 
+  <code>quot</code> function, or the <code>rem</code> function to get the remainder.
+</p>
+
+<p>
+  All of the math functions take an arbitrary number of arguments. This means you can do stuff
+  like this: <code class="expr">(+ 1 2 3 4 5 6)</code>. Go ahead, try it out. You know you want to. Play 
+  around with the math functions for a while. I'll wait. Go ahead.
+</p>
+
+<p>
+  That's the end of step two. Press Next to continue to step three, where we'll play with 
+  sequences.
+</p>
