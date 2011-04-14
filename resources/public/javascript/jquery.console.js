@@ -1,7 +1,7 @@
 // JQuery Console 1.0
 // Sun Feb 21 20:28:47 GMT 2010
 //
-// Copyright 2010 Chris Done. All rights reserved.
+// Copyright 2010 Chris Done, Simon David Pratt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
@@ -10,61 +10,109 @@
 //    1. Redistributions of source code must retain the above
 //       copyright notice, this list of conditions and the following
 //       disclaimer.
-
+//
 //    2. Redistributions in binary form must reproduce the above
 //       copyright notice, this list of conditions and the following
 //       disclaimer in the documentation and/or other materials
 //       provided with the distribution.
 //
-// THIS SOFTWARE IS PROVIDED BY CHRIS DONE ``AS IS'' AND ANY EXPRESS
-// OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-// ARE DISCLAIMED. IN NO EVENT SHALL CHRIS DONE OR CONTRIBUTORS BE
-// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
-// OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
-// BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-// LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-// USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
-// DAMAGE.
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+// FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
+// COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
+// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
+// BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+// CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
+// LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+// ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+// POSSIBILITY OF SUCH DAMAGE.
 
-// The views and conclusions contained in the software and
-// documentation are those of the authors and should not be
-// interpreted as representing official policies, either expressed or
-// implied, of Chris Done.
-//
 // TESTED ON
 //   Internet Explorer 6
 //   Opera 10.01
 //   Chromium 4.0.237.0 (Ubuntu build 31094)
-//   Firefox 3.5.8
+//   Firefox 3.5.8, 3.6.2 (Mac)
+//   Safari 4.0.5 (6531.22.7) (Mac)
+//   Google Chrome 5.0.375.55 (Mac)
 
 (function($){
     $.fn.console = function(config){
         ////////////////////////////////////////////////////////////////////////
         // Constants
         // Some are enums, data types, others just for optimisation
-        var keyCodes = { left:37,right:39,up:38,down:40,back:8,del:46,
-                         end:35,start:36,ret:13 };
+        var keyCodes = {
+	    // left
+	    37: moveBackward,
+	    // right
+	    39: moveForward,
+	    // up
+	    38: previousHistory,
+	    // down
+	    40: nextHistory,
+	    // backspace
+	    8:  backDelete,
+	    // delete
+	    46: forwardDelete,
+            // end
+	    35: moveToEnd,
+	    // start
+	    36: moveToStart,
+	    // return
+	    13: commandTrigger,
+	    // tab
+	    18: doNothing
+	};
+	var ctrlCodes = {
+	    // C-a
+	    65: moveToStart,
+	    // C-e
+	    69: moveToEnd,
+	    // C-d
+	    68: forwardDelete,
+	    // C-n
+	    78: nextHistory,
+	    // C-p
+	    80: previousHistory,
+	    // C-b
+	    66: moveBackward,
+	    // C-f
+	    70: moveForward,
+	    // C-k
+	    75: deleteUntilEnd
+	};
+	var altCodes = {
+	    // M-f
+	    70: moveToNextWord,
+	    // M-b
+	    66: moveToPreviousWord,
+	    // M-d
+	    68: deleteNextWord
+	};
         var cursor = '<span class="jquery-console-cursor">&nbsp;</span>';
         // Opera only works with this character, not <wbr> or &shy;,
         // but IE6 displays this character, which is bad, so just use
         // it on Opera.
-        var wbr = $.browser.opera? '&#8203;' : '';
+        var wbr = $.browser.opera? '' : '<wbr>&shy;';
 
         ////////////////////////////////////////////////////////////////////////
         // Globals
         var container = $(this);
         var inner = $('<div class="jquery-console-inner"></div>');
-        var typer = $('<input class="jquery-console-typer" type="text">');
+        // erjiang: changed this from a text input to a textarea so we
+        // can get pasted newlines
+        var typer = $('<textarea class="jquery-console-typer"></textarea>');
         // Prompt
         var promptBox;
         var prompt;
         var promptLabel = config && config.promptLabel? config.promptLabel : "> ";
+        var continuedPromptLabel = config && config.continuedPromptLabel?
+        config.continuedPromptLabel : "> ";
         var column = 0;
         var promptText = '';
         var restoreText = '';
+        var continuedText = '';
         // Prompt history stack
         var history = [];
         var ringn = 0;
@@ -76,6 +124,10 @@
         // variable below to ignore the keypress event if the keydown
         // event succeeds.
         var cancelKeyPress = 0;
+	// When this value is false, the prompt will not respond to input
+	var acceptInput = true;
+	// When this value is true, the command has been canceled
+	var cancelCommand = false;
 
         // External exports object
         var extern = {};
@@ -98,18 +150,21 @@
                 },100);
             }
             extern.inner = inner;
+            extern.typer = typer;
             extern.scrollToBottom = scrollToBottom;
         })();
 
         ////////////////////////////////////////////////////////////////////////
         // Reset terminal
         extern.reset = function(){
-            var welcome = true;
+            var welcome = (typeof config.welcomeMessage != 'undefined');
             inner.parent().fadeOut(function(){
                 inner.find('div').each(function(){
-                    if (!welcome) 
+                    if (!welcome) {
                         $(this).remove();
-                    welcome = false;
+		    } else {
+			welcome = false;
+		    }
                 });
                 newPromptBox();
                 inner.parent().fadeIn(function(){
@@ -152,9 +207,13 @@
         function newPromptBox() {
             column = 0;
             promptText = '';
+	    ringn = 0; // Reset the position of the history ring
+	    enableInput();
             promptBox = $('<div class="jquery-console-prompt-box"></div>');
             var label = $('<span class="jquery-console-prompt-label"></span>');
-            promptBox.append(label.text(promptLabel).show());
+            var labelText = extern.continuedPrompt? continuedPromptLabel : promptLabel;
+            promptBox.append(label.text(labelText).show());
+            label.html(label.html().replace(' ','&nbsp;'));
             prompt = $('<span class="jquery-console-prompt"></span>');
             promptBox.append(prompt);
             inner.append(promptBox);
@@ -177,7 +236,21 @@
             inner.removeClass('jquery-console-focus');
             inner.addClass('jquery-console-nofocus');
         });
-
+        
+        ////////////////////////////////////////////////////////////////////////
+        // Bind to the paste event of the input box so we know when we
+        // get pasted data
+        typer.bind('paste', function(e) {
+            // wipe typer input clean just in case
+            typer.val("");
+            // this timeout is required because the onpaste event is
+            // fired *before* the text is actually pasted
+            setTimeout(function() {
+                typer.consoleInsert(typer.val());
+                typer.val("");
+            }, 0);
+        });
+        
         ////////////////////////////////////////////////////////////////////////
         // Handle key hit before translation
         // For picking up control characters like up/left/down/right
@@ -185,19 +258,41 @@
         typer.keydown(function(e){
             cancelKeyPress = 0;
             var keyCode = e.keyCode;
-            if (isControlCharacter(keyCode)) {
-                cancelKeyPress = keyCode;
-                if (!typer.consoleControl(keyCode)) {
-                    return false;
-                }
-            }
+	    // C-c: cancel the execution
+	    if(e.ctrlKey && keyCode == 67) {
+		cancelKeyPress = keyCode;
+		cancelExecution();
+		return false;
+	    }
+	    if (acceptInput) {
+		if (keyCode in keyCodes) {
+                    cancelKeyPress = keyCode;
+		    (keyCodes[keyCode])();
+		    return false;
+		} else if (e.ctrlKey && keyCode in ctrlCodes) {
+                    cancelKeyPress = keyCode;
+		    (ctrlCodes[keyCode])();
+		    return false;
+		} else if (e.altKey  && keyCode in altCodes) {
+                    cancelKeyPress = keyCode;
+		    (altCodes[keyCode])();
+		    return false;
+		}
+	    }
         });
         
         ////////////////////////////////////////////////////////////////////////
         // Handle key press
         typer.keypress(function(e){
             var keyCode = e.keyCode || e.which;
-            if (cancelKeyPress != keyCode && keyCode >= 32){
+            if (isIgnorableKey(e)) {
+                return false;
+            }
+          // // C-v: don't insert on paste event
+            if (e.ctrlKey && String.fromCharCode(keyCode).toLowerCase() == 'v') {
+              return true;
+            }
+            if (acceptInput && cancelKeyPress != keyCode && keyCode >= 32){
                 if (cancelKeyPress) return false;
                 if (typeof config.charInsertTrigger == 'undefined' ||
                     (typeof config.charInsertTrigger == 'function' &&
@@ -207,72 +302,10 @@
             if ($.browser.webkit) return false;
         });
 
-        // Is a keycode a contorl character? 
-        // E.g. up, down, left, right, backspc, return, etc.
-        function isControlCharacter(keyCode){
-            // TODO: Make more precise/fast.
-            return (
-                (keyCode >= keyCodes.left && keyCode <= keyCodes.down)
-                    || keyCode == keyCodes.back || keyCode == keyCodes.del
-                    || keyCode == keyCodes.end || keyCode == keyCodes.start
-                    || keyCode == keyCodes.ret
-            );
-        };
-
-        ////////////////////////////////////////////////////////////////////////
-        // Handle console control keys
-        // E.g. up, down, left, right, backspc, return, etc.
-        typer.consoleControl = function(keyCode){
-            switch (keyCode){
-            case keyCodes.left:{ 
-                moveColumn(-1);
-                updatePromptDisplay(); 
-                return false;
-                break;
-            }
-            case keyCodes.right:{
-                moveColumn(1); 
-                updatePromptDisplay();
-                return false;
-                break; 
-            }
-            case keyCodes.back:{
-                if (moveColumn(-1)){
-                    deleteCharAtPos();
-                    updatePromptDisplay();
-                }
-                return false;
-                break;
-            }
-            case keyCodes.del:{
-                if (deleteCharAtPos())
-                    updatePromptDisplay();
-                return false;
-                break;
-            }
-            case keyCodes.end:{
-                if (moveColumn(promptText.length-column))
-                    updatePromptDisplay();
-                return false;
-                break;
-            }
-            case keyCodes.start:{
-                if (moveColumn(-column))
-                    updatePromptDisplay();
-                return false;
-                break;
-            }
-            case keyCodes.ret:{
-                commandTrigger(); return false;
-            }
-            case keyCodes.up:{
-                rotateHistory(-1); return false;
-            }
-            case keyCodes.down:{
-                rotateHistory(1); return false;
-            }
-            default: //alert("Unknown control character: " + keyCode);
-            }
+        function isIgnorableKey(e) {
+            // for now just filter alt+tab that we receive on some platforms when
+            // user switches windows (goes away from the browser)
+            return ((e.keyCode == keyCodes.tab || e.keyCode == 192) && e.altKey);
         };
 
         ////////////////////////////////////////////////////////////////////////
@@ -294,13 +327,19 @@
                 } else if (column == 0) {
                     column = promptText.length;
                 }
-            } else if (config.historyColumnAtEnd) {
-                column = promptText.length;
             } else {
-                column = 0;
+                column = promptText.length;
             }
             updatePromptDisplay();
         };
+
+	function previousHistory() {
+	    rotateHistory(-1);
+	};
+
+	function nextHistory() {
+	    rotateHistory(1);
+	};
 
         // Add something to the history ring
         function addToHistory(line){
@@ -310,7 +349,7 @@
 
         // Delete the character at the current position
         function deleteCharAtPos(){
-            if (promptText != ''){
+            if (column < promptText.length){
                 promptText =
                     promptText.substring(0,column) +
                     promptText.substring(column+1);
@@ -318,6 +357,41 @@
                 return true;
             } else return false;
         };
+
+	function backDelete() {
+            if (moveColumn(-1)){
+                deleteCharAtPos();
+                updatePromptDisplay();
+            }
+	};
+	
+	function forwardDelete() {
+            if (deleteCharAtPos())
+                updatePromptDisplay();
+	};
+
+	function deleteUntilEnd() {
+	    while(deleteCharAtPos()) {
+		updatePromptDisplay();
+	    }
+	};
+
+	function deleteNextWord() {
+	    // A word is defined within this context as a series of alphanumeric
+	    // characters.
+	    // Delete up to the next alphanumeric character
+	    while(column < promptText.length &&
+		  !isCharAlphanumeric(promptText[column])) {
+		deleteCharAtPos();
+		updatePromptDisplay();
+	    }
+	    // Then, delete until the next non-alphanumeric character
+	    while(column < promptText.length &&
+		  isCharAlphanumeric(promptText[column])) {
+		deleteCharAtPos();
+		updatePromptDisplay();
+	    }
+	};
 
         ////////////////////////////////////////////////////////////////////////
         // Validate command and trigger it if valid, or show a validation error
@@ -342,34 +416,58 @@
             inner.attr({ scrollTop: inner.attr("scrollHeight") });;
         };
 
+	function cancelExecution() {
+	    if(typeof config.cancelHandle == 'function') {
+		config.cancelHandle();
+	    }
+	}
+
         ////////////////////////////////////////////////////////////////////////
         // Handle a command
         function handleCommand() {
             if (typeof config.commandHandle == 'function') {
-                var ret = config.commandHandle(promptText,function(msgs){
+		disableInput();
+                addToHistory(promptText);
+                var text = promptText;
+                if (extern.continuedPrompt) {
+                  if (continuedText)
+                    continuedText += '\n' + promptText;
+                  else continuedText = promptText;
+                } else continuedText = undefined;
+                if (continuedText) text = continuedText;
+                var ret = config.commandHandle(text,function(msgs){
                     commandResult(msgs);
                 });
+                if (extern.continuedPrompt && !continuedText)
+                  continuedText = promptText;
                 if (typeof ret == 'boolean') {
                     if (ret) {
                         // Command succeeded without a result.
-                        addToHistory(promptText);
                         commandResult();
                     } else {
-                        addToHistory(promptText);
                         commandResult('Command failed.',
                                       "jquery-console-message-error");
                     }
                 } else if (typeof ret == "string") {
-                    addToHistory(promptText);
                     commandResult(ret,"jquery-console-message-success");
-                } else if (typeof ret == 'undefined') {
-                    addToHistory(promptText);
-                } else if (ret.length) {
-                    addToHistory(promptText);
+                } else if (typeof ret == 'object' && ret.length) {
                     commandResult(ret);
+                } else if (extern.continuedPrompt) {
+                    commandResult();
                 }
             }
         };
+
+        ////////////////////////////////////////////////////////////////////////
+        // Disable input
+	function disableInput() {
+	    acceptInput = false;
+	};
+
+        // Enable input
+	function enableInput() {
+	    acceptInput = true;
+	}
 
         ////////////////////////////////////////////////////////////////////////
         // Reset the prompt in invalid command
@@ -392,20 +490,22 @@
         function message(msg,className) {
             var mesg = $('<div class="jquery-console-message"></div>');
             if (className) mesg.addClass(className);
-            mesg.html(msg).hide();
+            mesg.filledText(msg).hide();
             inner.append(mesg);
             mesg.show();
         };
 
         ////////////////////////////////////////////////////////////////////////
         // Handle normal character insertion
-        typer.consoleInsert = function(keyCode){
+        // data can either be a number, which will be interpreted as the
+        // numeric value of a single character, or a string
+        typer.consoleInsert = function(data){
             // TODO: remove redundant indirection
-            var char = String.fromCharCode(keyCode);
+            var text = isNaN(data) ? data : String.fromCharCode(data);
             var before = promptText.substring(0,column);
             var after = promptText.substring(column);
-            promptText = before + char + after;
-            moveColumn(1);
+            promptText = before + text + after;
+            moveColumn(text.length);
             restoreText = promptText;
             updatePromptDisplay();
         };
@@ -419,17 +519,77 @@
                 return true;
             } else return false;
         };
-	
-	extern.promptText = function(text){
+
+	function moveForward() {
+            if(moveColumn(1)) {
+		updatePromptDisplay();
+		return true;
+	    }
+	    return false;
+	};
+
+	function moveBackward() {
+            if(moveColumn(-1)) {
+		updatePromptDisplay();
+		return true;
+	    }
+	    return false;
+	};
+
+	function moveToStart() {
+            if (moveColumn(-column))
+                updatePromptDisplay();
+	};
+
+	function moveToEnd() {
+            if (moveColumn(promptText.length-column))
+                updatePromptDisplay();
+	};
+
+	function moveToNextWord() {
+	    while(column < promptText.length &&
+		  !isCharAlphanumeric(promptText[column]) &&
+		  moveForward()) {
+	    }
+	    while(column < promptText.length &&
+		  isCharAlphanumeric(promptText[column]) &&
+		  moveForward()) {
+	    }
+	};
+
+	function moveToPreviousWord() {
+	    // Move backward until we find the first alphanumeric
+	    while(column -1 >= 0 &&
+		  !isCharAlphanumeric(promptText[column-1]) &&
+		  moveBackward()) {
+	    }
+	    // Move until we find the first non-alphanumeric
+	    while(column -1 >= 0 &&
+		  isCharAlphanumeric(promptText[column-1]) &&
+		  moveBackward()) {
+	    }
+	};
+
+	function isCharAlphanumeric(charToTest) {
+	    if(typeof charToTest == 'string') {
+		var code = charToTest.charCodeAt();
+		return (code >= 'A'.charCodeAt() && code <= 'Z'.charCodeAt()) ||
+		    (code >= 'a'.charCodeAt() && code <= 'z'.charCodeAt()) ||
+		    (code >= '0'.charCodeAt() && code <= '9'.charCodeAt());
+	    }
+	    return false;
+	};
+
+	function doNothing() {};
+
+        extern.promptText = function(text){
             if (text) {
                 promptText = text;
-                if (column > promptText.length)
-                    column = promptText.length;
+                column = promptText.length;
                 updatePromptDisplay();
             }
             return promptText;
         };
-	
 
         ////////////////////////////////////////////////////////////////////////
         // Update the prompt display
@@ -471,7 +631,8 @@
                     .replace(/</g,'&lt;')
                     .replace(/</g,'&lt;')
                     .replace(/ /g,'&nbsp;')
-                    .replace(/([^<>&]{10})/g,'$1<wbr>&shy;' + wbr)
+                    .replace(/\n/g,'<br />')
+                    .replace(/([^<>&]{10})/g,'$1' + wbr)
             );
         };
 
