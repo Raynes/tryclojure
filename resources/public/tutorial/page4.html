@@ -11,9 +11,9 @@
 
 <p>
   In isolation this doesn't make sense, so let's play with vectors. A literal vector looks like
-  this: <code class="expr">[1 2 3 "four" 5 6.0]</code>. Vectors are the most commonly used collection in 
+  this: <code>[1 2 3 "four" 5 6.0]</code>. Vectors are the most commonly used collection in 
   Clojure, along with maps. Let's see if we can square all of the elements of a vector:
-  <code class="expr">(map (fn [x] (* x x)) [1 2 3 4 5])</code>. Try that out. The <code>map</code> function
+  <code>(map (fn [x] (* x x)) [1 2 3 4 5])</code>. Try that out. The <code>map</code> function
   takes a function that takes a single argument and returns a value, which it 'applies' to each
   element of its second argument, a sequence. The resulting sequence is then returned.
 </p>
@@ -26,12 +26,12 @@
   anonymous function can be rewritten using a shorthand form: <code>#(* % %)</code>. When you
   use this shorthand, the function arguments are accessed like so: % or %1 for the first 
   argument, %2 for the second argument, %3 for the third and so on. Our code looks like this:
-  <code class="expr">(map #(* % %) [1 2 3 4 5])</code>
+  <code>(map #(* % %) [1 2 3 4 5])</code>
 </p>
 
 <p>
   Another highly important collection is the hashmap. A literal hashmap looks like this:
-  <code class="expr">{:key "value" :key2 3 :key4 [3 4 2 1]}</code>. The keys in this map are something 
+  <code>{:key "value" :key2 3 :key4 [3 4 2 1]}</code>. The keys in this map are something 
   called 'keywords'. You can tell that they are keywords because they start with a colon ':' character.
   They're like symbols that resolve to themselves. In idiomatic Clojure code, keywords are often
   used as map keys. You can use many objects as map keys, including integers, vectors, strings,
@@ -39,16 +39,16 @@
 </p>
 
 <p>
-  To get a value at a key in a map, we can do this: <code class="expr">({:key1 :val1} :key1)</code>. I bet
+  To get a value at a key in a map, we can do this: <code>({:key1 :val1} :key1)</code>. I bet
   you're all lolwut right now, aren't you? In Clojure, hashmaps are functions that take a single
   argument, which should be a key and they lookup the key within themselves and return the value
   at the key or nil if the key doesn't exist. Another neat trick for maps with keywords for keys
-  is this: <code class="expr">(:key1 {:key1 :val1})</code>. Keywords are also functions. They just look
+  is this: <code>(:key1 {:key1 :val1})</code>. Keywords are also functions. They just look
   themselves up in the supplied map.
 </p>
 
 <p>
   Clojure has all sorts of other data structures as well. Sets, lists, queues, zippers, etc. 
-  We'll talk about some of those later on. For now, let's move on to step four. Press Next to 
+  We'll talk about some of those later on. For now, let's move on to step four. Type next to 
   continue.
 </p>
