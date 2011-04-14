@@ -39,7 +39,6 @@
       (catch TimeoutException _
         {:error true :message "Execution Timed Out!"})
       (catch Exception e
-        (println e)
         {:error true :message (.getMessage (root-cause e))}))))
 
 (def links
