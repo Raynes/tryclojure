@@ -39,6 +39,7 @@
       (catch TimeoutException _
         {:error true :message "Execution Timed Out!"})
       (catch Exception e
+        (println e)
         {:error true :message (.getMessage (root-cause e))}))))
 
 (def links
@@ -128,17 +129,17 @@
    :headers {"Content-Type" "application/json"}})
 
 (defn eval-handler [request]
-  (let [{:keys [expr result error] :as res} (eval-request request)
-        history (get-in request [:session :history] [])
-        [out res] result]
+  (let [{:keys [expr result error message] :as res} (eval-request request)
+        history (get-in request [:session :history] [])]
     (if error
       (merge eval-response-defaults
              {:session (:session request)
               :body (json/json-str res)})
-      (merge eval-response-defaults
-             {:session {:history (conj history expr)}
-              :body (json/json-str {:expr (pr-str expr)
-                                    :result (str out (pr-str res))})}))))
+      (let [[out res] result]
+        (merge eval-response-defaults
+               {:session {:history (conj history expr)}
+                :body (json/json-str {:expr (pr-str expr)
+                                      :result (str out (pr-str res))})})))))
 
 (defn- max-history [max history]
   (if (> (count history) max)
@@ -151,7 +152,7 @@
       (->> (get-in response [:session :history] [])
            (max-history 5)
            (filter has-state?)
-           (vec)
+           vec
            (assoc-in response [:session :history])))))
 
 (def clojureroutes
