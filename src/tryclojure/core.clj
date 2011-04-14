@@ -44,7 +44,7 @@
 (def links
      (html (unordered-list 
 	    [(link-to "http://clojure.org" "The official Clojure website")
-	     (link-to "http://www.assembla.com/wiki/show/clojure/Getting_Started" "Getting started with Clojure")
+	     (link-to "http://dev.clojure.org/display/doc/Getting+Started" "Getting started with Clojure")
 	     (link-to "http://groups.google.com/group/clojure" "Clojure mailing list")
 	     (link-to "http://java.ociweb.com/mark/clojure/article.html" "A comprehensive Clojure tutorial")
 	     (link-to "http://joyofclojure.com/" "The Joy of Clojure: a book by Michael Fogus and Chris Houser")
