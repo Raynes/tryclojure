@@ -5,8 +5,7 @@
 		 [net.cgrand/moustache "1.0.0-SNAPSHOT" :exclusions [org.clojure/clojure]]
                  [ring "0.3.3"]
 		 [commons-lang/commons-lang "2.5"]
-                 [clojail "0.3.4-SNAPSHOT"]
-                 [org.clojars.rayne/clj-highlight "1.1.1-SNAPSHOT"]
+                 [clojail "0.4.0-SNAPSHOT"]
 		 [hiccup "0.2.7"]]
   :dev-dependencies [[swank-clojure "1.2.1"]
 		     [ring/ring-devel "0.3.3"]])
