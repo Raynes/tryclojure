@@ -19,8 +19,9 @@
 
 (defn eval-form [form sbox]
   (with-open [out (java.io.StringWriter.)]
-    {:expr form
-     :result (sbox form {#'*out* out})}))
+    (let [result (sbox form {#'*out* out})]
+      {:expr form
+       :result [out result]})))
 
 (defn eval-string [expr sbox]
   (let [form (binding [*read-eval* false] (read-string expr))]
@@ -128,7 +129,8 @@
 
 (defn eval-handler [request]
   (let [{:keys [expr result error] :as res} (eval-request request)
-        history (get-in request [:session :history] [])]
+        history (get-in request [:session :history] [])
+        [out res] result]
     (if error
       (merge eval-response-defaults
              {:session (:session request)
@@ -136,7 +138,7 @@
       (merge eval-response-defaults
              {:session {:history (conj history expr)}
               :body (json/json-str {:expr (pr-str expr)
-                                    :result (pr-str result)})}))))
+                                    :result (str out (pr-str res))})}))))
 
 (defn- max-history [max history]
   (if (> (count history) max)
