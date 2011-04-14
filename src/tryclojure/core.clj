@@ -5,7 +5,6 @@
 	net.cgrand.moustache
 	[clojure.stacktrace :only [root-cause]]
         [clojail core testers]
-	tryclojure.tutorial
   [clojure.set :only [difference]])
   (:require [clojure.contrib.json :as json])
   (:import java.io.StringWriter
@@ -122,12 +121,6 @@
    :session session
    :body links})
 
-(defn tutorial-handler [{formps :form-params session :session :as req}]
-  {:status 200
-   :headers {"Content-Type" "text/html"}
-   :session session
-   :body (get-tutorial (formps "step"))})
-
 (def ^{:private true}
   eval-response-defaults
   {:status 200
@@ -167,7 +160,6 @@
       (wrap-file (System/getProperty "user.dir"))
       (wrap-params)
       (wrap-stacktrace)
-      ["tutorial"] tutorial-handler
       ["links"] link-handler
       ["about"] about-handler
       ["eval.json"] eval-handler
