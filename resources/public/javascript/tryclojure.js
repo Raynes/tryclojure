@@ -122,7 +122,7 @@ function onHandle(line, report) {
 
     // handle error
     if (data.error) {
-        return [{msg: html_escape(data.message), className: "jquery-console-message-error"}];
+        return [{msg: data.message, className: "jquery-console-message-error"}];
     }
 
     // handle page
@@ -131,7 +131,7 @@ function onHandle(line, report) {
     }
 
     // display expr results
-    return [{msg: html_escape(data.result), className: "jquery-console-message-value"}];
+    return [{msg: data.result, className: "jquery-console-message-value"}];
 }
 
 /**
