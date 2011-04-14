@@ -92,7 +92,6 @@
          [:div#container
           [:div#console.console]
           [:div#buttons
-           [:a#tutorial.buttons "tutorial"]
            [:a#links.buttons "links"]
            [:a#about.buttons.last "about"]]
           [:div#changer
@@ -101,18 +100,9 @@
             "their results right here in your browser. We also have a brief tutorial to give you a "
             "taste of Clojure. Try it out by typing <code>tutorial</code> in the console!"]]]
          [:div.footer
-          [:p.bottom "©2010 Anthony Simpson (Raynes) and contributors"]
-          [:p.bottom "Domain and hosting kindly provided by "
-           (link-to "http://blog.licenser.net" "Heinz N. Gies") "."]]]
-        [:script {:type "text/javascript"}
-         "var _gaq = _gaq || []; _gaq.push(['_setAccount', 'UA-552543-3']); _gaq.push(['_trackPageview']);
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-"]
-]]))
+          [:p.bottom "©2011 Anthony Grimes (Raynes) and contributors"]
+          [:p.bottom "Domain kindly paid for by "
+           (link-to "http://blog.licenser.net" "Heinz N. Gies")]]]]]))
 
 (defn handler [{session :session}]
   {:status  200
