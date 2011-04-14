@@ -1,56 +1,6 @@
 <p>
-  Let's jump right in there and write some Clojure. Let's start out with the familiar
-  'Hello, World!'. People seem to love it so much. Type the following into the REPL:
+  I bet you're curious to find out what Clojure code looks like, aren't you? Sure you are.
+  Well, I've give you a hint: it's made up of lists. Let's do some arithmetic.
 </p>
 
-<code>(println "!dlrow ,olleH")</code>
-
-<p>
-  Something isn't right here! (I'm not talking about the fact that this website's lack of panache).
-  It seems that 'Hello World' has been mangled! It's okay though, because we're smart and we can 
-  figure out how to remedy this situation. If you're wondering why it printed our gibberish AND
-  'nil' it's because 'nil' (which essentially means 'nothing') is println's return value. Let's
-  experiment until we figure out what went wrong. It seems that the <code>reverse</code>
-  should fix things -- so type the following into the REPL:
-</p>
-
-<code>(reverse "!dlrow ,olleH")</code>
-
-<p>
-  Hmm. It did indeed set it right, but this isn't what we were looking for! That doesn't even look
-  like a string. Reverse took our string, reversed it, and now we have a sequence of characters.
-  You can tell this because each character has a '\\' (backslash in layman's terms) preceeding it.
-  Clojure uses those to denote Character (big 'C' character) literals. We need a string though!
-  What do we do when we need a string, but we have something else that isn't stringy (a highly
-  technical term)? No, we don't go to the shop and buy string cheese (not to disparage string
-  cheese mind you), but instead we use the lovely <code>str</code> function! Try this:
-</p>
-
-<code>(str (reverse "!dlrow ,olleH"))</code>
-
-<p>
-  Ooh! So close. It appears that the str function is making the entire sequence a string!
-  Sequences can be made to look like strings. str works on any number of arguments. You can pass
-  str any number of arguments and it will call Java's toString method on each of them to change
-  them into a string, and then it will concatenate them all into one mammoth string. Unfortunately,
-  all of our characters are stuck in this sequence! How can we get them out of the sequence, and
-  pass them all to str? Do not fear, young Clojurian, for I have the answer. We use the 
-  <code>apply</code> function. <code>apply</code> takes a function and a sequence, and 'unrolls'
-  the sequence, passing all of its elements to the function as arguments. Basically, it takes the
-  sequence and dumps its elements into the argument list of the supplied function; which is exactly
-  what we need. Let's see if it works... Try this:
-</p>
-
-<code>(apply str (reverse "!dlrow ,olleH"))</code>
-
-<p>
-  Ka-chow! There we go. Impressive. I'm proud of you, I really am. Now, for the final test. Let's
-  tell the world just how much they mean to us by making the world rotate in the other direction!
-  Let's do this:
-</p>
-
-<code>(println (apply str (reverse "!dlrow ,olleH")))</code>
-
-<p>
-  Congratulations, you have passed step one. Type next to continue.
-</p>
+<code>(+ 3 3)</code>
