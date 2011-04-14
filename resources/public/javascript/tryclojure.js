@@ -2,47 +2,36 @@ var pageNum = -1;
 var page = null;
 var pages = [
     {
-        url: "/resources/public/tutorial/page1.html",
         verify: function(data) { return false; }
     },
     {
-        url: "/resources/public/tutorial/page2.html",
         verify: function(data) { return data.expr == "(+ 3 3)"; }
     },
     {
-        url: "/resources/public/tutorial/page3.html",
         verify: function(data) { return data.expr == "(/ 10 3)"; }
     },
     {
-        url: "/resources/public/tutorial/page4.html",
         verify: function(data) { return data.expr == "(/ 10 3.0)"; }
     },
     {
-        url: "/resources/public/tutorial/page5.html",
         verify: function(data) { return data.expr == "(+ 1 2 3 4 5 6)"; }
     },
     {
-        url: "/resources/public/tutorial/page6.html",
         verify: function (data) { return data.expr == "(defn square [x] (* x x))"; }
     },
     {
-        url: "/resources/public/tutorial/page7.html",
         verify: function (data) { return data.expr == "(square 10)"; }
     },
     {
-        url: "/resources/public/tutorial/page8.html",
         verify: function (data) { return data.expr == "((fn [x] (* x x)) 10)"; }
     },
     {
-        url: "/resources/public/tutorial/page9.html",
         verify: function (data) { return data.expr == "(def square (fn [x] (* x x)))"; }
     },
     {
-        url: "/resources/public/tutorial/page10.html",
         verify: function (data) { return data.expr == "(map inc [1 2 3 4])"; }
     },
     {
-        url: "/resources/public/tutorial/page11.html",
         verify: function (data) { return false; }
     }
 ];
@@ -55,7 +44,7 @@ function showPage(n) {
 
         var block = $("#changer");
         block.fadeOut(function(e) {
-            block.load(res.url, function() {
+            block.load("/tutorial", { 'n' : n+1 }, function() {
                 block.fadeIn();
                 changerUpdated();
             });
@@ -188,7 +177,7 @@ $(document).ready(function() {
 
     $("#about").click(setupLink("about"));
     $("#links").click(setupLink("links"));
-    $("#tutorial").click(function(e) {
+    $("#home").click(function(e) {
         showPage(0);
     });
 

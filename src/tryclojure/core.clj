@@ -73,6 +73,12 @@
 	    "Also thanks to my buddy Heinz (Licenser) for all the help with this site. This site is hosted on"
 	    " his server, with his domain name. He completely funds this project and it wouldn't be possible without him."]))
 
+(def home-text
+  [:p.bottom 
+   "Welcome to Try Clojure. Above, you have a Clojure REPL. You can type expressions and see "
+   "their results right here in your browser. We also have a brief tutorial to give you a "
+   "taste of Clojure. Try it out by typing <code>tutorial</code> in the console!"])
+
 (def fire-html
      (html
       (:html4 doctype)
@@ -94,11 +100,7 @@
           [:div#buttons
            [:a#links.buttons "links"]
            [:a#about.buttons.last "about"]]
-          [:div#changer
-           [:p.bottom 
-            "Welcome to Try Clojure. Above, you have a Clojure REPL. You can type expressions and see "
-            "their results right here in your browser. We also have a brief tutorial to give you a "
-            "taste of Clojure. Try it out by typing <code>tutorial</code> in the console!"]]]
+          [:div#changer home-text]]
          [:div.footer
           [:p.bottom "©2011 Anthony Grimes (Raynes) and contributors"]
           [:p.bottom "Domain kindly paid for by "
@@ -140,6 +142,12 @@
                 :body (json/json-str {:expr (pr-str expr)
                                       :result (str out (pr-str res))})})))))
 
+(defn tutorial-handler [{{n "n"} :params session :session :as res}]
+  {:status 200
+   :headers {"Content-Type" "application/html"}
+   :session session
+   :body (slurp (str "resources/public/tutorial/page" n ".html"))})
+
 (defn- max-history [max history]
   (if (> (count history) max)
     (drop 1 history)
@@ -155,16 +163,16 @@
            (assoc-in response [:session :history])))))
 
 (def clojureroutes
-     (app
-      (wrap-session)
-      (wrap-post-history)
-      ;(wrap-reload '(tryclojure.core tryclojure.tutorial))
-      (wrap-file (System/getProperty "user.dir"))
-      (wrap-params)
-      (wrap-stacktrace)
+  (app
+   (wrap-session)
+   (wrap-post-history)
+   (wrap-file (System/getProperty "user.dir"))
+   (wrap-params)
+   (wrap-stacktrace)
       ["links"] link-handler
       ["about"] about-handler
       ["eval.json"] eval-handler
+      ["tutorial"] tutorial-handler
       [""] handler))
 
 (defn tryclj [] (run-jetty #'clojureroutes {:port 8801}))
