@@ -77,7 +77,7 @@
   [:p.bottom 
    "Welcome to Try Clojure. Above, you have a Clojure REPL. You can type expressions and see "
    "their results right here in your browser. We also have a brief tutorial to give you a "
-   "taste of Clojure. Try it out by typing <code>tutorial</code> in the console!"])
+   "taste of Clojure. Try it out by typing <code class=\"expr\">tutorial</code> in the console!"])
 
 (def fire-html
      (html

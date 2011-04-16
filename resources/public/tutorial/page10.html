@@ -6,10 +6,10 @@
 </p>
 
 <p>
-  Vectors: <code>[1 2 3 4]</code><br/>
-  Maps: <code>{:foo "bar" 3 4}</code><br/>
-  Lists: <code>'(1 2 3 4)</code><br/>
-  Sets: <code>#{1 2 3 4}</code><br/>
+  Vectors: <code class="expr">[1 2 3 4]</code><br/>
+  Maps: <code class="expr">{:foo "bar" 3 4}</code><br/>
+  Lists: <code class="expr">'(1 2 3 4)</code><br/>
+  Sets: <code class="expr">#{1 2 3 4}</code><br/>
   Vectors and lists are sequential and ordered collections. You'll see vectors used much more than lists.
   Maps are typical hash-maps. Unordered collections indexed by keys. The keys can be any object. Here,
   we've used a keyword, <code>:foo</code> as a key. Keywords make excellent keys. We also used a number.
@@ -26,5 +26,5 @@
 <p>
   A prime example of this is <code>map</code>. We can use map, a higher order function (which is a function
   that takes functions as arguments or returns functions), to 'map' a function to every element of a sequence.
-  Let's use this to increment each number in a vector. Type <code>(map inc [1 2 3 4])</code> to continue.
+  Let's use this to increment each number in a vector. Type <code class="expr">(map inc [1 2 3 4])</code> to continue.
 </p>
