@@ -7,7 +7,8 @@
 	[clojure.stacktrace :only [root-cause]]
         [clojail.core :only [sandbox]]
         [clojail.testers :only [secure-tester-without-def]])
-  (:require [noir.server :as server])
+  (:require [noir.server :as server]
+            [noir.session :as session])
   (:import java.io.StringWriter
 	   java.util.concurrent.TimeoutException))
 
@@ -23,13 +24,16 @@
 
 (defpartial bottom-html []
   [:p.bottom
-   "This site is still under construction. I can't promise everything will work correctly."
-   " You can find the site's source and such on its " (link-to "http://github.com/Raynes/tryclojure" "github")
+   "You can find the site's source and such on its "
+   (link-to "http://github.com/Raynes/tryclojure" "github")
    " page."]
   [:p.bottom
    "Please note that this REPL is sandboxed, so you wont be able to do everything in it "
    "that you would in a local unsandboxed REPL. Keep in mind that this site is designed for "
    "beginners to try out Clojure and not necessarily as a general-purpose server-side REPL."]
+  [:p.bottom
+   "One quirk you might run into is that things you bind with def can sometimes disappear. "
+   "The sandbox wipes defs if you def too many things, so don't be surprised."]
   [:p.bottom
    "TryClojure is written in Clojure and JavaScript (JQuery), powered by " 
    (link-to "https://github.com/flatland/clojail" "clojail")
@@ -66,8 +70,10 @@
       [:div#changer (home-text)]]
      [:div.footer
       [:p.bottom "©2011 Anthony Grimes (Raynes) and contributors"]
-      [:p.bottom "Domain kindly paid for by "
-       (link-to "http://blog.licenser.net" "Heinz N. Gies")]]]]])
+      [:p.bottom
+       "Built with "
+       (link-to "http://webnoir.org" "Noir")
+       "."]]]]])
 
 (defpage "/" []
   (fire-html))
@@ -88,17 +94,31 @@
   (let [form (binding [*read-eval* false] (read-string expr))]
     (eval-form form sbox)))
 
+(def sandboxes (atom {:counter 0}))
+
+(defn add-user [old]
+  (let [count (inc (:counter old))]
+    (assoc old
+      :counter count
+      count (sandbox secure-tester-without-def :timeout 2000))))
+
 (defn eval-request [expr]
-  (let [sbox (sandbox secure-tester-without-def :timeout 3000)]
-    (try
-      (eval-string expr sbox)
-      (catch TimeoutException _
-        {:error true :message "Execution Timed Out!"})
-      (catch Exception e
-        {:error true :message (.getMessage (root-cause e))}))))
+  (try
+    (eval-string
+     expr
+     (do
+       (if-let [sb (@sandboxes (session/get :sb))]
+         sb
+         (let [sbs (swap! sandboxes add-user)
+               count (:counter sbs)]
+           (session/put! :sb count)
+           (sbs count)))))
+    (catch TimeoutException _
+      {:error true :message "Execution Timed Out!"})
+    (catch Exception e
+      {:error true :message (.getMessage (root-cause e))})))
 
 (defpage "/eval.json" {:keys [expr]}
-  (prn "expr")
   (json
    (let [{:keys [expr result error message] :as res} (eval-request expr)]
      (if error
