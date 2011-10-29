@@ -131,9 +131,6 @@
          {:expr (pr-str expr)
           :result (str out (pr-str res))})))))
 
-(server/add-middleware wrap-session)
 (server/add-middleware wrap-file (System/getProperty "user.dir"))
-(server/add-middleware wrap-params)
-(server/add-middleware wrap-stacktrace)
 
 (defn tryclj [] (server/start 8801))
