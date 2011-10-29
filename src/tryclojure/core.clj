@@ -86,6 +86,9 @@
 (defpage "/links" []
   (links))
 
+(defpage [:post "/tutorial"] {n :n}
+  (slurp (str "resources/public/tutorial/page" n ".html")))
+
 (defn eval-form [form sbox]
   (with-open [out (java.io.StringWriter.)]
     (let [result (sbox form {#'*out* out})]
