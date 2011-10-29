@@ -33,7 +33,9 @@
    "beginners to try out Clojure and not necessarily as a general-purpose server-side REPL."]
   [:p.bottom
    "One quirk you might run into is that things you bind with def can sometimes disappear. "
-   "The sandbox wipes defs if you def too many things, so don't be surprised."]
+   "The sandbox wipes defs if you def too many things, so don't be surprised. Furthermore, "
+   "The sandbox will automatically be wiped after 15 minutes and if you evaluate more after that,"
+   "It'll be in an entirely new namespace/sandbox."]
   [:p.bottom
    "TryClojure is written in Clojure and JavaScript (JQuery), powered by " 
    (link-to "https://github.com/flatland/clojail" "clojail")
