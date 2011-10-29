@@ -112,6 +112,8 @@
          (let [sbs (swap! sandboxes add-user)
                count (:counter sbs)]
            (session/put! :sb count)
+           (future (Thread/sleep 900000)
+                   (swap! sandboxes dissoc count))
            (sbs count)))))
     (catch TimeoutException _
       {:error true :message "Execution Timed Out!"})
