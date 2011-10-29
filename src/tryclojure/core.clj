@@ -101,11 +101,15 @@
 
 (def sandboxes (atom {:counter 0}))
 
+(def try-clojure-tester
+  (into secure-tester-without-def
+        #{'tryclojure.core}))
+
 (defn add-user [old]
   (let [count (inc (:counter old))]
     (assoc old
       :counter count
-      count (sandbox secure-tester-without-def :timeout 2000))))
+      count (sandbox try-clojure-tester :timeout 2000))))
 
 (defn eval-request [expr]
   (try
