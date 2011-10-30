@@ -140,6 +140,6 @@
 
 (server/add-middleware wrap-file (System/getProperty "user.dir"))
 
-(defn tryclj [] (server/start 47761))
+(defn tryclj [] (server/start (Integer. (System/getenv "PORT"))))
 
 (defn -main [& args] (tryclj))
