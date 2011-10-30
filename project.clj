@@ -4,4 +4,5 @@
                  [noir "1.2.0"]
 		 [commons-lang/commons-lang "2.5"]
                  [clojail "0.4.6-beta2"]]
+  :jvm-opts ["-Djava.security.policy=example.policy"]
   :main tryclojure.core)
