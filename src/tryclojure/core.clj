@@ -141,3 +141,5 @@
 (server/add-middleware wrap-file (System/getProperty "user.dir"))
 
 (defn tryclj [] (server/start 8801))
+
+(defn -main [& args] (tryclj))

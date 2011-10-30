@@ -3,4 +3,5 @@
   :dependencies [[org.clojure/clojure "1.3.0"]
                  [noir "1.2.0"]
 		 [commons-lang/commons-lang "2.5"]
-                 [clojail "0.4.6-beta2"]])
+                 [clojail "0.4.6-beta2"]]
+  :main tryclojure.core)
