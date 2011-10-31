@@ -71,7 +71,7 @@
         [:a#about.buttons.last "about"]]
        [:div#changer (home-text)]]
       [:div.footer
-       [:p.bottom "©2011 Anthony Grime and numerous contributors"]
+       [:p.bottom "©2011 Anthony Grimes and numerous contributors"]
        [:p.bottom
         "Built with "
         (link-to "http://webnoir.org" "Noir")
