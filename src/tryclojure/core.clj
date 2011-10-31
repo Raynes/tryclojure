@@ -22,11 +22,9 @@
     (link-to "http://disclojure.org" "Disclojure")
     (link-to "http://planet.clojure.in" "Planet Clojure")]))
 
-(defpartial bottom-html []
-  [:p.bottom
-   "You can find the site's source and such on its "
-   (link-to "http://github.com/Raynes/tryclojure" "github")
-   " page."]
+(def github-link (link-to "http://github.com/Raynes/tryclojure" "github"))
+
+(defpartial about-html []
   [:p.bottom
    "Please note that this REPL is sandboxed, so you wont be able to do everything in it "
    "that you would in a local unsandboxed REPL. Keep in mind that this site is designed for "
@@ -37,19 +35,27 @@
    "The sandbox will automatically be wiped after 15 minutes and if you evaluate more after that,"
    "It'll be in an entirely new namespace/sandbox."]
   [:p.bottom
+   "You can find the site's source and such on its "
+   github-link
+   " page."]
+  [:p.bottom
    "TryClojure is written in Clojure and JavaScript (JQuery), powered by "
    (link-to "https://github.com/flatland/clojail" "clojail")
    " and Chris Done's "
    (link-to "https://github.com/chrisdone/jquery-console" "jquery-console")]
   [:p.bottom "Design by " (link-to "http://apgwoz.com" "Andrew Gwozdziewycz")])
 
-(defpartial home-text []
+(defpartial home-html []
   [:p.bottom
    "Welcome to Try Clojure. Above, you have a Clojure REPL. You can type expressions and see "
    "their results right here in your browser. We also have a brief tutorial to give you a "
-   "taste of Clojure. Try it out by typing <code class=\"expr\">tutorial</code> in the console!"])
+   "taste of Clojure. Try it out by typing <code class=\"expr\">tutorial</code> in the console!"]
+  [:p.bottom
+   "Check out the site's source on "
+   (link-to "http://github.com/Raynes/tryclojure" "github")
+   "!"])
 
-(defpartial fire-html []
+(defpartial root-html []
   (html4
    [:head
     (include-css "/resources/public/css/tryclojure.css")
@@ -67,9 +73,10 @@
       [:div#container
        [:div#console.console]
        [:div#buttons
+        [:a#home.buttons "home"]
         [:a#links.buttons "links"]
         [:a#about.buttons.last "about"]]
-       [:div#changer (home-text)]]
+       [:div#changer (home-html)]]
       [:div.footer
        [:p.bottom "©2011 Anthony Grimes and numerous contributors"]
        [:p.bottom
@@ -78,10 +85,13 @@
         "."]]]]]))
 
 (defpage "/" []
-  (fire-html))
+  (root-html))
+
+(defpage "/home" []
+  (home-html))
 
 (defpage "/about" []
-  (bottom-html))
+  (about-html))
 
 (defpage "/links" []
   (links))

@@ -177,9 +177,7 @@ $(document).ready(function() {
 
     $("#about").click(setupLink("about"));
     $("#links").click(setupLink("links"));
-    $("#home").click(function(e) {
-        showPage(0);
-    });
+    $("#home").click(setupLink("home"));
 
     changerUpdated();
 });
