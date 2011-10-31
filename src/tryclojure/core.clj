@@ -13,7 +13,7 @@
 	   java.util.concurrent.TimeoutException))
 
 (defpartial links []
-  (unordered-list 
+  (unordered-list
    [(link-to "http://clojure.org" "The official Clojure website")
     (link-to "http://dev.clojure.org/display/doc/Getting+Started" "Getting started with Clojure")
     (link-to "http://groups.google.com/group/clojure" "Clojure mailing list")
@@ -37,45 +37,45 @@
    "The sandbox will automatically be wiped after 15 minutes and if you evaluate more after that,"
    "It'll be in an entirely new namespace/sandbox."]
   [:p.bottom
-   "TryClojure is written in Clojure and JavaScript (JQuery), powered by " 
+   "TryClojure is written in Clojure and JavaScript (JQuery), powered by "
    (link-to "https://github.com/flatland/clojail" "clojail")
    " and Chris Done's "
    (link-to "https://github.com/chrisdone/jquery-console" "jquery-console")]
   [:p.bottom "Design by " (link-to "http://apgwoz.com" "Andrew Gwozdziewyc")])
 
 (defpartial home-text []
-  [:p.bottom 
+  [:p.bottom
    "Welcome to Try Clojure. Above, you have a Clojure REPL. You can type expressions and see "
    "their results right here in your browser. We also have a brief tutorial to give you a "
    "taste of Clojure. Try it out by typing <code class=\"expr\">tutorial</code> in the console!"])
 
-(defpartial fire-html []  
-  (:html4 doctype)
-  [:head
-   (include-css "/resources/public/css/tryclojure.css")
-   (include-js "/resources/public/javascript/jquery-1.4.2.min.js"
-               "/resources/public/javascript/jquery.console.js"
-               "/resources/public/javascript/tryclojure.js")
-   [:title "Try Clojure"]]
-  [:body
-   [:div#wrapper
-    [:div#content
-     [:div#header
-      [:h1 
-       [:span.logo-try "Try"] " "
-       [:span.logo-clojure "Clo" [:em "j"] "ure"]]]
-     [:div#container
-      [:div#console.console]
-      [:div#buttons
-       [:a#links.buttons "links"]
-       [:a#about.buttons.last "about"]]
-      [:div#changer (home-text)]]
-     [:div.footer
-      [:p.bottom "©2011 Anthony Grimes (Raynes) and contributors"]
-      [:p.bottom
-       "Built with "
-       (link-to "http://webnoir.org" "Noir")
-       "."]]]]])
+(defpartial fire-html []
+  (html4
+   [:head
+    (include-css "/resources/public/css/tryclojure.css")
+    (include-js "/resources/public/javascript/jquery-1.4.2.min.js"
+                "/resources/public/javascript/jquery.console.js"
+                "/resources/public/javascript/tryclojure.js")
+    [:title "Try Clojure"]]
+   [:body
+    [:div#wrapper
+     [:div#content
+      [:div#header
+       [:h1
+        [:span.logo-try "Try"] " "
+        [:span.logo-clojure "Clo" [:em "j"] "ure"]]]
+      [:div#container
+       [:div#console.console]
+       [:div#buttons
+        [:a#links.buttons "links"]
+        [:a#about.buttons.last "about"]]
+       [:div#changer (home-text)]]
+      [:div.footer
+       [:p.bottom "©2011 Anthony Grimes (Raynes) and contributors"]
+       [:p.bottom
+        "Built with "
+        (link-to "http://webnoir.org" "Noir")
+        "."]]]]]))
 
 (defpage "/" []
   (fire-html))
@@ -143,10 +143,10 @@
 (defn to-port [s]
   (when-let [port s] (Long. port)))
 
-(defn tryclj [port]
+(defn tryclj [& [port]]
   (server/start
    (or (to-port port)
-       (to-port (System/getenv "PORT")) ;; For deploying to Heroku        
+       (to-port (System/getenv "PORT")) ;; For deploying to Heroku
        8801)))
 
 (defn -main [& args] (tryclj (first args)))
