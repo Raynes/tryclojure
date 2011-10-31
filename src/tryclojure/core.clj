@@ -41,7 +41,7 @@
    (link-to "https://github.com/flatland/clojail" "clojail")
    " and Chris Done's "
    (link-to "https://github.com/chrisdone/jquery-console" "jquery-console")]
-  [:p.bottom "Design by " (link-to "http://apgwoz.com" "Andrew Gwozdziewyc")])
+  [:p.bottom "Design by " (link-to "http://apgwoz.com" "Andrew Gwozdziewycz")])
 
 (defpartial home-text []
   [:p.bottom
@@ -71,7 +71,7 @@
         [:a#about.buttons.last "about"]]
        [:div#changer (home-text)]]
       [:div.footer
-       [:p.bottom "©2011 Anthony Grimes (Raynes) and contributors"]
+       [:p.bottom "©2011 Anthony Grime and numerous contributors"]
        [:p.bottom
         "Built with "
         (link-to "http://webnoir.org" "Noir")
