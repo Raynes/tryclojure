@@ -140,6 +140,13 @@
 
 (server/add-middleware wrap-file (System/getProperty "user.dir"))
 
-(defn tryclj [] (server/start (Integer. (System/getenv "PORT"))))
+(defn to-port [s]
+  (when-let [port s] (Long. port)))
 
-(defn -main [& args] (tryclj))
+(defn tryclj [port]
+  (server/start
+   (or (to-port port)
+       (to-port (System/getenv "PORT")) ;; For deploying to Heroku        
+       8801)))
+
+(defn -main [& args] (tryclj (first args)))
