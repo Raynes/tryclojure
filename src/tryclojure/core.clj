@@ -119,7 +119,9 @@
   (let [count (inc (:counter old))]
     (assoc old
       :counter count
-      count (sandbox try-clojure-tester :timeout 2000))))
+      count (sandbox try-clojure-tester
+                     :timeout 2000
+                     :namespace (symbol (str "sandbox" (rand-int Integer/MAX_VALUE)))))))
 
 (defn eval-request [expr]
   (try
@@ -128,12 +130,13 @@
      (do
        (if-let [sb (@sandboxes (session/get :sb))]
          sb
-         (let [sbs (swap! sandboxes add-user)
-               count (:counter sbs)]
+         (let [{count :counter} (swap! sandboxes add-user)]
            (session/put! :sb count)
-           (future (Thread/sleep 900000)
-                   (swap! sandboxes dissoc count))
-           (sbs count)))))
+           (future
+             (Thread/sleep 600000)
+             (-> ((get @sandboxes count) '*ns*) str symbol remove-ns)
+             (swap! sandboxes dissoc count))
+           (get @sandboxes count)))))
     (catch TimeoutException _
       {:error true :message "Execution Timed Out!"})
     (catch Exception e
