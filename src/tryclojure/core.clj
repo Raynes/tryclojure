@@ -139,14 +139,17 @@
     (catch Exception e
       {:error true :message (str (root-cause e))})))
 
-(defpage "/eval.json" {:keys [expr]}
-  (json
-   (let [{:keys [expr result error message] :as res} (eval-request expr)]
-     (if error
-       res
-       (let [[out res] result]
-         {:expr (pr-str expr)
-          :result (str out (pr-str res))})))))
+(defpage "/eval.json" {:keys [expr jsonp]}
+  (update-in
+   (json
+    (let [{:keys [expr result error message] :as res} (eval-request expr)]
+      (if error
+        res
+        (let [[out res] result]
+          {:expr (pr-str expr)
+           :result (str out (pr-str res))}))))
+   [:body]
+   #(if jsonp (str jsonp "(" % ")") %)))
 
 (server/add-middleware wrap-file (System/getProperty "user.dir"))
 
