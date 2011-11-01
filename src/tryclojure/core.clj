@@ -137,7 +137,7 @@
     (catch TimeoutException _
       {:error true :message "Execution Timed Out!"})
     (catch Exception e
-      {:error true :message (.getMessage (root-cause e))})))
+      {:error true :message (str (root-cause e))})))
 
 (defpage "/eval.json" {:keys [expr]}
   (json
