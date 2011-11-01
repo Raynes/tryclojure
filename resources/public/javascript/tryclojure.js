@@ -166,7 +166,7 @@ var controller;
 
 $(document).ready(function() {
     controller = $("#console").console({
-        welcomeMessage:'Enter some Clojure code, and it will be evaluated.',
+        welcomeMessage:'Enter some Clojure code to be evaluated.',
         promptLabel: 'Clojure> ',
         commandValidate: onValidate,
         commandHandle: onHandle,

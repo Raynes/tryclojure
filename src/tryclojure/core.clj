@@ -47,9 +47,9 @@
 
 (defpartial home-html []
   [:p.bottom
-   "Welcome to Try Clojure. Above, you have a Clojure REPL. You can type expressions and see "
-   "their results right here in your browser. We also have a brief tutorial to give you a "
-   "taste of Clojure. Try it out by typing <code class=\"expr\">tutorial</code> in the console!"]
+   "Welcome to Try Clojure. See that little box up there? That's a Clojure repl. You can type "
+   "expressions and see their results right here in your browser. We also have a brief tutorial to "
+   "give you a taste of Clojure. Try it out by typing " [:code.expr "tutorial"] " in the console!"]
   [:p.bottom
    "Check out the site's source on "
    (link-to "http://github.com/Raynes/tryclojure" "github")
