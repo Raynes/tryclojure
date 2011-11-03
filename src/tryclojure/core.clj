@@ -102,7 +102,6 @@
 (defn eval-form [form sbox]
   (with-open [out (java.io.StringWriter.)]
     (let [result (sbox form {#'*out* out})]
-      (sbox (list 'rebind-last-results result))
       {:expr form
        :result [out result]})))
 
@@ -122,12 +121,7 @@
       :counter count
       count (sandbox try-clojure-tester
                      :timeout 2000
-                     :namespace (symbol (str "sandbox" (rand-int Integer/MAX_VALUE)))
-                     :init '(defn rebind-last-results [last]
-                              (let [core (the-ns 'clojure.core)]
-                                (when (find-var 'clojure.core/*2) (intern core '*3 *2))
-                                (when (find-var 'clojure.core/*1) (intern core '*2 *1))
-                                (intern core '*1 last)))))))
+                     :namespace (symbol (str "sandbox" (rand-int Integer/MAX_VALUE)))))))
 
 (defn eval-request [expr]
   (try
