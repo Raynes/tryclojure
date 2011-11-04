@@ -1,7 +1,7 @@
 (ns tryclojure.core
   (:use ring.adapter.jetty
 	[hiccup form-helpers page-helpers]
-	[ring.middleware reload stacktrace params file session]
+	ring.middleware.file
         noir.core
         [noir.response :only [json]]
 	[clojure.stacktrace :only [root-cause]]
@@ -109,34 +109,21 @@
   (let [form (binding [*read-eval* false] (read-string expr))]
     (eval-form form sbox)))
 
-(def sandboxes (atom {:counter 0}))
-
 (def try-clojure-tester
   (into secure-tester-without-def
         #{'tryclojure.core}))
 
-(defn add-user [old]
-  (let [count (inc (:counter old))]
-    (assoc old
-      :counter count
-      count (sandbox try-clojure-tester
-                     :timeout 2000
-                     :namespace (symbol (str "sandbox" (rand-int Integer/MAX_VALUE)))))))
+(defn update-session! [f & args]
+  (apply swap! session/*noir-session* f args))
+
+(defn find-sb [old]
+  (if-let [sb (get old "sb")]
+    old
+    (assoc old "sb" (sandbox try-clojure-tester :timeout 2000))))
 
 (defn eval-request [expr]
   (try
-    (eval-string
-     expr
-     (do
-       (if-let [sb (@sandboxes (session/get :sb))]
-         sb
-         (let [{count :counter} (swap! sandboxes add-user)]
-           (session/put! :sb count)
-           (future
-             (Thread/sleep 600000)
-             (-> ((get @sandboxes count) '*ns*) str symbol remove-ns)
-             (swap! sandboxes dissoc count))
-           (get @sandboxes count)))))
+    (eval-string expr (get (update-session! find-sb) "sb"))
     (catch TimeoutException _
       {:error true :message "Execution Timed Out!"})
     (catch Exception e
