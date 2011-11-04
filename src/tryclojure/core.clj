@@ -116,10 +116,16 @@
 (defn update-session! [f & args]
   (apply swap! session/*noir-session* f args))
 
+(defn make-sandbox []
+  (sandbox try-clojure-tester
+           :timeout 2000
+           :init '(future (Thread/sleep 600000)
+                          (-> *ns* .getName remove-ns))))
+
 (defn find-sb [old]
   (if-let [sb (get old "sb")]
     old
-    (assoc old "sb" (sandbox try-clojure-tester :timeout 2000))))
+    (assoc old "sb" (make-sandbox))))
 
 (defn eval-request [expr]
   (try
@@ -150,6 +156,7 @@
   (server/start
    (or (to-port port)
        (to-port (System/getenv "PORT")) ;; For deploying to Heroku
-       8801)))
+       8801)
+   {:session-cookie-attrs {:max-age 600}}))
 
 (defn -main [& args] (tryclj (first args)))
