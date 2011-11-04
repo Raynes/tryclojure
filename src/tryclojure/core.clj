@@ -5,7 +5,7 @@
         noir.core
         [noir.response :only [json]]
 	[clojure.stacktrace :only [root-cause]]
-        [clojail.core :only [sandbox]]
+        [clojail.core :only [sandbox eagerly-consume]]
         [clojail.testers :only [secure-tester-without-def]])
   (:require [noir.server :as server]
             [noir.session :as session])
