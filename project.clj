@@ -6,5 +6,5 @@
                  [clojail "0.5.0-beta3"]]
   ;; For lein and Heroku compatibility. If you're using cake, add
   ;; this line to .cake/config: jvm.opts = -Djava.security.policy=example.policy
-  :jvm-opts ["-Djava.security.policy=example.policy" #_"-Xmx80M"]
+  :jvm-opts ["-Djava.security.policy=example.policy""-Xmx80M"]
   :main tryclojure.core)
