@@ -1,6 +1,5 @@
 (ns tryclojure.core
-  (:use ring.adapter.jetty
-	[hiccup form-helpers page-helpers]
+  (:use [hiccup form-helpers page-helpers]
 	ring.middleware.file
         noir.core
         [noir.response :only [json]]
@@ -113,9 +112,6 @@
   (into secure-tester-without-def
         #{'tryclojure.core}))
 
-(defn update-session! [f & args]
-  (apply swap! session/*noir-session* f args))
-
 (defn make-sandbox []
   (sandbox try-clojure-tester
            :timeout 2000
@@ -129,7 +125,7 @@
 
 (defn eval-request [expr]
   (try
-    (eval-string expr (get (update-session! find-sb) "sb"))
+    (eval-string expr (get (session/swap! find-sb) "sb"))
     (catch TimeoutException _
       {:error true :message "Execution Timed Out!"})
     (catch Exception e
