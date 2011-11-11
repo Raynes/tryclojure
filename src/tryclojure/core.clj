@@ -115,8 +115,9 @@
 (defn make-sandbox []
   (sandbox try-clojure-tester
            :timeout 2000
-           :init '(future (Thread/sleep 600000)
-                          (-> *ns* .getName remove-ns))))
+           :init '(do (use '[clojure.repl :only [doc]])
+                      (future (Thread/sleep 600000)
+                              (-> *ns* .getName remove-ns)))))
 
 (defn find-sb [old]
   (if-let [sb (get old "sb")]
