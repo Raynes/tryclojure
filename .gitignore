@@ -3,4 +3,4 @@ pom.xml
 lib
 classes
 *~
-.cake
+resources/public/javascript/jquery*
