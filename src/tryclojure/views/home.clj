@@ -12,8 +12,6 @@
     (link-to "http://disclojure.org" "Disclojure")
     (link-to "http://planet.clojure.in" "Planet Clojure")]))
 
-(def github-link (link-to "http://github.com/Raynes/tryclojure" "github"))
-
 (defpartial about-html []
   [:p.bottom
    "Please note that this REPL is sandboxed, so you wont be able to do everything in it "
@@ -26,7 +24,7 @@
    "It'll be in an entirely new namespace/sandbox."]
   [:p.bottom
    "You can find the site's source and such on its "
-   github-link
+   (link-to "http://github.com/Raynes/tryclojure" "github")
    " page."]
   [:p.bottom
    "TryClojure is written in Clojure and JavaScript (JQuery), powered by "
