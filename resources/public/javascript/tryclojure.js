@@ -125,7 +125,7 @@ function onValidate(input) {
 }
 
 function onHandle(line, report) {
-    var input = line.trim();
+    var input = $.trim(line);
 
     // handle commands
     if (doCommand(input, report)) return;
