@@ -8,6 +8,6 @@
   ;; this line to .cake/config: jvm.opts = -Djava.security.policy=example.policy
   :jvm-opts ["-Djava.security.policy=example.policy""-Xmx80M"]
   :hooks [leiningen.fetch-js]
-  :main tryclojure.core)
+  :main tryclojure.server)
 
 

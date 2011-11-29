@@ -1,15 +1,6 @@
-(ns tryclojure.core
-  (:use [hiccup form-helpers page-helpers]
-	ring.middleware.file
-        noir.core
-        [noir.response :only [json]]
-	[clojure.stacktrace :only [root-cause]]
-        [clojail.core :only [sandbox eagerly-consume]]
-        [clojail.testers :only [secure-tester-without-def]])
-  (:require [noir.server :as server]
-            [noir.session :as session])
-  (:import java.io.StringWriter
-	   java.util.concurrent.TimeoutException))
+(ns tryclojure.views.home
+  (:use [noir.core :only [defpartial defpage]]
+        [hiccup form-helpers page-helpers]))
 
 (defpartial links []
   (unordered-list
@@ -104,66 +95,3 @@
 
 (defpage "/links" []
   (links))
-
-(defpage [:post "/tutorial"] {n :n}
-  (slurp (str "resources/public/tutorial/page" n ".html")))
-
-(defn eval-form [form sbox]
-  (with-open [out (java.io.StringWriter.)]
-    (let [result (sbox form {#'*out* out})]
-      {:expr form
-       :result [out result]})))
-
-(defn eval-string [expr sbox]
-  (let [form (binding [*read-eval* false] (read-string expr))]
-    (eval-form form sbox)))
-
-(def try-clojure-tester
-  (into secure-tester-without-def
-        #{'tryclojure.core}))
-
-(defn make-sandbox []
-  (sandbox try-clojure-tester
-           :timeout 2000
-           :init '(do (use '[clojure.repl :only [doc]])
-                      (future (Thread/sleep 600000)
-                              (-> *ns* .getName remove-ns)))))
-
-(defn find-sb [old]
-  (if-let [sb (get old "sb")]
-    old
-    (assoc old "sb" (make-sandbox))))
-
-(defn eval-request [expr]
-  (try
-    (eval-string expr (get (session/swap! find-sb) "sb"))
-    (catch TimeoutException _
-      {:error true :message "Execution Timed Out!"})
-    (catch Exception e
-      {:error true :message (str (root-cause e))})))
-
-(defpage "/eval.json" {:keys [expr jsonp]}
-  (update-in
-   (json
-    (let [{:keys [expr result error message] :as res} (eval-request expr)]
-      (if error
-        res
-        (let [[out res] result]
-          {:expr (pr-str expr)
-           :result (str out (pr-str res))}))))
-   [:body]
-   #(if jsonp (str jsonp "(" % ")") %)))
-
-(server/add-middleware wrap-file (System/getProperty "user.dir"))
-
-(defn to-port [s]
-  (when-let [port s] (Long. port)))
-
-(defn tryclj [& [port]]
-  (server/start
-   (or (to-port port)
-       (to-port (System/getenv "PORT")) ;; For deploying to Heroku
-       8801)
-   {:session-cookie-attrs {:max-age 600}}))
-
-(defn -main [& args] (tryclj (first args)))
