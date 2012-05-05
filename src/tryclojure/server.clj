@@ -1,6 +1,6 @@
 (ns tryclojure.server
-  (:use [ring.middleware.file :only [wrap-file]])
-  (:require [noir.server :as server]))
+  (:require [noir.server :as server]
+            [ring.middleware.file :refer [wrap-file]]))
 
 (server/add-middleware wrap-file (System/getProperty "user.dir"))
 (server/load-views "src/tryclojure/views")

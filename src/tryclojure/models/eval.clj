@@ -1,8 +1,8 @@
 (ns tryclojure.models.eval
-  (:use [clojail.testers :only [secure-tester-without-def]]
-        [clojail.core :only [sandbox]]
-        [clojure.stacktrace :only [root-cause]])
-  (:require [noir.session :as session])
+  (:require [clojail.testers :refer [secure-tester-without-def]]
+            [clojail.core :refer [sandbox]]
+            [clojure.stacktrace :refer [root-cause]]
+            [noir.session :as session])
   (:import java.io.StringWriter
 	   java.util.concurrent.TimeoutException))
 
@@ -23,7 +23,7 @@
 (defn make-sandbox []
   (sandbox try-clojure-tester
            :timeout 2000
-           :init '(do (use '[clojure.repl :only [doc]])
+           :init '(do (require '[clojure.repl :refer [doc]])
                       (future (Thread/sleep 600000)
                               (-> *ns* .getName remove-ns)))))
 

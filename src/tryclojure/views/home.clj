@@ -1,6 +1,7 @@
 (ns tryclojure.views.home
-  (:use [noir.core :only [defpartial defpage]]
-        [hiccup form-helpers page-helpers]))
+  (:require [noir.core :refer [defpartial defpage]]
+            [hiccup.element :refer [javascript-tag link-to unordered-list]]
+            [hiccup.page :refer [include-css include-js html5]]))
 
 (defpartial links []
   (unordered-list
@@ -43,12 +44,12 @@
    (link-to "http://github.com/Raynes/tryclojure" "github")
    "!"])
 
-(defpartial root-html []
-  (html4
+(defn root-html []
+  (html5
    [:head
     (include-css "/resources/public/css/tryclojure.css")
-    (include-js "/resources/public/javascript/jquery-1.4.2.min.js"
-                "/resources/public/javascript/jquery.console.js"
+    (include-js "http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"
+                "/resources/public/javascript/jquery-console/jquery.console.js"
                 "/resources/public/javascript/tryclojure.js")
     [:title "Try Clojure"]]
    [:body
