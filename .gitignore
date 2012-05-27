@@ -3,3 +3,5 @@ pom.xml
 lib
 classes
 *~
+/.lein*
+/resources/public/javascript/tryclojure.js
