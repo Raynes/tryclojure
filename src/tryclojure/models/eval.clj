@@ -1,5 +1,5 @@
 (ns tryclojure.models.eval
-  (:require [clojail.testers :refer [secure-tester-without-def]]
+  (:require [clojail.testers :refer [secure-tester-without-def blanket]]
             [clojail.core :refer [sandbox]]
             [clojure.stacktrace :refer [root-cause]]
             [noir.session :as session])
@@ -17,8 +17,7 @@
     (eval-form form sbox)))
 
 (def try-clojure-tester
-  (into secure-tester-without-def
-        #{'tryclojure.core}))
+  (blanket secure-tester-without-def "tryclojure"))
 
 (defn make-sandbox []
   (sandbox try-clojure-tester
