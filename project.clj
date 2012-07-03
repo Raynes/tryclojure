@@ -3,7 +3,7 @@
   :dependencies [[org.clojure/clojure "1.4.0"]
                  [noir "1.3.0-beta10"]
 		 [commons-lang/commons-lang "2.5"]
-                 [clojail "0.6.0"]]
+                 [clojail "0.6.1"]]
   :jvm-opts ["-Djava.security.policy=example.policy""-Xmx80M"]
   :main tryclojure.server)
 
