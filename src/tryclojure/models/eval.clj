@@ -17,7 +17,7 @@
     (eval-form form sbox)))
 
 (def try-clojure-tester
-  (blanket secure-tester-without-def "tryclojure"))
+  (conj secure-tester-without-def (blanket "tryclojure" "noir")))
 
 (defn make-sandbox []
   (sandbox try-clojure-tester
