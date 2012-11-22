@@ -32,6 +32,9 @@ var pages = [
         verify: function (data) { return data.expr == "(map inc [1 2 3 4])"; }
     },
     {
+        verify: function (data) { return data.expr == "(:zar h \"not found\")"; }
+    },
+    {
         verify: function (data) { return false; }
     }
 ];
