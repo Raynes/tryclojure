@@ -1,8 +1,19 @@
-<p>Excellent work.</p>
-
 <p>
-  Well, that's all there is right now. This tutorial is still a work in progress, and I'm working on more
-  steps. If anybody wants to contribute, you can find a link to the Github repository on the 'about' page.
-  Furthermore, if you're just a brand new Clojure developer looking for some learning experiences, check
-  out the 'links' page. You'll find links to some tutorials and such there.
+  Let's define a hash-map as we seen earlier:<br/>
+  <code class="expr">(def h {:foo "buu" :bar "bazz"})</code>
+</p>
+<p>
+  Now try some of this magic:<br/>
+  <code class="expr">(:bar h "not found")</code>
+</p>
+<p>
+  This is actually a convenient version of <code class="expr">(get h :bar "not found")</code> and it
+  says:
+</p>
+<p>
+  "Give me the value associated with the key <code class="expr">:bar</code> if it exists in the map,
+  or else the string <code class="expr">"not found"</code>".
+</p>
+<p>
+  Try <code class="expr">(:zar h "not found")</code> to continue.
 </p>
