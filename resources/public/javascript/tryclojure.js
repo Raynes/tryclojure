@@ -1,5 +1,17 @@
-var pageNum = -1;
-var page = null;
+var currentPage = -1;
+var pageNames = [
+			"page1",
+			"page2",
+			"page3",
+			"page4",
+			"page5",
+			"page6",
+			"page7",
+			"page8",
+			"page9",
+			"page10",
+			"page11"
+		];
 var pages = [
     {
         verify: function(data) { return false; }
@@ -37,14 +49,12 @@ var pages = [
 ];
 
 function showPage(n) {
-    var res = pages[n];
-    if (res) {
-        pageNum = n;
-        page = res;
+    if (pages[n]) {
+        currentPage = n;
 
         var block = $("#changer");
         block.fadeOut(function(e) {
-            block.load("/tutorial", { 'n' : n+1 }, function() {
+            block.load("/tutorial", { 'page' : pageNames[n+1] }, function() {
                 block.fadeIn();
                 changerUpdated();
             });
@@ -92,23 +102,23 @@ function doCommand(input, report) {
         report();
         return true;
     case 'back':
-        if (pageNum > 0) {
-            showPage(pageNum - 1);
+        if (currentPage > 0) {
+            showPage(currentPage - 1);
             report();
             return true;
         } else {
             return false;
         }
     case 'next':
-        if (pageNum >= 0 && pageNum < pages.length - 1) {
-            showPage(pageNum + 1);
+        if (currentPage >= 0 && currentPage < pages.length - 1) {
+            showPage(currentPage + 1);
             report();
             return true;
         } else {
             return false;
         }
     case 'restart':
-        if (pageNum > 0) {
+        if (currentPage > 0) {
             showPage(0);
             report();
             return true;
@@ -139,8 +149,8 @@ function onHandle(line, report) {
     }
 
     // handle page
-    if (page && page.verify(data)) {
-        showPage(pageNum + 1);
+    if (pages[n] && pages[n].verify(data)) {
+        showPage(currentPage + 1);
     }
 
     // display expr results
