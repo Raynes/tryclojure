@@ -24,10 +24,6 @@
    "The sandbox will automatically be wiped after 15 minutes and if you evaluate more after that,"
    "It'll be in an entirely new namespace/sandbox."]
   [:p.bottom
-   "You can find the site's source and such on its "
-   (link-to "http://github.com/Raynes/tryclojure" "github")
-   " page."]
-  [:p.bottom
    "TryClojure is written in Clojure and JavaScript (JQuery), powered by "
    (link-to "https://github.com/flatland/clojail" "clojail")
    " and Chris Done's "
@@ -38,22 +34,24 @@
   [:p.bottom
    "Welcome to Try Clojure. See that little box up there? That's a Clojure repl. You can type "
    "expressions and see their results right here in your browser. We also have a brief tutorial to "
-   "give you a taste of Clojure. Try it out by typing " [:code.expr "tutorial"] " in the console!"]
-  [:p.bottom
-   "Check out the site's source on "
-   (link-to "http://github.com/Raynes/tryclojure" "github")
-   "!"])
+   "give you a taste of Clojure. Try it out by typing " [:code.expr "tutorial"] " in the console!"])
 
 (defn root-html []
   (html5
    [:head
-    (include-css "/resources/public/css/tryclojure.css")
+    (include-css "/resources/public/css/tryclojure.css"
+								 "/resources/public/css/gh-fork-ribbon.css")
     (include-js "http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"
                 "/resources/public/javascript/jquery-console/jquery.console.js"
                 "/resources/public/javascript/tryclojure.js")
     [:title "Try Clojure"]]
    [:body
     [:div#wrapper
+			[:div.github-fork-ribbon-wrapper.right
+	     [:div.github-fork-ribbon
+	       (link-to "https://github.com/Raynes/tryclojure" "Fork me on GitHub")
+				]
+			]
      [:div#content
       [:div#header
        [:h1
@@ -67,9 +65,7 @@
         [:a#about.buttons.last "about"]]
        [:div#changer (home-html)]]
       [:div.footer
-       [:p.bottom "©2011 Anthony Grimes and numerous contributors"]
-       [:p.bottom
-        "Built with "
+       [:p.bottom "©2011-2012 Anthony Grimes and numerous contributors. Built with "
         (link-to "http://webnoir.org" "Noir")
         "."]]
       (javascript-tag
