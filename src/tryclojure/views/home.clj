@@ -15,34 +15,32 @@
 
 (defpartial about-html []
   [:p.bottom
-   "Please note that this REPL is sandboxed, so you wont be able to do everything in it "
-   "that you would in a local unsandboxed REPL. Keep in mind that this site is designed for "
-   "beginners to try out Clojure and not necessarily as a general-purpose server-side REPL."]
+	 "Welcome to Try Clojure - a quick tour of Clojure for absolute beginners."
+	]
   [:p.bottom
-   "One quirk you might run into is that things you bind with def can sometimes disappear. "
-   "The sandbox wipes defs if you def too many things, so don't be surprised. Furthermore, "
-   "The sandbox will automatically be wiped after 15 minutes and if you evaluate more after that,"
-   "It'll be in an entirely new namespace/sandbox."]
+	 "Here is our only disclaimer: this site is an introduction to Clojure, not a generic Clojure REPL. "
+	 "You won't be able to do everything in it that you could do in your local interpreter. "
+	 "Also, the interpreter deletes the data that you enter if you define too many things, or after 15 minutes."]
   [:p.bottom
    "You can find the site's source and such on its "
    (link-to "http://github.com/Raynes/tryclojure" "github")
    " page."]
   [:p.bottom
-   "TryClojure is written in Clojure and JavaScript (JQuery), powered by "
-   (link-to "https://github.com/flatland/clojail" "clojail")
-   " and Chris Done's "
-   (link-to "https://github.com/chrisdone/jquery-console" "jquery-console")]
-  [:p.bottom "Design by " (link-to "http://apgwoz.com" "Andrew Gwozdziewycz")])
+   "TryClojure is written in Clojure and JavaScript with "
+   (link-to "http://webnoir.org" "Noir") ", "
+   (link-to "https://github.com/flatland/clojail" "clojail") ", and Chris Done's "
+   (link-to "https://github.com/chrisdone/jquery-console" "jquery-console") ". "
+   " The design is by " (link-to "http://apgwoz.com" "Andrew Gwozdziewycz") "."
+  ])
 
 (defpartial home-html []
   [:p.bottom
-   "Welcome to Try Clojure. See that little box up there? That's a Clojure repl. You can type "
-   "expressions and see their results right here in your browser. We also have a brief tutorial to "
-   "give you a taste of Clojure. Try it out by typing " [:code.expr "tutorial"] " in the console!"]
-  [:p.bottom
-   "Check out the site's source on "
-   (link-to "http://github.com/Raynes/tryclojure" "github")
-   "!"])
+    "Welcome to Clojure! "
+		"You can see a Clojure interpreter above - we call it a <emp>REPL</emp>."
+	]
+	[:p.bottom
+	"Type \"tutorial\" in the REPL to begin."
+	])
 
 (defn root-html []
   (html5
@@ -67,11 +65,7 @@
         [:a#about.buttons.last "about"]]
        [:div#changer (home-html)]]
       [:div.footer
-       [:p.bottom "©2011 Anthony Grimes and numerous contributors"]
-       [:p.bottom
-        "Built with "
-        (link-to "http://webnoir.org" "Noir")
-        "."]]
+       [:p.bottom "©2011-2012 Anthony Grimes and numerous contributors."]]
       (javascript-tag
        "var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-27340918-1']);
