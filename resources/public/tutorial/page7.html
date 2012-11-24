@@ -1,12 +1,13 @@
-<p>Oh boy! We wrote our very own function! It's a lovely one, isn't it?</p>
+<p>Congratulations - you just defined your first Clojure function. Many more will follow!</p>
 
 <p>
-  Our <code>square</code> function takes a single argument -- a number -- and squares it.
+  <code>defn</code> takes the name of the function, then the list of arguments, and then the body of the function.
+  I told you that a Clojure program is made of lists, right?
+  The entire <code>defn</code> is a list, and the function body is also a list.
+  (Even the arguments are collected in a vector, which is similar to a list - we'll talk about vectors soon).
 </p>
 
 <p>
-  Take a look at how our defn form looks. First comes the name of the function, then the argument list
-  (which is a vector, and not an actual list), then the body of the function.
+  Oh, sorry for talking so long - you probably want to try out your brand new function!
+  Type <code class="expr">(square 10)</code>.
 </p>
-
-<p>But wait! We don't even know if our function works or not! Let's try it out. Type <code class="expr">(square 10)</code>.</p>
