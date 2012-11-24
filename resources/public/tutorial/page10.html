@@ -17,11 +17,11 @@
   Vectors and lists are sequential and ordered collections.
   Sets are not ordered, and they cannot contain duplicate elements.
   Maps are key-value collections, where the keys can be any object.
-  Here, we've used what Clojure calls a <emp>keyword</emp> (<code>:foo</code>) for one of the keys, and a number for the other key.
+  Here, we've used what Clojure calls a <em>keyword</em> (<code>:foo</code>) for one of the keys, and a number for the other key.
 </p>
 
 <p>
-  Now I'll tell you another thing that may surprise you: Clojure collections are <emp>immutable</emp> - they can never change.
+  Now I'll tell you another thing that may surprise you: Clojure collections are <em>immutable</em> - they can never change.
   When you do anything on a list, including adding and removing elements, you actually get a brand new list.
   (Fortunately, Clojure is amazingly efficient at creating new lists).
   In general, Clojure encourages you to have as little mutable state as possible.
@@ -29,7 +29,7 @@
 </p>
 
 <p>
-  A prime example of this is <code>map</code>. <code>map</code> is a <emp>higher order function</emp>, which means that it takes another function as an argument.
+  A prime example of this is <code>map</code>. <code>map</code> is a <em>higher order function</em>, which means that it takes another function as an argument.
   For example, you can ask <code>map</code> to increment each number in a vector by passing it the <code>inc</code> function, followed by the vector.
   Try it for yourself: type <code class="expr">(map inc [1 2 3 4])</code> to continue.
 </p>

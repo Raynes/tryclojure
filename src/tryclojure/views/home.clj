@@ -36,7 +36,7 @@
 (defpartial home-html []
   [:p.bottom
     "Welcome to Clojure! "
-		"You can see a Clojure interpreter above - we call it a <emp>REPL</emp>."
+		"You can see a Clojure interpreter above - we call it a <em>REPL</em>."
 	]
 	[:p.bottom
 	"Type \"tutorial\" in the REPL to begin."
