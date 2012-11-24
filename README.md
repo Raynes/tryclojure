@@ -2,6 +2,8 @@
 
 TryClojure is a online Clojure REPL written using Noir and Chris Done's jquery console (you're awesome, Chris).
 
+[<img src="https://secure.travis-ci.org/Raynes/tryclojure.png"/>](http://travis-ci.org/Raynes/tryclojure)
+
 ## Usage
 
 http://tryclj.com
