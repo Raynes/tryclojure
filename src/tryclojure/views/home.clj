@@ -65,9 +65,7 @@
         [:a#about.buttons.last "about"]]
        [:div#changer (home-html)]]
       [:div.footer
-       [:p.bottom "©2011 Anthony Grimes and numerous contributors"]
-       [:p.bottom
-        "Built with "
+       [:p.bottom "©2011-2012 Anthony Grimes and numerous contributors. Built with "
         (link-to "http://webnoir.org" "Noir")
         "."]]
       (javascript-tag
