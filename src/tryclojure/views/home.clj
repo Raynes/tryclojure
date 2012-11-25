@@ -35,7 +35,7 @@
 		"You can see a Clojure interpreter above - we call it a <em>REPL</em>."
 	]
 	[:p.bottom
-	"Type \"tutorial\" in the REPL to begin."
+	"Type \"next\" in the REPL to begin."
 	])
 
 (defn root-html []

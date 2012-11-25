@@ -1,5 +1,5 @@
 var currentPage = -1;
-var pageNames = [
+var pages = [
 			"page1",
 			"page2",
 			"page3",
@@ -12,7 +12,7 @@ var pageNames = [
 			"page10",
 			"page11"
 		];
-var pages = [
+var pageExitConditions = [
     {
         verify: function(data) { return false; }
     },
@@ -48,18 +48,34 @@ var pages = [
     }
 ];
 
-function showPage(n) {
-    if (pages[n]) {
-        currentPage = n;
+function nextPage() {
+	if (currentPage < pages.length - 1) {
+      goToPage(currentPage + 1);
+  }
+}
 
-        var block = $("#changer");
-        block.fadeOut(function(e) {
-            block.load("/tutorial", { 'page' : pageNames[n+1] }, function() {
-                block.fadeIn();
-                changerUpdated();
-            });
-        });
-    }
+function previousPage() {
+	if (currentPage > 0) {
+      goToPage(currentPage - 1);
+  }
+}
+
+function goToFirstPage() {
+	if (currentPage > 0) {
+      goToPage(0);
+  }
+}
+
+function goToPage(pageNumber) {
+	currentPage = pageNumber;
+
+	var block = $("#changer");
+  	block.fadeOut(function(e) {
+    	block.load("/tutorial", { 'page' : pages[pageNumber] }, function() {
+      block.fadeIn();
+      changerUpdated();
+		});
+	});
 }
 
 function setupLink(url) {
@@ -95,36 +111,17 @@ function html_escape(val) {
     return result;
 }
 
-function doCommand(input, report) {
-    switch (input) {
-    case 'tutorial':
-        showPage(0);
-        report();
-        return true;
+function doCommand(input) {
+		switch (input) {
+  	case 'next':
+				nextPage();
+				return true;
     case 'back':
-        if (currentPage > 0) {
-            showPage(currentPage - 1);
-            report();
-            return true;
-        } else {
-            return false;
-        }
-    case 'next':
-        if (currentPage >= 0 && currentPage < pages.length - 1) {
-            showPage(currentPage + 1);
-            report();
-            return true;
-        } else {
-            return false;
-        }
+				previousPage();
+				return true;
     case 'restart':
-        if (currentPage > 0) {
-            showPage(0);
-            report();
-            return true;
-        } else {
-            return false;
-        }
+				goToFirstPage();
+      	return true;
     default:
         return false;
     }
@@ -138,7 +135,10 @@ function onHandle(line, report) {
     var input = $.trim(line);
 
     // handle commands
-    if (doCommand(input, report)) return;
+    if (doCommand(input)) {
+			report();
+			return;
+		}
 
     // perform evaluation
     var data = eval_clojure(input);
@@ -149,8 +149,8 @@ function onHandle(line, report) {
     }
 
     // handle page
-    if (pages[n] && pages[n].verify(data)) {
-        showPage(currentPage + 1);
+    if (currentPage >= 0 && pageExitConditions[currentPage].verify(data)) {
+        nextPage();
     }
 
     // display expr results
