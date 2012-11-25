@@ -62,7 +62,6 @@
       [:div#container
        [:div#console.console]
        [:div#buttons
-        [:a#home.buttons "home"]
         [:a#links.buttons "links"]
         [:a#about.buttons.last "about"]]
        [:div#changer (home-html)]]
