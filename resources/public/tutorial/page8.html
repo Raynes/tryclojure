@@ -1,17 +1,20 @@
 <p>Yay! It works!</p>
 
 <p>
-  You know, Clojure is a functional programming language. As such, it has first-class and
-  anonymous functions. Let's write our square function as an anonymous function.
+  By now, you probably think that Clojure is very different from the programming languages you already know.
+  Indeed, it belongs to a different family than most popular languages' - the family of "functional" programming languages.
+  Like most functional languages, Clojure can define a function without even giving it a name:
 </p>
+
 <code class="expr">(fn [x] (* x x))</code>
+
 <p>
-  If you run this in the REPL above (as you should), you'll note that some very weird and
-  cryptic thing is printed. Functions are just normal values like a number, a string, or
-  anything else. The cryptic thing is simply how they look when printed.
+  If you run this code, you'll see some cryptic output.
+  In Clojure, functions are just normal values like numbers or strings.
+  <code>fn</code> defines a function and then returns it.
+  What you're seeing is simply what a function looks like when you print it on the screen.
 </p>
 
 <p>
-  Our anonymous function isn't very useful if we don't call it. Let's do it. Type 
-  <code class="expr">((fn [x] (* x x)) 10)</code>
+  But wait - an anonymous function isn't very useful if you can't call it. Try to define a new anonymous function and call it straight away: <code class="expr">((fn [x] (* x x)) 10)</code>.
 </p>
