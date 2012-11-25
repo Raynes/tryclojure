@@ -10,7 +10,8 @@ var pages = [
 			"page8",
 			"page9",
 			"page10",
-			"page11"
+			"page11",
+			"end"
 		];
 var pageExitConditions = [
     {
@@ -42,6 +43,9 @@ var pageExitConditions = [
     },
     {
         verify: function (data) { return data.expr == "(map inc [1 2 3 4])"; }
+    },
+    {
+        verify: function (data) { return false; }
     },
     {
         verify: function (data) { return false; }
