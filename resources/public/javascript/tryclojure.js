@@ -48,25 +48,11 @@ var pageExitConditions = [
     }
 ];
 
-function nextPage() {
-	if (currentPage < pages.length - 1) {
-      goToPage(currentPage + 1);
-  }
-}
-
-function previousPage() {
-	if (currentPage > 0) {
-      goToPage(currentPage - 1);
-  }
-}
-
-function goToFirstPage() {
-	if (currentPage > 0) {
-      goToPage(0);
-  }
-}
-
 function goToPage(pageNumber) {
+	if (pageNumber == currentPage || pageNumber < 0 || pageNumber >= pages.length) {
+		return;
+	}
+
 	currentPage = pageNumber;
 
 	var block = $("#changer");
@@ -115,18 +101,18 @@ function doCommand(input) {
 		switch (input) {
 	  case 'next':
 	  case 'forward':
-				nextPage();
+    		goToPage(currentPage + 1);
 				return true;
 		case 'previous':
 		case 'prev':
 		case 'back':
-				previousPage();
+    		goToPage(currentPage - 1);
 				return true;
     case 'restart':
     case 'reset':
     case 'home':
     case 'quit':
-				goToFirstPage();
+    		goToPage(0);
       	return true;
     default:
         return false;

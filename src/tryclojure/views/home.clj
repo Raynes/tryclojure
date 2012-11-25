@@ -3,7 +3,7 @@
             [hiccup.element :refer [javascript-tag link-to unordered-list]]
             [hiccup.page :refer [include-css include-js html5]]))
 
-(defpartial links []
+(defpartial links-html []
   (unordered-list
    [(link-to "http://clojure.org" "The official Clojure website")
     (link-to "http://dev.clojure.org/display/doc/Getting+Started" "Getting started with Clojure")
@@ -35,7 +35,7 @@
 		"You can see a Clojure interpreter above - we call it a <em>REPL</em>."
 	]
 	[:p.bottom
-	"Type \"next\" in the REPL to begin."
+	"Type <code>next</code> in the REPL to begin."
 	])
 
 (defn root-html []
@@ -89,4 +89,4 @@
   (about-html))
 
 (defpage "/links" []
-  (links))
+  (links-html))
