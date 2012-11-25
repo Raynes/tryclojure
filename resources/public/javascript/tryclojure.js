@@ -113,13 +113,19 @@ function html_escape(val) {
 
 function doCommand(input) {
 		switch (input) {
-  	case 'next':
+	  case 'next':
+	  case 'forward':
 				nextPage();
 				return true;
-    case 'back':
+		case 'previous':
+		case 'prev':
+		case 'back':
 				previousPage();
 				return true;
     case 'restart':
+    case 'reset':
+    case 'home':
+    case 'quit':
 				goToFirstPage();
       	return true;
     default:
