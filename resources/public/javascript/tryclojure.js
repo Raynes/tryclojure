@@ -1,6 +1,19 @@
-var pageNum = -1;
-var page = null;
+var currentPage = -1;
 var pages = [
+			"page1",
+			"page2",
+			"page3",
+			"page4",
+			"page5",
+			"page6",
+			"page7",
+			"page8",
+			"page9",
+			"page10",
+			"page11",
+			"end"
+		];
+var pageExitConditions = [
     {
         verify: function(data) { return false; }
     },
@@ -33,23 +46,26 @@ var pages = [
     },
     {
         verify: function (data) { return false; }
+    },
+    {
+        verify: function (data) { return false; }
     }
 ];
 
-function showPage(n) {
-    var res = pages[n];
-    if (res) {
-        pageNum = n;
-        page = res;
+function goToPage(pageNumber) {
+	if (pageNumber == currentPage || pageNumber < 0 || pageNumber >= pages.length) {
+			return;
+	}
 
-        var block = $("#changer");
-        block.fadeOut(function(e) {
-            block.load("/tutorial", { 'n' : n+1 }, function() {
-                block.fadeIn();
-                changerUpdated();
-            });
-        });
-    }
+	currentPage = pageNumber;
+
+	var block = $("#changer");
+  	block.fadeOut(function(e) {
+    	block.load("/tutorial", { 'page' : pages[pageNumber] }, function() {
+      block.fadeIn();
+      changerUpdated();
+		});
+	});
 }
 
 function setupLink(url) {
@@ -85,36 +101,28 @@ function html_escape(val) {
     return result;
 }
 
-function doCommand(input, report) {
-    switch (input) {
-    case 'tutorial':
-        showPage(0);
-        report();
-        return true;
-    case 'back':
-        if (pageNum > 0) {
-            showPage(pageNum - 1);
-            report();
-            return true;
-        } else {
-            return false;
-        }
-    case 'next':
-        if (pageNum >= 0 && pageNum < pages.length - 1) {
-            showPage(pageNum + 1);
-            report();
-            return true;
-        } else {
-            return false;
-        }
+function doCommand(input) {
+		if (input.match(/^gopage /)) {
+				goToPage(parseInt(input.substring("gopage ".length)));
+				return true;
+		}
+
+		switch (input) {
+	  case 'next':
+	  case 'forward':
+    		goToPage(currentPage + 1);
+				return true;
+		case 'previous':
+		case 'prev':
+		case 'back':
+    		goToPage(currentPage - 1);
+				return true;
     case 'restart':
-        if (pageNum > 0) {
-            showPage(0);
-            report();
-            return true;
-        } else {
-            return false;
-        }
+    case 'reset':
+    case 'home':
+    case 'quit':
+    		goToPage(0);
+      	return true;
     default:
         return false;
     }
@@ -128,7 +136,10 @@ function onHandle(line, report) {
     var input = $.trim(line);
 
     // handle commands
-    if (doCommand(input, report)) return;
+    if (doCommand(input)) {
+			report();
+			return;
+		}
 
     // perform evaluation
     var data = eval_clojure(input);
@@ -139,8 +150,8 @@ function onHandle(line, report) {
     }
 
     // handle page
-    if (page && page.verify(data)) {
-        showPage(pageNum + 1);
+    if (currentPage >= 0 && pageExitConditions[currentPage].verify(data)) {
+  			goToPage(currentPage + 1);
     }
 
     // display expr results

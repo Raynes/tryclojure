@@ -3,7 +3,7 @@
             [hiccup.element :refer [javascript-tag link-to unordered-list]]
             [hiccup.page :refer [include-css include-js html5]]))
 
-(defpartial links []
+(defpartial links-html []
   (unordered-list
    [(link-to "http://clojure.org" "The official Clojure website")
     (link-to "http://dev.clojure.org/display/doc/Getting+Started" "Getting started with Clojure")
@@ -22,10 +22,6 @@
 	 "You won't be able to do everything in it that you could do in your local interpreter. "
 	 "Also, the interpreter deletes the data that you enter if you define too many things, or after 15 minutes."]
   [:p.bottom
-   "You can find the site's source and such on its "
-   (link-to "http://github.com/Raynes/tryclojure" "github")
-   " page."]
-  [:p.bottom
    "TryClojure is written in Clojure and JavaScript with "
    (link-to "http://webnoir.org" "Noir") ", "
    (link-to "https://github.com/flatland/clojail" "clojail") ", and Chris Done's "
@@ -39,7 +35,7 @@
 		"You can see a Clojure interpreter above - we call it a <em>REPL</em>."
 	]
 	[:p.bottom
-	"Type \"tutorial\" in the REPL to begin."
+	"Type <code>next</code> in the REPL to begin."
 	])
 
 (defn root-html []
@@ -66,7 +62,6 @@
       [:div#container
        [:div#console.console]
        [:div#buttons
-        [:a#home.buttons "home"]
         [:a#links.buttons "links"]
         [:a#about.buttons.last "about"]]
        [:div#changer (home-html)]]
@@ -93,4 +88,4 @@
   (about-html))
 
 (defpage "/links" []
-  (links))
+  (links-html))
