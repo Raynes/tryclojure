@@ -54,7 +54,7 @@ var pageExitConditions = [
 
 function goToPage(pageNumber) {
 	if (pageNumber == currentPage || pageNumber < 0 || pageNumber >= pages.length) {
-		return;
+			return;
 	}
 
 	currentPage = pageNumber;
@@ -102,6 +102,11 @@ function html_escape(val) {
 }
 
 function doCommand(input) {
+		if (input.match(/^gopage /)) {
+				goToPage(parseInt(input.substring("gopage ".length)));
+				return true;
+		}
+
 		switch (input) {
 	  case 'next':
 	  case 'forward':
@@ -146,7 +151,7 @@ function onHandle(line, report) {
 
     // handle page
     if (currentPage >= 0 && pageExitConditions[currentPage].verify(data)) {
-        nextPage();
+  			goToPage(currentPage + 1);
     }
 
     // display expr results
