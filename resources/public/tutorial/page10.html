@@ -1,30 +1,35 @@
-<p>Awesome. Now you can call this function just like we called the old square function.</p>
+<p>
+  Success! Now you can call this new <code>square</code> function just like you called the old <code>square</code> function.
+</p>
 
 <p>
-  Clojure has a great set of immutable and persistent data structures. Vectors, lists, maps, sets,
-  I get chills.
+  By now, you know that lists are quite important in Clojure.
+  But Clojure also has other data structures:
 </p>
 
 <p>
   Vectors: <code class="expr">[1 2 3 4]</code><br/>
   Maps: <code class="expr">{:foo "bar" 3 4}</code><br/>
-  Lists: <code class="expr">'(1 2 3 4)</code><br/>
   Sets: <code class="expr">#{1 2 3 4}</code><br/>
-  Vectors and lists are sequential and ordered collections. You'll see vectors used much more than lists.
-  Maps are typical hash-maps - unordered collections indexed by keys. The keys can be any object. Here,
-  we've used a keyword, <code>:foo</code> as a key. Keywords make excellent keys. We also used a number.
-  Sets are mathematical sets.
 </p>
 
 <p>
-  Clojure's collections are one of the most imporant parts of Clojure. Being a functional language, Clojure
-  encourages immutability and as little state as possible. Therefore, instead of for loops mutating variables
-  and such, most of the time you'll see higher order functions doing transformations on immutable data and
-  returning new collections rather than ever modifying the old one.
+  Vectors and lists are sequential and ordered collections.
+  Sets are not ordered, and they cannot contain duplicate elements.
+  Maps are key-value collections, where the keys can be any object.
+  Here, we've used what Clojure calls a <em>keyword</em> (<code>:foo</code>) for one of the keys, and a number for the other key.
 </p>
 
 <p>
-  A prime example of this is <code>map</code>. We can use map, a higher order function (which is a function
-  that takes functions as arguments or returns functions), to 'map' a function to every element of a sequence.
-  Let's use this to increment each number in a vector. Type <code class="expr">(map inc [1 2 3 4])</code> to continue.
+  Now I'll tell you another thing that may surprise you: Clojure collections are <em>immutable</em> - they can never change.
+  When you do anything on a list, including adding and removing elements, you actually get a brand new list.
+  (Fortunately, Clojure is amazingly efficient at creating new lists).
+  In general, Clojure encourages you to have as little mutable state as possible.
+  For example, instead of "for" loops and other state-changing constructs, most of the time you'll see functions doing transformations on immutable data and returning new collections, without changing the old one.
+</p>
+
+<p>
+  A prime example of this is <code>map</code>. <code>map</code> is a <em>higher order function</em>, which means that it takes another function as an argument.
+  For example, you can ask <code>map</code> to increment each number in a vector by passing it the <code>inc</code> function, followed by the vector.
+  Try it for yourself: type <code class="expr">(map inc [1 2 3 4])</code> to continue.
 </p>
