@@ -6,9 +6,9 @@
 (defpartial links-html []
   (unordered-list
    [(link-to "http://clojure.org" "The official Clojure website")
-    (link-to "http://dev.clojure.org/display/doc/Getting+Started" "Getting started with Clojure")
+    (link-to "http://clojure-doc.org/articles/content.html#clojure_tutorials" "Clojure Tutorials")
     (link-to "http://groups.google.com/group/clojure" "Clojure mailing list")
-    (link-to "http://java.ociweb.com/mark/clojure/article.html" "A comprehensive Clojure tutorial")
+    (link-to "http://clojure-doc.org/articles/content.html#clojure_language_guides" "Clojure guides")
     (link-to "http://joyofclojure.com/" "The Joy of Clojure: a book by Michael Fogus and Chris Houser")
     (link-to "http://disclojure.org" "Disclojure")
     (link-to "http://planet.clojure.in" "Planet Clojure")]))
