@@ -1,6 +1,6 @@
 INTRODUCTION
 
-See demo.html. Or here: http://chrisdone.com/jquery-console/demo.html
+See demo.html. Or here: http://chrisdone.com/jquery-console/
 
 Options available:
 
@@ -18,6 +18,10 @@ Options available:
 
  promptLabel            string    Prompt string like 'JavaScript> '.
 
+ cols                   integer   the number of cols, this value is only
+                                  used by the command completion to format
+                                  the list of results.
+
  commandValidate        function  When user hits return, validate
                                   whether to trigger commandHandle and
                                   re-prompt.
@@ -30,6 +34,10 @@ Options available:
                                   to report a result of the command
                                   asynchronously.
 
+ commandComplete        function  Handle the command completion when the
+                                  tab key is pressed. It returns a list
+                                  of string completion suffixes.
+
  animateScroll          bool      Whether to animate the scroll to
                                   top. Currently disabled.
 
@@ -38,6 +46,9 @@ Options available:
                                   charInsertTrigger(char,line) is called.
 
  cancelHandle           function  Handle a user-signaled interrupt.
+
+ fadeOnReset            bool      Whether to trigger a fade in/out when
+                                  the console is reset.  Defaults to true.
 
 LICENSE
 
@@ -68,5 +79,3 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
 LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
 ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
-
-
