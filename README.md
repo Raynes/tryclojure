@@ -8,7 +8,7 @@ TryClojure is a online Clojure REPL written using Noir and Chris Done's jquery c
 
 http://tryclj.com
 
-To run it locally, use `lein run`.
+To run it locally, use `lein ring server`.
 
 ## Credits
 
