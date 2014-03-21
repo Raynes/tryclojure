@@ -1,5 +1,4 @@
-(ns tryclojure.views.tutorial
-  (:require [noir.core :refer [defpage]]))
+(ns tryclojure.views.tutorial)
 
-(defpage [:post "/tutorial"] {page :page}
+(defn tutorial-html [page] 
   (slurp (str "resources/public/tutorial/" page ".html")))

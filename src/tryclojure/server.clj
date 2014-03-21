@@ -1,18 +1,23 @@
 (ns tryclojure.server
-  (:require [noir.server :as server]
-            [ring.middleware.file :refer [wrap-file]]))
+  (:use compojure.core)
+  (:require [compojure.route :as route]
+            [noir.util.middleware :as nm]
+            [ring.adapter.jetty :as jetty]
+            [tryclojure.views.home :as home]
+            [tryclojure.views.tutorial :as tutorial]
+            [tryclojure.views.eval :as eval]))
 
-(server/add-middleware wrap-file (System/getProperty "user.dir"))
-(server/load-views "src/tryclojure/views")
+(def app-routes
+  [(GET "/" [] (home/root-html))
+   (GET "/about" [] (home/about-html))
+   (GET "/links" [] (home/links-html))
+   (POST "/tutorial" [:as {args :params}] (tutorial/tutorial-html (args :page)))
+   (POST "/eval.json" [:as {args :params}] (eval/eval-json (args :expr) (args :jsonp)))
+   (GET "/eval.json" [:as {args :params}] (eval/eval-json (args :expr) (args :jsonp)))
+   (route/resources "/")
+   (route/not-found "Not Found")])
 
-(defn to-port [s]
-  (when-let [port s] (Long. port)))
+(def app (nm/app-handler app-routes))
 
-(defn tryclj [& [port]]
-  (server/start
-   (or (to-port port)
-       (to-port (System/getenv "PORT")) ;; For deploying to Heroku
-       8801)
-   {:session-cookie-attrs {:max-age 600}}))
-
-(defn -main [& args] (tryclj (first args)))
+(defn -main [port]
+  (jetty/run-jetty app {:port (Long. port) :join? false}))
