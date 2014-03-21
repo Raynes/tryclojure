@@ -1,9 +1,10 @@
 (ns tryclojure.views.home
   (:require [hiccup.element :refer [javascript-tag link-to unordered-list]]
-            [hiccup.page :refer [include-css include-js html5]]))
+            [hiccup.page :refer [include-css include-js html5]]
+            [hiccup.core :refer [html]]))
 
 (defn links-html []
-  (html5
+  (html
     (unordered-list
      [(link-to "http://clojure.org" "The official Clojure website")
       (link-to "http://clojure-doc.org/" "Clojure tutorials and documentation")
@@ -13,7 +14,7 @@
       (link-to "http://planet.clojure.in" "Planet Clojure")])))
 
 (defn about-html []
-  (html5
+  (html
     [:p.bottom
      "Welcome to Try Clojure - a quick tour of Clojure for absolute beginners."]
     [:p.bottom
@@ -29,7 +30,7 @@
      " The design is by " (link-to "http://apgwoz.com" "Andrew Gwozdziewycz") "."]))
 
 (defn home-html []
-  (html5 
+  (html 
     [:p.bottom
       "Welcome to Clojure! "
       "You can see a Clojure interpreter above - we call it a <em>REPL</em>."]
