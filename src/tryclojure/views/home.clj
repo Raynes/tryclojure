@@ -15,8 +15,7 @@
 (defn about-html []
   (html5
     [:p.bottom
-     "Welcome to Try Clojure - a quick tour of Clojure for absolute beginners."
-    ]
+     "Welcome to Try Clojure - a quick tour of Clojure for absolute beginners."]
     [:p.bottom
      "Here is our only disclaimer: this site is an introduction to Clojure, not a generic Clojure REPL. "
      "You won't be able to do everything in it that you could do in your local interpreter. "
@@ -27,15 +26,13 @@
      (link-to "https://github.com/noir-clojure/lib-noir" "lib-noir") ", "
      (link-to "https://github.com/flatland/clojail" "clojail") ", and Chris Done's "
      (link-to "https://github.com/chrisdone/jquery-console" "jquery-console") ". "
-     " The design is by " (link-to "http://apgwoz.com" "Andrew Gwozdziewycz") "."
-    ]))
+     " The design is by " (link-to "http://apgwoz.com" "Andrew Gwozdziewycz") "."]))
 
 (defn home-html []
   (html5 
     [:p.bottom
       "Welcome to Clojure! "
-      "You can see a Clojure interpreter above - we call it a <em>REPL</em>."
-    ]
+      "You can see a Clojure interpreter above - we call it a <em>REPL</em>."]
     [:p.bottom "Type <code>next</code> in the REPL to begin." ]))
 
 (defn root-html []
@@ -51,9 +48,7 @@
     [:div#wrapper
       [:div.github-fork-ribbon-wrapper.right
        [:div.github-fork-ribbon
-         (link-to "https://github.com/Raynes/tryclojure" "Fork me on GitHub")
-        ]
-      ]
+         (link-to "https://github.com/Raynes/tryclojure" "Fork me on GitHub")]]
      [:div#content
       [:div#header
        [:h1
