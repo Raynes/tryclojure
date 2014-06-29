@@ -5,7 +5,7 @@ body {
 
 #wrapper {
  text-align: left;
- width: 620px;
+ width: 820px;
  margin: 0 auto;
  border-radius: 5px;
  border: 5px solid #eee;
@@ -49,7 +49,7 @@ body {
 }
 
 #console div.jquery-console-inner { 
- width:580px;
+ width:780px;
  height:200px; 
  margin: 10px 10px;
  overflow:auto; 
