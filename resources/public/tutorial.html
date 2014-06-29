@@ -1,0 +1,202 @@
+<div id="tutorial">
+  <div class="page" data-tag="start">
+    <p>
+      I'll take you on a 5-minutes tour of Clojure, but feel free to experiment on your own along the road!
+    </p>
+    <p>
+      You can type <code>next</code> to skip forward, <code>back</code> to return to the previous step, and <code>restart</code> to get back to the beginning. Let's get started: type <code>next</code>.
+    </p>
+  </div>
+  <div class="page" data-exitexpr="(+ 3 3)">
+    <p>
+      The first thing you may notice about Clojure is that common operations look... strange.
+    </p>
+    <p>
+      For example, try typing <code class="expr">(+ 3 3)</code> in the REPL.
+    </p>
+    <p>
+      <em>Hint: you can click on the code samples to insert them in the
+        REPL</em>
+    </p>
+  </div>
+  <div class="page" data-exitexpr="(/ 10 3)">
+    <p>
+      That was a strange way to say "three plus three", wasn't it?
+    </p>
+    <p>
+      A Clojure program is made of <em>lists</em>.
+      <code class="expr">(+ 3 3)</code> is a list that contains an operator, and then the operands.
+      Try out the same concept with the <code>*</code> and <code>-</code> operators.
+    </p>
+    <p>
+      Division might surprise you. When you're ready to move forward, try <code class="expr">(/ 10 3)</code>.
+    </p>
+  </div>
+  <div class="page" data-exitexpr="(/ 10 3.0)">
+    <p>
+      Now, that was a bit surprising: Clojure has a built in Rational
+      type. You can still force Clojure to do floating point division
+      by making one of the operands floating point:
+      type <code class="expr">(/ 10 3.0)</code> to continue.
+    </p>
+  </div>
+  <div class="page" data-exitexpr="(+ 1 2 3 4 5 6)">
+    <p>Awesome!</p>
+    <p>
+      Many Clojure functions can take an arbitrary number of arguments.
+      Try it out: type <code class="expr">(+ 1 2 3 4 5 6)</code> to continue.
+    </p>
+  </div>
+  <div class="page" data-exitexpr="(defn square [x] (* x x))">
+    <p>
+      That's enough math. Let's do some fun stuff, like defining functions.
+      You can do that in Clojure with <code>defn</code>.
+    </p>
+    <p>
+      Type <code class="expr">(defn square [x] (* x x))</code> to define a "square" function that takes a single number and squares it.
+    </p>
+  </div>
+  <div class="page" data-exitexpr="(square 10)">
+    <p>Congratulations - you just defined your first Clojure function. Many more will follow!</p>
+    <p>
+      <code>defn</code> takes the name of the function, then the list of arguments, and then the body of the function.
+      I told you that a Clojure program is made of lists, right?
+      The entire <code>defn</code> is a list, and the function body is also a list.
+      (Even the arguments are collected in a vector, which is similar to a list - we'll talk about vectors soon).
+    </p>
+    <p>
+      Oh, sorry for talking so long - you probably want to try out your brand new function!
+      Type <code class="expr">(square 10)</code>.
+    </p>
+  </div>
+  <div class="page" data-exitexpr="((fn [x] (* x x)) 10)">
+    <p>Yay! It works!</p>
+    <p>
+      By now, you probably think that Clojure is very different from
+      the programming languages you already know. Indeed, it belongs to a
+      different family than most popular languages' - the family of
+      "functional" programming languages. Like most functional languages,
+      Clojure can define a function without even giving it a name:
+    </p>
+    <code class="expr">(fn [x] (* x x))</code>
+    <p>
+      If you run this code, you'll see some cryptic output.
+      In Clojure, functions are just normal values like numbers or strings.
+      <code>fn</code> defines a function and then returns it.
+      What you're seeing is simply what a function looks like when you print it on the screen.
+    </p>    
+    <p>
+      But wait - an anonymous function isn't very useful if you can't
+      call it. Try to define a new anonymous function and call it
+      straight
+      away: <code class="expr">((fn [x] (* x x)) 10)</code>.
+    </p>
+  </div>
+  <div class="page" data-exitexpr="(def square (fn [x] (* x x)))">
+    <p>
+      Let's see what you just did: you evaluated a list where the
+      first element is the function itself, defined on the spot - and the
+      other elements are the arguments that you pass to the function.
+      That's exactly the same syntax that you used earlier on to call
+      functions like <code>square</code> or even <code>+</code>. The only
+      difference is that now you defined the function in the same place
+      where you called it.
+    </p>
+    <p>
+      Remember <code>defn</code>? Now I can tell you a
+      secret: <code>defn</code> is actually just a bit of syntactic
+      sugar around <code>def</code> and <code>fn</code>. You've just
+      seen <code>fn</code> at work: it defines a new function.
+      <code>def</code> binds the newly defined function to a name.
+    </p>
+    <p>
+      If you want, you can create a named functions without
+      using <code>defn</code>: type
+      <code class="expr">(def square (fn [x] (* x x)))</code> to continue.
+    </p>
+  </div>
+  <div class="page" data-exitexpr="(map inc [1 2 3 4])">
+    <p>
+      Success! Now you can call this new <code>square</code> function
+      just like you called the old <code>square</code> function.
+    </p>
+    <p>
+      By now, you know that lists are quite important in Clojure.
+      But Clojure also has other data structures:
+    </p>
+    <p>
+      Vectors: <code class="expr">[1 2 3 4]</code><br/>
+      Maps: <code class="expr">{:foo "bar" 3 4}</code><br/>
+      Sets: <code class="expr">#{1 2 3 4}</code><br/>
+    </p>
+    <p>
+      Vectors and lists are sequential and ordered collections.
+      Sets are not ordered, and they cannot contain duplicate elements.
+      Maps are key-value collections, where the keys can be any object.
+      Here, we've used what Clojure calls a <em>keyword</em> (<code>:foo</code>) for one of the keys, and a number for the other key.
+    </p>
+    <p>
+      Now I'll tell you another thing that may surprise you: Clojure
+      collections are <em>immutable</em> - they can never change. When
+      you do anything on a list, including adding and removing
+      elements, you actually get a brand new list. (Fortunately,
+      Clojure is amazingly efficient at creating new lists). In
+      general, Clojure encourages you to have as little mutable state
+      as possible. For example, instead qof "for" loops and other
+      state-changing constructs, most of the time you'll see functions
+      doing transformations on immutable data and returning new
+      collections, without changing the old one.
+    </p>
+    <p>
+      A prime example of this is <code>map</code>. <code>map</code> is
+      a <em>higher order function</em>, which means that it takes
+      another function as an argument. For example, you can
+      ask <code>map</code> to increment each number in a vector by
+      passing it the <code>inc</code> function, followed by the
+      vector. Try it for yourself: type
+      <code class="expr">(map inc [1 2 3 4])</code> to continue.
+    </p>
+  </div>
+  <div class="page">
+    <p>Great job!</p>
+    <p>
+      I told you that Clojure's data structures are immutable. Let's take
+      a closer look at what that means.
+    </p>
+    <p>
+      When you used the <code>map</code> function above to transform the
+      vector <code>[1 2 3 4]</code>, the original vector was unchanged.
+      Let's give our vector a name: type
+      <code class="expr">(def v [1 2 3 4])</code>.
+      Entering <code class="expr">v</code> at the REPL
+      prints the value of <code>v</code> to the console.
+    </p>
+    <p>
+      Now try <code class="expr">(map inc v)</code>, then
+      type <code class="expr">v</code> again - it remains unchanged!
+    </p>    
+    <p>
+      We can use the <code>conj</code> function to add elements to a
+      vector: try <code class="expr">(conj v 5)</code>.
+    </p>  
+    <p>
+      Now examine <code>v</code> - it is still the vector
+      <code>[1 2 3 4]</code>. Clojure has returned a new vector
+      with the value <code>5</code> added no the end. Clojure uses
+      <em>structural sharing</em> to manage these immutable data
+      structures in a memory-efficient manner.
+    </p>
+    <p>
+      Type <code class="expr">next</code> to continue.
+    </p>
+  </div>
+  <div class="page">
+    <p>
+      Glad to know you're eager for more, but unfortunately this tutorial is over.
+    </p>
+    <p>
+      Maybe you can click the 'links' button above for more resources?
+    </p>
+  </div>
+</div>
+

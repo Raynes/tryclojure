@@ -11,6 +11,7 @@
   [(GET "/" [] (home/root-html))
    (GET "/about" [] (home/about-html))
    (GET "/links" [] (home/links-html))
+   (GET "/metadata.json" [] (tutorial/tutorial-meta))
    (POST "/tutorial" [:as {args :params}] (tutorial/tutorial-html (args :page)))
    (POST "/eval.json" [:as {args :params}] (eval/eval-json (args :expr) (args :jsonp)))
    (GET "/eval.json" [:as {args :params}] (eval/eval-json (args :expr) (args :jsonp)))

@@ -1,6 +1,7 @@
 (defproject tryclojure "0.1.0-SNAPSHOT"
   :description "A simple web-based Clojure REPL for trying out Clojure without having to install it."
   :dependencies [[org.clojure/clojure "1.4.0"]
+                 [enlive "1.1.5"]
                  [lib-noir "0.8.1"]
                  [compojure "1.1.6"]
                  [ring-server "0.3.1"]
