@@ -87,7 +87,7 @@
       In Clojure, functions are just normal values like numbers or strings.
       <code>fn</code> defines a function and then returns it.
       What you're seeing is simply what a function looks like when you print it on the screen.
-    </p>    
+    </p>
     <p>
       But wait - an anonymous function isn't very useful if you can't
       call it. Try to define a new anonymous function and call it
@@ -115,7 +115,8 @@
     <p>
       If you want, you can create a named functions without
       using <code>defn</code>: type
-      <code class="expr">(def square (fn [x] (* x x)))</code> to continue.
+      <pre class="codeblock"><code class="expr">(def square (fn [x] (* x x)))</code></pre>
+      to continue.
     </p>
   </div>
   <div class="page" data-exitexpr="(map inc [1 2 3 4])">
@@ -177,11 +178,11 @@
     <p>
       Now try <code class="expr">(map inc v)</code>, then
       type <code class="expr">v</code> again - it remains unchanged!
-    </p>    
+    </p>
     <p>
       We can use the <code>conj</code> function to add elements to a
       vector: try <code class="expr">(conj v 5)</code>.
-    </p>  
+    </p>
     <p>
       Now examine <code>v</code> - it is still the vector
       <code>[1 2 3 4]</code>. Clojure has returned a new vector
@@ -262,13 +263,13 @@
       Did your function return the value 25? If not, evaluate the
       following code to define <code>cell-index</code>:
     </p>
-    <code class="expr">(defn cell-index [col row] (+ col (* 9 row)))</code>.
+    <pre class="codeblock"><code class="expr">(defn cell-index [col row] (+ col (* 9 row)))</code></pre>
     <p>
       We will represent our (unsolved) Sudoku grid as a vector of candidates for
       each cell. Let's define the empty grid, where the values of all cells are
       unknown:
     </p>
-    <code class="expr">(def empty-grid (vec (repeat 81 candidates)))</code>.
+    <pre class="codeblock"><code class="expr">(def empty-grid (vec (repeat 81 candidates)))</code></pre>
     <p>
       Like we used <code>set</code> to turn the sequence generated
       by <code>range</code> into a set, here we are
@@ -291,19 +292,15 @@
       use <code>0</code> to represent an unknown value, we can
       represent the puzzle like so:
     </p>
-    <pre>
-      <code class="expr">
-        (def puzzle "530070000
-                     600195000
-                     098000060
-                     800060003
-                     400803001
-                     700020006
-                     060000280
-                     000419005
-                     000080079")
-      </code>
-    </pre>
+    <pre class="codeblock"><code class="expr">(def puzzle "530070000
+             600195000
+             098000060
+             800060003
+             400803001
+             700020006
+             060000280
+             000419005
+             000080079")</code></pre>
     <p>
       We need to transform this into a sequence of integers that we can
       use to initialize our grid. Let's use a regular expression to
@@ -350,12 +347,8 @@
       <code class="expr">(set [d])</code>, but we prefer to use its
       sister function, <code>hash-set</code>:
     </p>
-    <pre>
-      <code class="expr">
-        (defn candidates-for [d]
-          (if (zero? d) candidates (hash-set d)))
-      </code>
-    </pre>
+    <pre class="codeblock"><code class="expr">(defn candidates-for [d]
+  (if (zero? d) candidates (hash-set d)))</code></pre>
     <p>
       Try it out for a few values of <code>d</code>, and
       type <code class="expr">next</code> when you're ready to
@@ -367,24 +360,16 @@
       With this helper function in hand, we can use <code>map</code>
       to build our grid. Try:
     </p>
-    <pre>
-      <code class="expr">
-        (def grid (map candidates-for
-                       (map parse-int (re-seq #"\d" puzzle))))
-      </code>.
-    </pre>
+    <pre class="codeblock"><code class="expr">(def grid (map candidates-for
+              (map parse-int (re-seq #"\d" puzzle))))</code></pre>
     <p>
       When you see two invocations of <code>map</code> together like
       this, you might be thinking there is a better way to express
       the solution, and you'd be right! We can use Clojure's <code>comp</code> function to <em>compose</em>
       the two functions:
     </p>
-    <pre>
-      <code class="expr">
-        (def grid (map (comp candidates-for parse-int)
-                       (re-seq #"\d" puzzle)))
-      </code>
-    </pre>
+    <pre class="codeblock"><code class="expr">(def grid (map (comp candidates-for parse-int)
+               (re-seq #"\d" puzzle)))</code></pre>
   </div>
   <div class="page" data-exitexpr="(get grid (cell-index 4 5))">
     <p>
@@ -535,12 +520,10 @@
     <p>
       With this in hand, we can render a grid row!
     </p>
-    <pre>
-      <code class="expr">
-          (defn render-grid-row [grid row]
-            (apply str (flatten ["|" (interpose "|" (partition 3 (row-render-values grid row))) "|"])))
-      </code>
-    </pre>
+    <pre class="codeblock"><code class="expr">(defn render-grid-row [grid row]
+  (apply str
+    (flatten
+      ["|" (interpose "|" (partition 3 (row-render-values grid row))) "|"])))</code></pre>
     <p>
       Try it: <code class="expr">(render-grid-row grid 4)</code>.
     </p>
@@ -623,7 +606,7 @@
       Let's define <code>row-peers</code>:
       <pre>
         <code class="expr">(defn row-peers [col row] (for [x (range 9)] [x row]))</code>
-      </pre>       
+      </pre>
     </p>
     <p>
       <code>col-peers</code> is almost the same:
@@ -646,7 +629,7 @@
       <p>
         Try it out: <code class="expr">(square-peers 4 5)</code>.
       </p>
-  </div>      
+  </div>
   <div class="page">
     <p>
       Glad to know you're eager for more, but unfortunately this tutorial is over.
@@ -656,4 +639,3 @@
     </p>
   </div>
 </div>
-
