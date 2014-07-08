@@ -114,8 +114,12 @@
     </p>
     <p>
       If you want, you can create a named functions without
-      using <code>defn</code>: type
-      <pre class="codeblock"><code class="expr">(def square (fn [x] (* x x)))</code></pre>
+      using <code>defn</code>; type
+      <pre class="codeblock">
+        <code class="expr">
+          (def square (fn [x] (* x x)))
+        </code>
+      </pre>
       to continue.
     </p>
   </div>
@@ -241,35 +245,141 @@
       continue.
     </p>
   </div>
-  <div class="page" data-exitexpr="(cell-index 7 2)">
+  <!-- Could say more about sets here -->
+  <div class="page" data-exitexpr='(.indexOf "ABCDEFGHI" "C")'>
     <p>
       We have the set of candidates for each cell, but we also need to
-      decide how to represent the 9x9 grid. The simplest data
-      structure we can use is an 81-element vector, with the first
-      element (index 0) representing the top left of the grid (column
-      0, row 0), and the 81st element (index 80) the bottom right
-      (column 8, row 8). Note that we are using coordinates counting
-      from 0 - this makes some of the arithmetic we have to do later a
-      bit simpler.
+      decide how to represent the 9x9 grid:
+    </p>
+    <pre>
+      A1 A2 A3 | A4 A5 A6 | A7 A8 A9
+      B1 B2 B3 | B4 B5 B6 | B7 B8 B9
+      C1 C2 C3 | C4 C5 C6 | C7 C8 C9
+      ---------+----------+---------
+      D1 D2 D3 | D4 D5 D6 | D7 D8 D9
+      E1 E2 E3 | E4 E5 E6 | E7 E8 E9
+      F1 F2 F3 | F4 F5 F6 | F7 F8 F9
+      ---------+----------+---------
+      G1 G2 G3 | G4 G5 G6 | G7 G8 G9
+      H1 H2 H3 | H4 H5 H6 | H7 H8 H9
+      I1 I2 I3 | I4 I5 I6 | I7 I8 I9
+    </pre>
+    <p>
+      The simplest data structure we can use is an 81-element vector,
+      with the first element (index 0) holding A1, the second element
+      (index 1) holding A2, etc. until finally the 81st element (index
+      80) stores I9.
     </p>
     <p>
-      With this in mind, can you complete this function definition?
-      <code>(defn cell-index [col row] ...)</code>.
-      Test your function by computing the index of column 7, row 2.
+      We're going to need a function to compute the index of a given
+      cell in our vector representation of the grid; let's start by
+      converting our alphabetic row indices into numeric indices. Clojure's
+      strings are actually Java strings, so we can take the string
+      <code>"ABCDEGFHI"</code>  and use the <code>java.lang.String/indexOf</code>
+      method to find the index.
+    </p>
+    <p>
+      Calling Java methods from Clojure is really easy: just prefix the
+      Java method with <code>.</code> and call it as a Clojure function with
+      the object as the first argument. Try it now:
+      <code class="expr">(.indexOf "ABCDEFGHI" "C")</code>.
     </p>
   </div>
-  <div class="page" data-exitexpr="(get empty-grid (cell-index 3 4))">
+  <div class="page" data-exitexpr='(map str "A3")'>
+    <p>
+      That returned a zero-indexed row, which is just what we need. We can do a similar
+      thing for the column:  <code class="expr">(.indexOf "123456789" "3")</code>. We're working
+      towards a function that we can call like <code>(cell-index "A3")</code>, so the final piece
+      of the puzzle is to split <code>"A3"</code> into its row and column components <code>"A"</code>
+      and <code>"3"</code>. There are many ways to do this, but here's one to try:
+      <code class="expr">(map str "A3")</code>.
+    </p>
+  </div>
+  <div class="page">
+    <p>
+      Now, we could write
+    </p>
+      <pre class="codeblock">
+        <code>(let [row (first (map str "A3"))] ...)</code>
+      </pre>
+    <p>
+      and
+    </p>
+    <pre class="codeblock">
+      <code>(let [col (second (map str "A3"))] ...)</code>
+    </pre>
+    <p>
+      but Clojure provides a very powerful mechanism called <em>destructuring</em>
+      that helps us out here. (Clojure's destructuring is worthy of a
+      tutorial in its own right; Jay Fields has written
+      <a href="http://blog.jayfields.com/2010/07/clojure-destructuring.html" target="_blank">a nice introduction</a>.)
+    </p>
+    <p>
+      Using destructuring, we can simply write
+    </p>
+    <pre class="codeblock">
+      <code>(let [[row col] (map str "A3") ...)</code>
+    </pre>
+    <p>
+      (note the extra set of square brackets inside the <code>let</code>). Putting this
+      all together, we have:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (let [[row col] (map str "A3")
+              row-index (.indexOf "ABCDEFGHI" row)
+              col-index (.indexOf "123456789" col)]
+          [row-index col-index])
+      </code>
+    </pre>
+    <p>
+      Try running that code fragment, and type <code>next</code> to continue.
+    </p>
+  </div>
+  <div class="page" data-exitexpr='(cell-index "C8")'>
+    <p>
+      We now have all the tools we need to write our <code>cell-index</code> function. Can you
+      complete this function definition?
+    </p>
+    <pre class="codeblock">
+      <code>
+        (defn cell-index
+          [cell]
+          (let [[row col] (map str cell)
+                row-index (.indexOf "ABCDEFGHI" row)
+                col-index (.indexOf "123456789" col)]
+            ...))
+      </code>
+    </pre>
+    <p>
+      Test your function by computing the index of C8.
+    </p>
+  </div>
+  <div class="page" data-exitexpr='(get empty-grid (cell-index "E4"))'>
     <p>
       Did your function return the value 25? If not, evaluate the
       following code to define <code>cell-index</code>:
     </p>
-    <pre class="codeblock"><code class="expr">(defn cell-index [col row] (+ col (* 9 row)))</code></pre>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn cell-index
+          [cell]
+          (let [[row col] (map str cell)
+                row-index (.indexOf "ABCDEFGHI" row)
+                col-index (.indexOf "123456789" col)]
+            (+ col-index (* 9 row-index))))
+      </code>
+    </pre>
     <p>
       We will represent our (unsolved) Sudoku grid as a vector of candidates for
       each cell. Let's define the empty grid, where the values of all cells are
       unknown:
     </p>
-    <pre class="codeblock"><code class="expr">(def empty-grid (vec (repeat 81 candidates)))</code></pre>
+    <pre class="codeblock">
+      <code class="expr">
+        (def empty-grid (vec (repeat 81 candidates)))
+      </code>
+    </pre>
     <p>
       Like we used <code>set</code> to turn the sequence generated
       by <code>range</code> into a set, here we are
@@ -279,7 +389,7 @@
     <p>
       To continue, try combining the core function <code>get</code>
       with your <code>cell-index</code> function to retrieve the
-      candidates for column 3, row 4 from the empty grid.
+      candidates for cell "E4" from the empty grid.
     </p>
   </div>
   <div class="page" data-exitexpr='(re-seq #"\d" puzzle)'>
@@ -292,41 +402,51 @@
       use <code>0</code> to represent an unknown value, we can
       represent the puzzle like so:
     </p>
-    <pre class="codeblock"><code class="expr">(def puzzle "530070000
-             600195000
-             098000060
-             800060003
-             400803001
-             700020006
-             060000280
-             000419005
-             000080079")</code></pre>
+    <pre class="codeblock">
+      <code class="expr">
+        (def puzzle "530070000
+                     600195000
+                     098000060
+                     800060003
+                     400803001
+                     700020006
+                     060000280
+                     000419005
+                     000080079")
+      </code>
+    </pre>
     <p>
       We need to transform this into a sequence of integers that we can
       use to initialize our grid. Let's use a regular expression to
       pick out the digits:
     </p>
-    <code class="expr">
-      (re-seq #"\d" puzzle)
-    </code>
+    <pre class="codeblock">
+      <code class="expr">
+        (re-seq #"\d" puzzle)
+      </code>
+    </pre>
   </div>
   <div class="page" data-exitexpr='(map parse-int (re-seq #"\d" puzzle))'>
     <p>
       That's close to what we're looking for, we just need to convert
       these strings into numbers. Java's <code>Integer</code> class
-      has a static method for doing just that, and as we're runnnig
-      Clojure on the JVM, we can simply use Clojure's Java
-      interoperability support. Define the following:
+      has a static method for doing just that, so we can again use
+      Clojure's Java interoperability support. Define the following:
     </p>
-    <code class="expr">
-      (defn parse-int [s] (Integer/parseInt s))
-    </code>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn parse-int [s] (Integer/parseInt s))
+      </code>
+    </pre>
     <p>
+      (Note the different syntax for calling a static method.)
       With that in hand, try:
     </p>
-    <code class="expr">
-      (map parse-int (re-seq #"\d" puzzle))
-    </code>
+    <pre class="codeblock">
+      <code class="expr">
+        (map parse-int (re-seq #"\d" puzzle))
+      </code>
+    </pre>
   </div>
   <div class="page">
     <p>
@@ -344,11 +464,15 @@
       The <code>set</code> function we used earlier expects a list as
       its first argument, so we could wrap <code>d</code> in a vector
       and write:
-      <code class="expr">(set [d])</code>, but we prefer to use its
+      <code>(set [d])</code>, but we prefer to use its
       sister function, <code>hash-set</code>:
     </p>
-    <pre class="codeblock"><code class="expr">(defn candidates-for [d]
-  (if (zero? d) candidates (hash-set d)))</code></pre>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn candidates-for [d]
+          (if (zero? d) candidates (hash-set d)))
+      </code>
+    </pre>
     <p>
       Try it out for a few values of <code>d</code>, and
       type <code class="expr">next</code> when you're ready to
@@ -360,18 +484,24 @@
       With this helper function in hand, we can use <code>map</code>
       to build our grid. Try:
     </p>
-    <pre class="codeblock"><code class="expr">(def grid (map candidates-for
-              (map parse-int (re-seq #"\d" puzzle))))</code></pre>
+    <pre class="codeblock">
+      <code class="expr">
+        (def grid (map candidates-for (map parse-int (re-seq #"\d" puzzle))))
+      </code>
+    </pre>
     <p>
       When you see two invocations of <code>map</code> together like
       this, you might be thinking there is a better way to express
       the solution, and you'd be right! We can use Clojure's <code>comp</code> function to <em>compose</em>
       the two functions:
     </p>
-    <pre class="codeblock"><code class="expr">(def grid (map (comp candidates-for parse-int)
-               (re-seq #"\d" puzzle)))</code></pre>
+    <pre class="codeblock">
+      <code class="expr">
+        (def grid (map (comp candidates-for parse-int) (re-seq #"\d" puzzle)))
+      </code>
+    </pre>
   </div>
-  <div class="page" data-exitexpr="(get grid (cell-index 4 5))">
+  <div class="page" data-exitexpr='(get grid (cell-index "C8"))'>
     <p>
       We're almost there! Let's look at the data type of <code>grid</code>:
     </p>
@@ -394,7 +524,7 @@
       Let's put everything together into a function that parses a puzzle and returns the candidates
       grid as a vector:
     </p>
-    <pre>
+    <pre class="codeblock">
       <code class="expr">
         (defn parse-puzzle [puzzle]
           (mapv (comp candidates-for parse-int)
@@ -406,7 +536,7 @@
     </p>
     <code class="expr">(def grid (parse-puzzle puzzle))</code>
     <p>
-      What are the candidates for the cell at column 4, row 5?
+      What are the candidates for the cell C8?
     </p>
   </div>
   <div class="page" data-exitexpr="true">
@@ -418,7 +548,7 @@
       +---+---+---+
       |53.|.7.|...|
       |6..|195|...|
-      |.98|...|..6|
+      |.98|...|.6.|
       +---+---+---+
       |8..|.6.|..3|
       |4..|8.3|..1|
@@ -430,10 +560,10 @@
       +---+---+---+
     </pre>
     <p>
-      First, let's write a function to render a cell. If the cell is a number, or a set of
+      We'll start by writing a function to render a cell. If the cell is a number, or a set of
       candidates with only one element, we should render the number, otherwise a dot.
     </p>
-    <pre>
+    <pre class="codeblock">
       <code class="expr">
         (defn render-cell [x]
           (cond
@@ -452,39 +582,53 @@
       Type <code class="expr">true</code> to continue.
     </p>
   </div>
-  <div class="page" data-exitexpr="(row-render-values grid 4)">
+  <div class="page" data-exitexpr='(row-render-values grid "D")'>
     <p>
       Let's write a function to pull out the rendered values for a
       given row. You'll see we're using the function <code>for</code> below. This
       does <strong>not</strong> introduce a loop like <code>for</code> does in
       some other languages. In Clojure, <code>for</code> is
-      a <a href="http://en.wikipedia.org/wiki/List_comprehension">list
+      a <a href="http://en.wikipedia.org/wiki/List_comprehension" target="_blank">list
       comprehension</a>. This is a very powerful construct, and we'll see
       more of it later.
     </p>
-    <pre>
+    <pre class="codeblock">
       <code class="expr">
         (defn row-render-values [grid row]
-          (for [col (range 9) :let [cell (get grid (cell-index col row))]]
-            (render-cell cell)))
+          (for [col (range 1 10) :let [cell (str row col)]]
+            (render-cell (get grid (cell-index cell)))))
       </code>
     </pre>
     <p>
-      Try it: <code class="expr">(row-render-values grid 4)</code>.
+      Try it: <code class="expr">(row-render-values grid "D")</code>.
     </p>
   </div>
   <div class="page" data-exitexpr='["|" (interpose "|" (partition 3 (range 9))) "|"]'>
     <p>
       Now, we need to partition these values into groups of 3 and
       interpose pipe symbols. Luckily, Clojure comes with <code>partiiton</code>
-      and <code>interpose</code> functions!
-      Try <code class="expr">(partition 3 (range 9))</code> and
-      <code class="expr">(interpose "|" (partition 3 (range 9)))</code>.
+      and <code>interpose</code> functions! Try:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (partition 3 (range 9))
+      </code>
+    </pre>
+    <p>and</p>
+    <pre class="codeblock">
+      <code class="expr">
+        (interpose "|" (partition 3 (range 9)))
+      </code>
+    </pre>
     </p>
     <p>
       Of course, we need a pipe at the beginning and the end of each row too:
-      <code class="expr">["|" (interpose "|" (partition 3 (range 9))) "|"]</code>
     </p>
+    <pre class="codeblock">
+      <code class="expr">
+        ["|" (interpose "|" (partition 3 (range 9))) "|"]
+      </code>
+    </pre>
   </div>
   <div class="page" data-exitexpr='(apply str (flatten ["|" (interpose "|" (partition 3 (range 9))) "|"]))'>
     <p>
@@ -493,7 +637,7 @@
       structure, not a string we can print. Once again, Clojure's core
       library has a function that comes to our rescue:
     </p>
-    <pre>
+    <pre class="codeblock">
       <code class="expr">
         (flatten ["|" (interpose "|" (partition 3 (range 9))) "|"])
       </code>
@@ -501,8 +645,18 @@
     <p>
       We need one more trick to render this row. If we try to print
       the list returned by <code>flatten</code>, we won't get quite
-      the right output. Try <code class="expr">(str ["A" "ba" "cus"])</code>
-      and compare that output with <code class="expr">(str "A" "ba" "cus")</code>.
+      the right output. Try:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">(str ["A" "ba" "cus"])</code>
+    </pre>
+    <p>
+      and compare that output with
+    </p>
+    <pre class="codeblock">
+      <code class="expr">(str "A" "ba" "cus")</code>
+    </pre>
+    <p>
       See the difference? The <code>str</code> function expects to be called
       with multiple arguments, not a single (list) argument. To get
       the results we desire, we have to <code>apply</code>
@@ -510,52 +664,58 @@
       by <code>flatten</code>, making it behave as if we'd
       called <code>str</code> with multiple arguments:
     </p>
-    <pre>
+    <pre class="codeblock">
       <code class="expr">
         (apply str (flatten ["|" (interpose "|" (partition 3 (range 9))) "|"]))
       </code>
     </pre>
   </div>
-  <div class="page" data-exitexpr="(render-grid-row grid 4)">
+  <div class="page" data-exitexpr='(render-grid-row grid "D")'>
     <p>
       With this in hand, we can render a grid row!
     </p>
-    <pre class="codeblock"><code class="expr">(defn render-grid-row [grid row]
-  (apply str
-    (flatten
-      ["|" (interpose "|" (partition 3 (row-render-values grid row))) "|"])))</code></pre>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn render-grid-row [grid row]
+          (apply str
+            (flatten
+              ["|" (interpose "|" (partition 3 (row-render-values grid row))) "|"])))
+      </code>
+    </pre>
     <p>
-      Try it: <code class="expr">(render-grid-row grid 4)</code>.
+      Try it: <code class="expr">(render-grid-row grid "D")</code>.
     </p>
   </div>
-  <div class="page" data-exitexpr="(map (partial render-grid-row grid) (range 9))">
+  <div class="page" data-exitexpr='(map (partial render-grid-row grid) "ABCDEFGHI")'>
     <p>
       We're going to have to call <code>(render-grid-row grid row</code>
-      for values of <code>row</code> ranging from 0 to 8.
+      for values of <code>row</code> ranging from "A" to "I".
       Hopefully by now you'll realise that this is a prime candidate
       for <code>map</code>. We could write:
     </p>
-    <pre>
+    <pre class="codeblock">
       <code class="expr">
-        (map (fn [row] (render-grid-row grid row)) (range 9))
+        (map (fn [row] (render-grid-row grid row)) "ABCDEFGHI")
       </code>
     </pre>
     <p>
-      ...and, while that would be perfectly fine, we could also use <code>(partial render-grid-row grid)</code>
-      create a new function that is just like <code>render-grid-row</code>, but with the first argument pre-populated.
+      ...and, while that would be perfectly fine, we could also use
+      <code>(partial render-grid-row grid)</code>
+      create a new function that is just like <code>render-grid-row</code>,
+      but with the first argument pre-populated.
     </p>
-    <pre>
+    <pre class="codeblock">
       <code class="expr">
-        (map (partial render-grid-row grid) (range 9))
+        (map (partial render-grid-row grid) "ABCDEFGHI")
       </code>
     </pre>
   </div>
-  <div class="page">
+  <div class="page" data-exitexpr='(render-grid grid)'>
     <p>
       When it comes to rendering the grid, we need to print a horizontal separator at the start
       and end, and between every 3 rows.
     </p>
-    <pre>
+    <pre class="codeblock">
       <code class="expr">
         (def hsep "+---+---+---+")
       </code>
@@ -564,19 +724,22 @@
       We can use <code>flatten</code>, <code>interpose</code> and <code>partition</code>
       to build the grid, like we did for each row:
     </p>
-    <pre>
+    <pre class="codeblock">
       <code class="expr">
-        (flatten [hsep (interpose hsep (partition 3 (map (partial render-grid-row grid) (range 9)))) hsep])
+        (flatten [hsep
+                  (interpose hsep
+                    (partition 3 (map (partial render-grid-row grid) "ABCDEFGHI")))
+                  hsep])
       </code>
     </pre>
     <p>
       Let's put all this together to build our <code>render-grid</code> function.
     </p>
-    <pre>
+    <pre class="codeblock">
       <code class="expr">
         (defn render-grid [grid]
           (let [hsep "+---+---+---+"
-                rows (map (partial render-grid-row grid) (range 9))]
+                rows (map (partial render-grid-row grid) "ABCDEFGHI")]
             (doseq [line (flatten [hsep (interpose hsep (partition 3 rows)) hsep])]
               (println line))))
       </code>
@@ -617,7 +780,7 @@
     <p>
       We have to work a little bit harder to calculate the minor square for a cell. We calculate the
       row and column of the top-left corner, and return the cells up to 3 columns to the right and 3 rows down.
-      <pre>
+      <pre class="codeblock">
         <code class="expr">
           (defn square-peers [col row]
              (let [top-left-col (* 3 (quot col 3))

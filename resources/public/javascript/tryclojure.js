@@ -18,7 +18,7 @@ function goToPage(pageNumber) {
     }
 
     currentPage = pageNumber;
-    
+
     var block = $("#changer");
     block.fadeOut(function(e) {
     	block.load("/tutorial", { 'page' : pageNumber }, function() {
@@ -80,7 +80,7 @@ function doCommand(input) {
         goToTag(input.substring("gotag ".length));
         return true;
     }
-    
+
     switch (input) {
     case 'next':
     case 'forward':
@@ -108,7 +108,7 @@ function onValidate(input) {
 
 function onHandle(line, report) {
     var input = $.trim(line);
-    
+
     // handle commands
     if (doCommand(input)) {
 	report();
@@ -117,17 +117,17 @@ function onHandle(line, report) {
 
     // perform evaluation
     var data = eval_clojure(input);
-    
+
     // handle error
     if (data.error) {
         return [{msg: data.message, className: "jquery-console-message-error"}];
     }
-    
+
     // handle page
     if (currentPage >= 0 && pageExitCondition(currentPage)(data)) {
   	goToPage(currentPage + 1);
     }
-    
+
     // display expr results
     return [{msg: data.result, className: "jquery-console-message-value"}];
 }
@@ -151,7 +151,7 @@ var controller;
 
 $(document).ready(function() {
     $.getJSON("/metadata.json", function (data) { pages = data; } );
-    
+
     controller = $("#console").console({
         welcomeMessage:'Give me some Clojure:',
         promptLabel: '> ',
@@ -161,10 +161,10 @@ $(document).ready(function() {
         animateScroll:true,
         promptHistory:true
     });
-    
+
     $("#about").click(setupLink("about"));
     $("#links").click(setupLink("links"));
     $("#home").click(setupLink("home"));
-    
+
     changerUpdated();
 });
