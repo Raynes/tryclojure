@@ -297,7 +297,16 @@
   </div>
   <div class="page">
     <p>
-      Now, we could write
+      There is something subtle going on here. When used as a sequence,
+      the string <code>"A3"</code> behaves like a list of characters; try
+      <code class="expr">(seq "A3")</code> in the REPL.
+    </p>
+    <p>
+      Clojure knows that the <code>map</code> function expects a
+      sequence as its second argument, so it automatically coerces the
+      string to a sequence of characters for us.
+    <p>
+      With this in hand, we could write
     </p>
       <pre class="codeblock">
         <code>(let [row (first (map str "A3"))] ...)</code>
@@ -333,7 +342,7 @@
       </code>
     </pre>
     <p>
-      Try running that code fragment, and type <code>next</code> to continue.
+      Try running that code fragment, and type <code class="expr">next</code> to continue.
     </p>
   </div>
   <div class="page" data-exitexpr='(cell-index "C8")'>
@@ -439,7 +448,8 @@
       </code>
     </pre>
     <p>
-      (Note the different syntax for calling a static method.)
+      (Note the different syntax for calling a static method: the class name,
+      followed by a <code>/</code>, then the method name.)
       With that in hand, try:
     </p>
     <pre class="codeblock">
@@ -448,7 +458,7 @@
       </code>
     </pre>
   </div>
-  <div class="page">
+  <div class="page" data-exitexpr="(hash-set 3)">
     <p>
       You might be thinking that we need to loop over this list of
       integers to build our grid. Well, we <em>could</em>, but in
@@ -461,12 +471,27 @@
       cell. If <code>d</code> is zero, this will just be the
       set <code>candidates</code> we defined earlier. Otherwise, it
       will be the set containing the single element <code>d</code>.
-      The <code>set</code> function we used earlier expects a list as
-      its first argument, so we could wrap <code>d</code> in a vector
-      and write:
-      <code>(set [d])</code>, but we prefer to use its
-      sister function, <code>hash-set</code>:
     </p>
+    <p>
+      How are we going to create a set containing just one element? Try:
+      <code class="expr">(set 3)</code>.
+    </p>
+    <p>
+      The error message is telling us that
+      the <code>set</code> function expects a list as its first argument, but we
+      are passing the value <code>3</code> (a Long).
+    </p>
+    <p>
+      We could wrap our single argument in a vector, and call <code>set</code> on that; Try:
+      <code class="expr">(set [3])</code>.
+    </p>
+    <p>
+      Clojure also provides the <code>hash-set</code> function which takes zero or more arguments
+      and returns a set of those arguments; try:
+      <code class="expr">(hash-set 3)</code>.
+    </p>
+  </div>
+  <div class="page">
     <pre class="codeblock">
       <code class="expr">
         (defn candidates-for [d]
@@ -700,7 +725,7 @@
     </pre>
     <p>
       ...and, while that would be perfectly fine, we could also use
-      <code>(partial render-grid-row grid)</code>
+      <code>(partial render-grid-row grid)</code> to
       create a new function that is just like <code>render-grid-row</code>,
       but with the first argument pre-populated.
     </p>
@@ -748,12 +773,13 @@
       To continue, type <code class="expr">(render-grid grid)</code>.
     </p>
   </div>
-  <div class="page" data-exitexpr="(square-peers 4 5)">
+  <!-- Add content: encapsulate helpers with letfn closure -->
+  <div class="page" data-exitexpr='(col-peers "D5")'>
     <p>
       We're going to solve the puzzle using a combination
       of <em>assignment</em>, <em>elimination</em> and <em>search</em>
       (more on this later). When we <em>assign</em> the value 6 to the
-      cell (0,1), no other cells in the same row, column or 3x3 square
+      cell B1, no other cells in the same row, column or 3x3 square
       can have the value 6 - so we <em>eliminate</em> it from the
       corresponding candidate lists.
     </p>
@@ -767,31 +793,86 @@
     </p>
     <p>
       Let's define <code>row-peers</code>:
-      <pre>
-        <code class="expr">(defn row-peers [col row] (for [x (range 9)] [x row]))</code>
-      </pre>
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn row-peers [cell]
+          (let [[row _] (map str cell)]
+            (for [col "123456789"] (str row col))))
+      </code>
+    </pre>
+    <p>
+      We're using <em>destructuring</em> again to extract the row from the cell; you'll
+      often see the name  <code>_</code> used in Clojure to indicate a variable whose
+      value we aren't going to use - here, we don't need the column of the input cell,
+      as we're going to range across all columns. Try it out:
+      <code class="expr">(row-peers "D5")</code>.
     </p>
     <p>
       <code>col-peers</code> is almost the same:
-      <pre>
-        <code class="expr">(defn col-peers [col row] (for [y (range 9)] [col y]))</code>
-      </pre>
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn col-peers [cell]
+          (let [[_ col] (map str cell)]
+            (for [row "ABCDEFGHI"] (str row col))))
+      </code>
+    </pre>
+    <p>
+      Try it out: <code class="expr">(col-peers "D5")</code>.
+    </p>
+  </div>
+  <div class="page" data-exitexpr='(square-peers "D5")'>
+    <p>
+      We have to work a little bit harder to calculate the minor square for a cell. We
+      could do some arithmetic to work this out, but we'll keep things simple and just
+      hard-code a lookup.
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn square-peers [cell]
+          (let [[row col] (map str cell)
+                rows (case row
+                           ("A" "B" "C") "ABC"
+                           ("D" "E" "F") "DEF"
+                           ("G" "H" "I") "GHI")
+                cols (case col
+                           ("1" "2" "3") "123"
+                           ("4" "5" "6") "456"
+                           ("7" "8" "9") "789")]
+            (for [row rows col cols] (str row col))))
+      </code>
+    </pre>
+    <p>
+      <code>case</code> is similar to <code>cond</code>, which we saw earlier;
+      type <code class="expr">(doc case)</code> to learn more.
     </p>
     <p>
-      We have to work a little bit harder to calculate the minor square for a cell. We calculate the
-      row and column of the top-left corner, and return the cells up to 3 columns to the right and 3 rows down.
-      <pre class="codeblock">
-        <code class="expr">
-          (defn square-peers [col row]
-             (let [top-left-col (* 3 (quot col 3))
-                   top-left-row (* 3 (quot row 3))]
-               (for [delta-row (range 3) delta-col (range 3)]
-                 [(+ top-left-col delta-col) (+ top-left-row delta-row)])))
-        </code>
-      </pre>
-      <p>
-        Try it out: <code class="expr">(square-peers 4 5)</code>.
-      </p>
+      Try it out: <code class="expr">(square-peers "D5")</code>.
+    </p>
+  </div>
+  <div class="page" data-exitexpr='(peers "D5")'>
+    <p>
+      We need to return <em>all</em> the peers for a given cell, which we do by concatenating the
+      results of the three simpler functions; try:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (concat (square-peers "D5") (row-peers "D5") (col-peers "D5"))
+      </code>
+    </pre>
+    <p>
+      You might see some duplicates in this list, but these are easily dealt with:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn peers [cell]
+          (distinct (concat (square-peers cell) (row-peers cell) (col-peers cell))))
+      </code>
+    </pre>
+    <p>
+      Try it out: <code class="expr">(peers "D5")</code>.
+    </p>
   </div>
   <div class="page">
     <p>
