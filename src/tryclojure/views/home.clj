@@ -8,9 +8,11 @@
     (unordered-list
      [(link-to "http://clojure.org" "The official Clojure website")
       (link-to "http://clojure-doc.org/" "Clojure tutorials and documentation")
+      (link-to "http://jafingerhut.github.io/cheatsheet-clj-1.3/cheatsheet-tiptip-no-cdocs-summary.html" "Clojure Cheat Sheet")
       (link-to "http://groups.google.com/group/clojure" "Clojure mailing list")
+      (link-to "http://www.clojurebook.com/" "Clojue Programming: a book by Chas Emerick, Brian Carper and Christophe Grand")
       (link-to "http://joyofclojure.com/" "The Joy of Clojure: a book by Michael Fogus and Chris Houser")
-      (link-to "http://disclojure.org" "Disclojure")
+      (link-to "http://clojure-cookbook.com/" "The Clojure Cookbook: a book by Luke VanderHart and Ryan Neufeld, with community contributions")
       (link-to "http://planet.clojure.in" "Planet Clojure")])))
 
 (defn about-html []
@@ -30,7 +32,7 @@
      " The design is by " (link-to "http://apgwoz.com" "Andrew Gwozdziewycz") "."]))
 
 (defn home-html []
-  (html 
+  (html
     [:p.bottom
       "Welcome to Clojure! "
       "You can see a Clojure interpreter above - we call it a <em>REPL</em>."]
@@ -73,4 +75,3 @@
           ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
           var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();")]]]))
-
