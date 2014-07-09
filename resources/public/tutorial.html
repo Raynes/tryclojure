@@ -113,7 +113,7 @@
       <code>def</code> binds the newly defined function to a name.
     </p>
     <p>
-      If you want, you can create a named functions without
+      If you want, you can create a named function without
       using <code>defn</code>; type
       <pre class="codeblock">
         <code class="expr">
@@ -150,7 +150,7 @@
       elements, you actually get a brand new list. (Fortunately,
       Clojure is amazingly efficient at creating new lists). In
       general, Clojure encourages you to have as little mutable state
-      as possible. For example, instead qof "for" loops and other
+      as possible. For example, instead of "for" loops and other
       state-changing constructs, most of the time you'll see functions
       doing transformations on immutable data and returning new
       collections, without changing the old one.
@@ -601,7 +601,7 @@
   <div class="page" data-exitexpr="true">
     <p>
       Before we go on to solve the puzzle, let's write a function to
-      pretty-print our grid. We'd like the output to look like:
+      pretty-print our grid. We'd like the output to look like this:
     </p>
     <pre>
       +---+---+---+
@@ -1168,7 +1168,8 @@
       Hmm. In this case, <code>eliminate-one</code> is returning <code>nil</code> when
       we try to eliminate 5 as a value for A1, and <code>reduce</code> carries on looping
       with a <code>nil</code> accumulator. We need a way to short-circuit the reduce
-      when we run into a <code>nil</code> value:
+      when we run into a <code>nil</code> value. Try this new version
+      of <code>eliminate</code>:
     </p>
     <pre class="codeblock">
       <code class="expr">
@@ -1356,7 +1357,9 @@
       </code>
     </pre>
     <p>
-      Try solving this grid: <code class="expr">(render-grid (solve hard-grid))</code>.
+      Try solving this grid:
+      <code class="expr">(render-grid (solve hard-grid))</code>.
+      (Again, it may take a few seconds.)
     </p>
   </div>
   <div class="page" data-exitexpr='(find-unsolved hard-grid)'>
@@ -1371,7 +1374,8 @@
     <p>
       This is where Clojure's immutable data structures really show their strength:
       backtracking comes for free, as trying a value creates a new grid without mutating
-      the original one! Let's take a look at our <code>solve</code> function:
+      the original one! Let's take a look at our <code>solve</code>
+      function so far:
     </p>
     <pre class="codeblock">
       <code class="expr">
