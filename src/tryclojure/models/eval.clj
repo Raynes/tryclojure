@@ -22,7 +22,7 @@
 (defn make-sandbox []
   (sandbox try-clojure-tester
            :max-defs 200
-           :timeout 2000
+           :timeout 1000000
            :init '(do (require '[clojure.repl :refer [doc source]]))))
 
 (defn find-sb [old]

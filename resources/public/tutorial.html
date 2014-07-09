@@ -438,9 +438,14 @@
   <div class="page" data-exitexpr='(map parse-int (re-seq #"\d" puzzle))'>
     <p>
       That's close to what we're looking for, we just need to convert
-      these strings into numbers. Java's <code>Integer</code> class
-      has a static method for doing just that, so we can again use
-      Clojure's Java interoperability support. Define the following:
+      these strings into numbers. Java's <code>Integer</code> class has
+      a static method for doing just that, so we can again use Clojure's
+      Java interoperability support. We saw earlier that we can call
+      methods on objects by adding a <code>.</code> to the front of the
+      method name and calling it as a Clojure function. The syntax for
+      calling a static method is slightly different:
+      <code>(ClassName/methodName arg ...)</code> Using this, we can
+      define:
     </p>
     <pre class="codeblock">
       <code class="expr">
@@ -448,8 +453,6 @@
       </code>
     </pre>
     <p>
-      (Note the different syntax for calling a static method: the class name,
-      followed by a <code>/</code>, then the method name.)
       With that in hand, try:
     </p>
     <pre class="codeblock">
@@ -491,7 +494,10 @@
       <code class="expr">(hash-set 3)</code>.
     </p>
   </div>
-  <div class="page">
+  <div class="page" data-exitexpr="(candidates-for 0)">
+    <p>
+      We can now define the <code>candidates-for</code> function:
+    </p>
     <pre class="codeblock">
       <code class="expr">
         (defn candidates-for [d]
@@ -499,9 +505,17 @@
       </code>
     </pre>
     <p>
-      Try it out for a few values of <code>d</code>, and
-      type <code class="expr">next</code> when you're ready to
-      continue.
+      Try it out for a few values of <code>d</code>:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (candidates-for 3)
+      </code>
+    </pre>
+    <pre class="codeblock">
+      <code class="expr">
+        (candidates-for 0)
+      </code>
     </p>
   </div>
   <div class="page" data-exitexpr='(def grid (map (comp candidates-for parse-int) (re-seq #"\d" puzzle)))'>
@@ -526,13 +540,15 @@
       </code>
     </pre>
   </div>
-  <div class="page" data-exitexpr='(get grid (cell-index "C8"))'>
+  <div class="page" data-exitexpr='(grid (cell-index "D5"))'>
     <p>
       We're almost there! Let's look at the data type of <code>grid</code>:
     </p>
-    <code class="expr">
-      (type grid)
-    </code>
+    <pre class="codeblock">
+      <code class="expr">
+        (type grid)
+      </code>
+    </pre>
     <p>
       We have generated a <em>list</em> (actually a <em>lazy
       sequence</em>, but we can think of it as a list). Lists and
@@ -557,12 +573,30 @@
       </code>
     </pre>
     <p>
-      New we can define our grid:
+      Now we can define our grid:
     </p>
-    <code class="expr">(def grid (parse-puzzle puzzle))</code>
+    <pre class="codeblock">
+      <code class="expr">
+        (def grid (parse-puzzle puzzle))
+      </code>
+    </pre>
     <p>
-      What are the candidates for the cell C8?
+      We can look up an element in a vector using <code>get</code>:
     </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (get grid (cell-index "D5"))
+      </code>
+    </pre>
+    <p>
+      Clojure vectors also act as functions that take an index as their
+      first argument and return the value at that index; try it now:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (grid (cell-index "D5"))
+      </code>
+    </pre>
   </div>
   <div class="page" data-exitexpr="true">
     <p>
@@ -851,7 +885,7 @@
       Try it out: <code class="expr">(square-peers "D5")</code>.
     </p>
   </div>
-  <div class="page" data-exitexpr='(peers "D5")'>
+  <div class="page" data-exitexpr='(peers "C8")'>
     <p>
       We need to return <em>all</em> the peers for a given cell, which we do by concatenating the
       results of the three simpler functions; try:
@@ -867,19 +901,566 @@
     <pre class="codeblock">
       <code class="expr">
         (defn peers [cell]
-          (distinct (concat (square-peers cell) (row-peers cell) (col-peers cell))))
+          (distinct (concat (square-peers cell)
+                            (row-peers cell)
+                            (col-peers cell))))
       </code>
     </pre>
     <p>
       Try it out: <code class="expr">(peers "D5")</code>.
     </p>
+    <p>
+      Finally, a cell is not a peer of itself, so we have to remove it from the list.
+      Here's one way to do it:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn peers [cell]
+          (remove (fn [x] (= x cell))
+            (distinct (concat (square-peers cell)
+                              (row-peers cell)
+                              (col-peers cell)))))
+      </code>
+    </pre>
+    <p>
+      Here, we've written a predicate function that will
+      return <code>true</code> when <code>(= x cell)</code>. It is more idiomatic in Clojure
+      to use a singleton set as a predicate function in these circumstances. Sets behave like functions
+      that return the element, if the set contains the element, otherwise <code>nil</code>. Experiment with
+      some sets: <code class="expr">(#{"a" "b" "c"} "b")</code> or <code class="expr">(#{"a" "b" "c"} "d")</code>.
+      This allows us to write:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn peers [cell]
+          (remove #{cell} (distinct (concat (square-peers cell)
+                                            (row-peers cell)
+                                            (col-peers cell)))))
+      </code>
+    </pre>
+    <p>
+      What are the peers of cell C8?
+    </p>
+  </div>
+  <div class="page"  data-exitexpr="(triangle-number 6)">
+    <p>
+      We mentioned earlier that Clojure's <code>for</code> function does
+      not introduce a loop. So how <em>do</em> we loop in Clojure? Like
+      many functional programming languages, we loop by using
+      <em>recursion</em>. Here's a simple example of recursion using
+      Clojure's <code>loop</code> and <code>recur</code>:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (loop [i 0]
+          (println (str "Iteration " i))
+          (if (> i 3)
+            (println "Done")
+            (recur (inc i))))
+      </code>
+    </pre>
+    <p>
+      The <code>loop</code> function takes a binding form just like <code>let</code>
+      and initializes our loop variables. Here the variable <code>i</code> is keeping track
+      of the number of iterations. The <code>if</code> statement checks a termination condition
+      that stops us from looping forever. When <code>i &lt;= 3</code>, we increment <code>i</code>
+      and <code>recur</code>.
+    </p>
+    <p>
+      We can also accumulate counters or lists in a loop; for example, to sum the numbers from
+      <code>1</code> to <code>n</code>, we could write:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn triangle-number [n]
+          (loop [accum 0 n n]
+            (if (> n 0)
+              (recur (+ accum n) (dec n))
+              accum)))
+      </code>
+    </pre>
+    <p>
+      Try it out: <code class="expr">(triangle-number 6)</code>.
+    </p>
+  </div>
+  <div class="page" data-exitexpr='(= (triangle-number 7) (sum (range 1 8)))'>
+    <p>
+      We can also use <code>loop</code>/<code>recur</code> to write a
+      more general <code>sum</code> function to add up an arbitrary list of
+      numbers:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn sum [xs]
+          (loop [accum 0 xs xs]
+            (if (empty? xs)
+               accum
+               (recur (+ accum (first xs)) (rest xs)))))
+      </code>
+    </pre>
+    <p>
+      Try it out: <code class="expr">(sum [7 8 9])</code>. Summing the
+      numbers from <code>1..n</code> should be equivalent to our <code>triangle-number</code> function:
+      <code class="expr">(= (triangle-number 7) (sum (range 1 8)))</code> (remember that <code>range</code>
+      includes the lower-bound but <em>excludes</em> the upper-bound, hence the <code>8</code> here).
+    </p>
+  </div>
+  <div class="page" data-exitexpr="(+)">
+    <p>
+      Although <code>loop</code>/<code>recur</code> is the primary looping construct in Clojure, it is
+      rarely used in practice. Whenever possible, we use a higher-order function. Clojure provides
+      <code>reduce</code> for the times when we need to accumulate data. We can implement our <code>sum</code>
+      funciton using <code>reduce</code> like so:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn sum [xs] (reduce (fn [accum x] (+ accum x)) 0 xs))
+      </code>
+    </pre>
+    <p>
+      We pass <code>reduce</code> an accumulator function, initial value for the accumulator,
+      and list of things to reduce. Try out our new function: <code class="expr">(sum [1 2 3])</code>.
+    </p>
+    <p>
+      The accumulator function takes the current value of the accumulator as its first
+      argument and the next value to accumulate as its second argument, and returns the new
+      value of the accumulator. We used <code>(fn [accum x] (+ accum x))</code>
+      above, but it it this case we could simply use <code>+</code>:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn sum [xs] (reduce + 0 xs))
+      </code>
+    </pre>
+    <p>
+      The initial value for the accumulator is optional, so we can simplify this function further:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn sum [xs] (reduce + xs))
+      </code>
+    </pre>
+    <p>
+      This works because <code>+</code>, when called with no arguments, returns 0; try it:
+      <code class="expr">(+)</code>.
+    </p>
+  </div>
+  <div class="page" data-exitexpr='(eliminate-one grid "A1" 5)'>
+    <p>
+      OK, back to our Sudoku solver. With <code>reduce</code> added to our toolkit, we can implement
+      the <code>eliminate</code> function. This function should take a grid, list of cells, and value to eliminate,
+      and return a new grid with this value eliminated from the specified cells:
+    </p>
+    <pre class="codeblock">
+      <code>
+        (defn eliminate [grid cells value-to-eliminate]
+          ...)
+      </code>
+    </pre>
+    <p>
+      We'll start with a simple helper function to eliminate a value
+      from a single cell:
+    </p>
+    <pre class="codeblock">
+      <code>
+        (defn eliminate-one [grid cell value-to-eliminate]
+          (let [ix         (cell-index cell)
+                cell-value (grid ix)]
+            ...))
+      </code>
+    </pre>
+    <p>
+      Each grid cell contains a set of candidates
+      for that cell. When we've "solved" a cell, we'll store the
+      solution as a single value (an integer). If this integer is the value
+      we're trying to eliminate, we have reached an inconsistent state. We'll
+      indicate this by returning <code>nil</code>. If it is an integer different
+      than the one we're trying to eliminate, we should return the grid
+      unchanged:
+    </p>
+    <pre class="codeblock">
+      <code>
+        (if (number? cell-value)
+          (if (= cell-value value-to-eliminate) nil grid))
+      </code>
+    </pre>
+    <p>
+      When the cell value is a set of candidates, we remove <code>value-to-eliminate</code>
+      from the candidates. If this results in an empty set, we have again reached
+      an inconsistent state and should return <code>nil</code>. Otherwise, we return a grid
+      with the new candidates for the cell:
+    </p>
+    <pre class="codeblock">
+      <code>
+        (let [new-candidates (disj cell-value value-to-eliminate)]
+          (if (empty? new-candidates)
+            nil
+            (assoc grid ix new-candidates)))
+      </code>
+    </pre>
+    <p>
+      Putting this all together, we have:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn eliminate-one [grid cell value-to-eliminate]
+          (let [ix         (cell-index cell)
+                cell-value (grid ix)]
+            (if (number? cell-value)
+              (if (= cell-value value-to-eliminate)
+                 nil
+                 grid)
+              (let [new-candidates (disj cell-value value-to-eliminate)]
+                (if (empty? new-candidates)
+                  nil
+                  (assoc grid ix new-candidates))))))
+      </code>
+    </pre>
+    <p>
+      Recall our original puzzle: <code class="expr">(render-grid grid)</code>. Cell A1 has only one candidate:
+      <code class="expr">(get grid (cell-index "A1"))</code>. What happens if we try to eliminate it?
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (eliminate-one grid "A1" 5)
+      </code>
+    </pre>
+  </div>
+  <div class="page" data-exitexpr='(eliminate grid ["A2" "A3" "A4" "A5" "A6" "A7" "A8" "A9"] 5)'>
+    <p>
+      It worked! When we try to eliminate 5 as a possible value for A1,
+      we get an empty set, and our <code>eliminate-one</code> function
+      returns <code>nil</code> to indicate that we have reached an invalid state.
+    </p>
+    <p>
+      We can now write our <code>eliminate</code> function using <code>eliminate-one</code>
+      and <code>reduce</code>:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn eliminate [grid cells value-to-eliminate]
+          (reduce (fn [accum cell] (eliminate-one accum cell value-to-eliminate))
+                  grid
+                  cells))
+      </code>
+    </pre>
+    <p>
+      We know that cell A1 has the value 5, so we can try eliminating the value 5 from the
+      other cells in row A:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (eliminate grid ["A2" "A3" "A4" "A5" "A6" "A7" "A8" "A9"] 5)
+      </code>
+    </pre>
+  </div>
+  <div class="page" data-exitexpr='(eliminate grid ["A1" "A2" "A3" "A4" "A5" "A6" "A7" "A8" "A9"] 5)'>
+    <p>
+      So far, so good. But what happens if A1 also appears in the list of cells for
+      elimination?
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (eliminate grid ["A1" "A2" "A3" "A4" "A5"] 5)
+      </code>
+    </pre>
+    <p>
+      Hmm. In this case, <code>eliminate-one</code> is returning <code>nil</code> when
+      we try to eliminate 5 as a value for A1, and <code>reduce</code> carries on looping
+      with a <code>nil</code> accumulator. We need a way to short-circuit the reduce
+      when we run into a <code>nil</code> value:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn eliminate [grid cells value-to-eliminate]
+          (reduce (fn [accum cell]
+                    (let [new-accum (eliminate-one accum cell value-to-eliminate)]
+                      (if (nil? new-accum)
+                        (reduced new-accum)
+                        new-accum)))
+                   grid
+                   cells))
+      </code>
+    </pre>
+    <p>
+      Wrapping the <code>nil</code> value of the new accumulator with <code>reduced</code>
+      causes <code>reduce</code> to terminate immediately with that value. Let's see if that
+      has worked:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (eliminate grid ["A1" "A2" "A3" "A4" "A5" "A6" "A7" "A8" "A9"] 5)
+      </code>
+    </pre>
+  </div>
+  <div class="page" data-exitexpr='(assign grid "A2" 5)'>
+    <p>
+      Great! That's <code>eliminate</code> done.
+    </p>
+    <p>
+      The <code>assign</code> function is a bit simpler: when
+      assigning a value to a cell, we have to check that the value is in
+      the candidate list for that cell and, if it is, eliminate it as a candidate
+      from the peers and replace the candidate set with the assigned value.
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn assign [grid cell value]
+          (let [ix (cell-index cell)]
+            (when (contains? (grid ix) value)
+              (when-let [new-grid (eliminate grid (peers cell) value)]
+                (assoc new-grid ix value)))))
+      </code>
+    </pre>
+    <p>
+      We're seeing <code>when</code> for the first time. This is just an <em>if</em>
+      statement without an <em>else</em> clause - if the condidion we're testing is
+      not true, <code>when</code> returns <code>nil</code>, which is just what we
+      want to indicate an inconsistent state.
+    </p>
+    <p>
+      We're also seeing <code>when-let</code> for the first time. You guessed it - this combines
+      <code>when</code> and <code>let</code>! If we enjoy typing, we could have do things
+      the long way:
+    </p>
+    <pre class="codeblock">
+      <code>
+        (if (contains? (grid ix) value)
+           (let [new-grid (eliminate grid (peers cell) value)]
+             (if new-grid
+                (assoc new-grid ix value)
+                nil))
+           nil)
+      </code>
+    </pre>
+    <p>
+      Let's try out the <code>assign</code> function:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (assign grid "A1" 5)
+      </code>
+    </pre>
+    <p>
+      And an illegal assignment:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (assign grid "A2" 5)
+      </code>
+    </pre>
+  </div>
+  <div class="page" data-exitexpr='(solved? grid)'>
+    <p>
+      We can't assign 5 to A2, as that is the only candidate for A1 so
+      would introduce an inconsistency. In this case, our <code>assign</code>
+      function is returning the desired <code>nil</code>.
+    </p>
+    <p>
+      The <code>assign</code> and <code>eliminate</code> functions are the building
+      blocks we need to solve a Sudoku grid. We start by looking for a cell with only
+      one candidate and assigning that value to the cell. Then we recur...
+    </p>
+    <p>
+      Of course, <code>recur</code> needs a termination condition. In
+      this case, we need to stop when the grid is solved, i.e. when the
+      value in every cell is a number (not a set of candidates).
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn solved? [grid]
+          (every? number? grid))
+      </code>
+    </pre>
+    <p>
+      This should return <code>false</code> for our grid:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (solved? grid)
+      </code>
+    </pre>
+  </div>
+  <div class="page" data-exitexpr='(find-singleton grid)'>
+    <p>
+      We also need to find the first singleton in the grid. By <em>singleton</em>, We
+      mean a set with one element:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn singleton? [cell-value]
+          (and (set? cell-value)
+               (= (count cell-value) 1)))
+      </code>
+    </pre>
+    <p>
+      ...and here's how to find the first singleton in the grid:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn find-singleton [grid]
+          (first
+            (for [row "ABCDEFGHI"
+                  col "123456789"
+                 :let [cell (str row col)]
+                 :when (singleton? (grid (cell-index cell)))]
+              cell)))
+      </code>
+    </pre>
+    <p>
+      What is the first singleton in our grid?
+    </p>
+  </div>
+  <div class="page" data-exitexpr='(render-grid (solve grid))'>
+    <p>
+      Now we can make a start on a function for solving Sudoku puzzles!
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn solve [grid]
+          (cond
+            (nil? grid) nil
+            (solved? grid) grid
+            :else (if-let [singleton-cell (find-singleton grid)]
+                    (let [value (first (grid (cell-index singleton-cell)))
+                          next-grid (assign grid singleton-cell value)]
+                       (recur next-grid))
+                    grid)))
+      </code>
+    </pre>
+    <p>
+      This next command may take a few seconds to run...
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (render-grid (solve grid))
+      </code>
+    </pre>
+  </div>
+  <div class="page" data-exitexpr='(render-grid (solve hard-grid))'>
+    <p>
+      Yay, it worked! This simple process of assignment and elimination solved this puzzle.
+      But we're not done yet... Let's define a harder puzzle:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (def hard-grid (parse-puzzle "008601000
+                                      600000003
+                                      000048506
+                                      040000600
+                                      780020091
+                                      001000030
+                                      109870000
+                                      200000007
+                                      000209100"))
+      </code>
+    </pre>
+    <p>
+      Try solving this grid: <code class="expr">(render-grid (solve hard-grid))</code>.
+    </p>
+  </div>
+  <div class="page" data-exitexpr='(find-unsolved hard-grid)'>
+    <p>
+      This time, we didn't manage to solve the grid with our simplistic
+      approach (although we did solve a couple of cells). This is
+      where <em>search</em> comes in. We find the first cell with
+      multiple candidates, and try the first candidate. If this results
+      in an inconsistent grid, we backtrack and try the next value for
+      that cell.
+    </p>
+    <p>
+      This is where Clojure's immutable data structures really show their strength:
+      backtracking comes for free, as trying a value creates a new grid without mutating
+      the original one! Let's take a look at our <code>solve</code> function:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        1 (defn solve [grid]
+        2   (cond
+        3     (nil? grid) nil
+        4     (solved? grid) grid
+        5     :else (if-let [singleton-cell (find-singleton grid)]
+        6             (let [value (first (grid (cell-index singleton-cell)))
+        7                   next-grid (assign grid singleton-cell value)]
+        8                (recur next-grid))
+        9             grid)))
+      </code>
+    </pre>
+    <p>
+      When we can't find a singleton cell in the grid, we hit the <em>else</em> branch
+      on line 9, giving up and returning the unsolved grid. This is where we need
+      to focus our attention. Type <code class="expr">next</code> to continue.
+    </p>
+  </div>
+  <div class="page" data-exitexpr='(find-unsolved hard-grid)'>
+    <p>
+      Let's start by writing a function to find the first unsolved cell. This is similar to
+      <code>find-singleton</code>, but with a different filter predicate:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn find-unsolved [grid]
+          (first
+            (for [row "ABCDEFGHI"
+                  col "123456789"
+                  :let [cell (str row col)
+                        cell-value (grid (cell-index cell))]
+                  :when (and (set? cell-value) (not (singleton? cell-value)))]
+              cell)))
+      </code>
+    </pre>
+    <p>
+      Try it out: <code class="expr">(find-unsolved hard-grid)</code>.
+    </p>
+  </div>
+  <div class="page" data-exitexpr='(render-grid (solve hard-grid))'>
+    <p>
+      We can now add <em>search</em> to our <code>solve</code> function:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (defn solve [grid]
+          (cond
+            (nil? grid) nil
+            (solved? grid) grid
+            :else (if-let [singleton-cell (find-singleton grid)]
+                     (let [value (first (grid (cell-index singleton-cell)))
+                           next-grid (assign grid singleton-cell value)]
+                       (recur next-grid))
+                     (let [cell (find-unsolved grid)
+                           candidates (grid (cell-index cell))]
+                       (first (remove nil?
+                                      (map (fn [candidate]
+                                              (solve (assign grid cell candidate)))
+                                           candidates)))))))
+      </code>
+    </pre>
+    <p>
+      Phew! There's quite a lot going on in there. We use <code>map</code> to try to solve
+      the grid for each candidate in turn. When a candidate results in an inconsistent
+      state, <code>solve</code> will return <code>nil</code>. We remove these nil values
+      and return the first solution.
+    </p>
+    <p>
+      Let's try it (but be patient, it may take a few seconds):
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (render-grid (solve hard-grid))
+      </code>
+    </pre>
   </div>
   <div class="page">
     <p>
-      Glad to know you're eager for more, but unfortunately this tutorial is over.
+      That's all folks!
     </p>
     <p>
-      Maybe you can click the 'links' button below for more resources?
+      We hope you enjoyed this whirlwind tour of Clojure. The Sudoku problem was inspired
+      by <a href="http://norvig.com/sudoku.html" target="_blank">an article by Peter Norvig</a>
+      - check it out if you'd like to see his Python implementation.
     </p>
-  </div>
+    <p>
+      We've only scratched the surface of Clojure. If you're keen to know more,
+      click on the 'links' button above for suggested further reading.
+    </p>
 </div>
