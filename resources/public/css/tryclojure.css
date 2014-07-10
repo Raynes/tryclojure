@@ -135,11 +135,15 @@ table.bottom {
 }
 
 #changer code {
-  background-color: #eee;
+  background-color: #979797;
   border: 1px solid #aaa;
   color: #555;
   font-family: courier, monospace;
   padding: 0.1em 0.25em 0.1em 0.25em;
+}
+
+#changer code.expr{
+  background-color: #eee;
 }
 
 div#tuttext {
