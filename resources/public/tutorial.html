@@ -1117,6 +1117,7 @@
             (assoc grid ix new-candidates)))
       </code>
     </pre>
+    <!-- need to explain disj -->
     <p>
       Putting this all together, we have:
     </p>
@@ -1348,6 +1349,16 @@
                     grid)))
       </code>
     </pre>
+    <p>
+      We're seeing <code>recur</code> again here, but this time
+      there's no opening <code>loop</code>. It turns out that
+      functions also introduce a point we can recur to, and
+      using <code>recur</code> in a function body like this simply
+      calls the function again with new arguments. Here, <code>(recur
+      next-grid</code> is almost the same as <code>(solve next-grid)</code>,
+      but we're giving the Clojure compiler an extra hint that allows it to
+      optimise the recursion to reduce stack consumption.
+    </p>
     <p>
       This next command may take a few seconds to run...
     </p>
