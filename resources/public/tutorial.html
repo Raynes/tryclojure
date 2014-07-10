@@ -651,11 +651,27 @@
       comprehension</a>. This is a very powerful construct, and we'll see
       more of it later.
     </p>
+    <p>
+      Let's use <code>for</code> to calculate all the possible scores for two dice.
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (for [x (range 1 7) y (range 1 7)] (+ x y))
+      </code>
+    </pre>
+    <p>
+      The first argument of <code>for</code> must be a vector with an even number of forms,
+      and the second is a function. The elements of the vector come in pairs: label then
+      sequence of values which will be assigned to the label. Thus in this
+      case the label <code>x</code> will assigned the values 1, then 2 then 3 <emph>etc</emph>.
+      The function in this case is to return the sum of the values.
+    </p>
     <pre class="codeblock">
       <code class="expr">
         (defn row-render-values [grid row]
-          (for [col (range 1 10) :let [cell (str row col)]]
-            (render-cell (get grid (cell-index cell)))))
+          (for [col (range 1 10)]
+            (let [cell (str row col)]
+              (render-cell (get grid (cell-index cell))))))
       </code>
     </pre>
     <p>
@@ -665,7 +681,7 @@
   <div class="page" data-exitexpr='["|" (interpose "|" (partition 3 (range 9))) "|"]'>
     <p>
       Now, we need to partition these values into groups of 3 and
-      interpose pipe symbols. Luckily, Clojure comes with <code>partiiton</code>
+      interpose pipe symbols. Luckily, Clojure comes with <code>partition</code>
       and <code>interpose</code> functions! Try:
     </p>
     <pre class="codeblock">
