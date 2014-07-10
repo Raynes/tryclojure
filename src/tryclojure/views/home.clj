@@ -59,9 +59,9 @@
         [:span.logo-clojure "Clo" [:em "j"] "ure"]]]
       [:div#container
        [:div#console.console]
+       [:div#changer (home-html)]
        [:div#buttons
         [:a#links.buttons "links"]
-        [:a#about.buttons.last "about"]]
-       [:div#changer (home-html)]]
+        [:a#about.buttons.last "about"]]]
       [:div.footer
        [:p.bottom "©2011-2012 Anthony Grimes and numerous contributors. Sudoku tutorial ©2014 Ray Miller."]]]]]))
