@@ -10,7 +10,13 @@ http://tryclj.com
 
 To run it locally, use `lein ring server`.
 
-## Amazon EC2 setup
+## Online
+
+We are running an instance of the tutorial on EC2
+
+http://ec2-54-77-13-3.eu-west-1.compute.amazonaws.com:8801/
+
+## Amazon EC2 setup notes
 
 Installed Ubuntu 14.04 LTS 64-bit AMI, login and:
 
