@@ -60,6 +60,7 @@
       [:div#container
        [:div#console.console]
        [:div#buttons
+        [:a#tutorial.buttons "tutorial"]
         [:a#links.buttons "links"]
         [:a#about.buttons.last "about"]]
        [:div#changer (home-html)]]

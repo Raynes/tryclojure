@@ -1,6 +1,6 @@
 var pages;
 
-var currentPage = -1;
+var currentPage = 0;
 
 function pageExitCondition(pageNumber) {
     if (pageNumber >= 0 && pageNumber < pages.length && pages[pageNumber].exitexpr) {
@@ -37,8 +37,8 @@ function goToTag(tag) {
     return;
 }
 
-function setupLink(url) {
-    return function(e) { $("#changer").load(url, function(data) { $("#changer").html(data); }); }
+function setupLink(url, opts) {
+    return function(e) { $("#changer").load(url, function(data) { $("#changer").html(data);changerUpdated() }); }
 }
 
 function setupExamples(controller) {
@@ -149,6 +149,13 @@ function changerUpdated() {
 
 var controller;
 
+function setCurrentPage(){
+    return function(){
+	$.post("/tutorial?page="+currentPage, function(data){
+	    $("#changer").html(data);
+	})}
+}
+
 $(document).ready(function() {
     $.getJSON("/metadata.json", function (data) { pages = data; } );
 
@@ -164,6 +171,7 @@ $(document).ready(function() {
 
     $("#about").click(setupLink("about"));
     $("#links").click(setupLink("links"));
+    $("#tutorial").click( setCurrentPage() );
     $("#home").click(setupLink("home"));
 
     changerUpdated();
