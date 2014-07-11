@@ -99,7 +99,7 @@ table.bottom {
  padding: .3em 1em;
  margin-right: .7em;
  font-family: Helvetica, sans-serif;
- font-size: 16px;
+ font-size: 14px;
  font-weight: bold;
  background: #90b4fe;
  border-radius: 5px;
@@ -128,14 +128,14 @@ table.bottom {
 
 #changer p {
  background: transparent;
- line-height: 1.3em;
+ line-height: 1.5em;
  font-family: Arial, serif;
- font-size: 16px;
+ font-size: 14px;
  color: #555;
 }
 
 #changer code {
-  background-color: #979797;
+  background-color: #eee;
   border: 1px solid #aaa;
   color: #555;
   font-family: courier, monospace;
@@ -143,7 +143,7 @@ table.bottom {
 }
 
 #changer code.expr{
-  background-color: #eee;
+  background-color: #D8ACDB;
 }
 
 div#tuttext {
@@ -160,8 +160,9 @@ div.footer {
 }
 
 pre.codeblock {
-  background: #f0f0f0;
+  background: #D8ACDB;
   border: 1px solid #aaa;
+  font-size: 14px;
   padding: 10px 0;
 }
 

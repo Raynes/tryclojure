@@ -86,7 +86,9 @@
       "functional" programming languages. Like most functional languages,
       Clojure can define a function without even giving it a name:
     </p>
-    <code class="expr">(fn [x] (* x x))</code>
+    <pre class="codeblock">
+      <code class="expr">(fn [x] (* x x))</code>
+    </pre>
     <p>
       If you run this code, you'll see some cryptic output.
       In Clojure, functions are just normal values like numbers or strings.
@@ -705,7 +707,7 @@
               :when (even? sum)]
           sum)
       </code>
-    </pre>        
+    </pre>
     <p>
       We want to look up in our grid all the values for a given row.
       We can use <code>for</code> to construct the cell names; for
