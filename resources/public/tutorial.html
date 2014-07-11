@@ -644,7 +644,7 @@
       Type <code class="expr">true</code> to continue.
     </p>
   </div>
-  <div class="page" data-exitexpr='(row-render-values grid "D")'>
+  <div class="page">
     <p>
       Let's write a function to pull out the rendered values for a
       given row. You'll see we're using the function <code>for</code> below. This
@@ -663,18 +663,64 @@
       </code>
     </pre>
     <p>
-      The first argument of <code>for</code> must be a vector with an even number of forms,
-      and the second is a function. The elements of the vector come in pairs: label then
-      sequence of values which will be assigned to the label. Thus in this
-      case the label <code>x</code> will assigned the values 1, then 2 then 3 <emph>etc</emph>.
-      The function in this case is to return the sum of the values.
+      The first argument of <code>for</code> must be a vector with an
+      even number of forms, and the second is an expression - it can
+      be a constant or a function referencing the variables introduced
+      by <code>for</code>. The elements of the vector come in pairs:
+      label then sequence of values which will be assigned to the
+      label. Thus in this case the label <code>x</code> will assigned
+      the values 1, then 2 then 3 <emph>etc</emph>. The function in
+      this case is to return the sum of the values.
+    </p>
+    <p>
+      Type <code class="expr">next</code> to continue.
+    </p>
+  </div>
+  <div class="page" data-exitexpr='(row-render-values grid "D")'>
+    <p>
+      The <code>for</code> function also accepts a couple of modifiers
+      introduced by the keywords <code>:let</code>
+      and <code>:when</code>. We can use <code>:let</code> to introduce
+      a local variable:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (for [x (range 1 7) y (range 1 7) :let [sum (+ x y)]]
+          sum)
+      </code>
+    </pre>
+    <p>
+      The <code>:when</code> modifier introduces a filter; if we only
+      want the dice scores when the sum is even, we can write:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (for [x (range 1 7) y (range 1 7)
+              :let [sum (+ x y)]
+              :when (even? sum)]
+          sum)
+      </code>
+    </pre>        
+    <p>
+      We want to look up in our grid all the values for a given row.
+      We can use <code>for</code> to construct the cell names; for
+      example, to get the indices of all the cells in row D:
+    </p>
+    <pre class="codeblock">
+      <code class="expr">
+        (for [col (range 1 10) :let [ix (cell-index (str "D" col))]]
+          ix)
+      </code>
+    </pre>
+    <p>
+      This leads us to the following function, which takes the row we
+      are interested in as its second argument:
     </p>
     <pre class="codeblock">
       <code class="expr">
         (defn row-render-values [grid row]
-          (for [col (range 1 10)]
-            (let [cell (str row col)]
-              (render-cell (get grid (cell-index cell))))))
+          (for [col (range 1 10) :let [ix (cell-index (str row col))]]
+            (render-cell (get grid ix))))
       </code>
     </pre>
     <p>
