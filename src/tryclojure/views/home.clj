@@ -61,6 +61,7 @@
        [:div#console.console]
        [:div#changer (home-html)]
        [:div#buttons
+        [:a#tutorial.buttons "tutorial"]
         [:a#links.buttons "links"]
         [:a#about.buttons.last "about"]]]
       [:div.footer
