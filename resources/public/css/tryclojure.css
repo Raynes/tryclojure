@@ -134,6 +134,14 @@ table.bottom {
  color: #555;
 }
 
+#changer ul {
+ background: transparent;
+ line-height: 1.5em;
+ font-family: Arial, serif;
+ font-size: 14px;
+ color: #555;
+}    
+
 #changer code {
   background-color: #eee;
   border: 1px solid #aaa;
