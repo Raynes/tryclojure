@@ -21,10 +21,9 @@
 
 (defn make-sandbox []
   (sandbox try-clojure-tester
-           :timeout 2000
-           :init '(do (require '[clojure.repl :refer [doc source]])
-                      (future (Thread/sleep 600000)
-                              (-> *ns* .getName remove-ns)))))
+           :max-defs 200
+           :timeout 1000000
+           :init '(do (require '[clojure.repl :refer [doc source]]))))
 
 (defn find-sb [old]
   (if-let [sb (get old "sb")]

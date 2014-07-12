@@ -1,75 +1,44 @@
-var currentPage = -1;
-var pages = [
-			"page1",
-			"page2",
-			"page3",
-			"page4",
-			"page5",
-			"page6",
-			"page7",
-			"page8",
-			"page9",
-			"page10",
-			"page11",
-			"end"
-		];
-var pageExitConditions = [
-    {
-        verify: function(data) { return false; }
-    },
-    {
-        verify: function(data) { return data.expr == "(+ 3 3)"; }
-    },
-    {
-        verify: function(data) { return data.expr == "(/ 10 3)"; }
-    },
-    {
-        verify: function(data) { return data.expr == "(/ 10 3.0)"; }
-    },
-    {
-        verify: function(data) { return data.expr == "(+ 1 2 3 4 5 6)"; }
-    },
-    {
-        verify: function (data) { return data.expr == "(defn square [x] (* x x))"; }
-    },
-    {
-        verify: function (data) { return data.expr == "(square 10)"; }
-    },
-    {
-        verify: function (data) { return data.expr == "((fn [x] (* x x)) 10)"; }
-    },
-    {
-        verify: function (data) { return data.expr == "(def square (fn [x] (* x x)))"; }
-    },
-    {
-        verify: function (data) { return data.expr == "(map inc [1 2 3 4])"; }
-    },
-    {
-        verify: function (data) { return false; }
-    },
-    {
-        verify: function (data) { return false; }
+var pages;
+
+var currentPage = 0;
+
+function pageExitCondition(pageNumber) {
+    if (pageNumber >= 0 && pageNumber < pages.length && pages[pageNumber].exitexpr) {
+        return function(data) { return data.expr == pages[pageNumber].exitexpr; }
     }
-];
+    else {
+        return function(data) { return false; }
 
-function goToPage(pageNumber) {
-	if (pageNumber == currentPage || pageNumber < 0 || pageNumber >= pages.length) {
-			return;
-	}
-
-	currentPage = pageNumber;
-
-	var block = $("#changer");
-  	block.fadeOut(function(e) {
-    	block.load("/tutorial", { 'page' : pages[pageNumber] }, function() {
-      block.fadeIn();
-      changerUpdated();
-		});
-	});
+    }
 }
 
-function setupLink(url) {
-    return function(e) { $("#changer").load(url, function(data) { $("#changer").html(data); }); }
+function goToPage(pageNumber) {
+    if (pageNumber == currentPage || pageNumber < 0 || pageNumber >= pages.length) {
+	return;
+    }
+
+    currentPage = pageNumber;
+
+    var block = $("#changer");
+    block.fadeOut(function(e) {
+    	block.load("/tutorial", { 'page' : pageNumber }, function() {
+            block.fadeIn();
+            changerUpdated();
+	});
+    });
+}
+
+function goToTag(tag) {
+    for (i=0; i < pages.length; i++) {
+        if (pages[i].tag && pages[i].tag == tag) {
+            return goToPage(i);
+        }
+    }
+    return;
+}
+
+function setupLink(url, opts) {
+    return function(e) { $("#changer").load(url, function(data) { $("#changer").html(data);changerUpdated() }); }
 }
 
 function setupExamples(controller) {
@@ -102,26 +71,31 @@ function html_escape(val) {
 }
 
 function doCommand(input) {
-		if (input.match(/^gopage /)) {
-				goToPage(parseInt(input.substring("gopage ".length)));
-				return true;
-		}
+    if (input.match(/^gopage /)) {
+	goToPage(parseInt(input.substring("gopage ".length)));
+	return true;
+    }
 
-		switch (input) {
-	  case 'next':
-	  case 'forward':
-    		goToPage(currentPage + 1);
-				return true;
-		case 'previous':
-		case 'prev':
-		case 'back':
-    		goToPage(currentPage - 1);
-				return true;
+    if (input.match(/^gotag /)) {
+        goToTag(input.substring("gotag ".length));
+        return true;
+    }
+
+    switch (input) {
+    case 'next':
+    case 'forward':
+    	goToPage(currentPage + 1);
+	return true;
+    case 'previous':
+    case 'prev':
+    case 'back':
+    	goToPage(currentPage - 1);
+	return true;
     case 'restart':
     case 'reset':
     case 'home':
     case 'quit':
-    		goToPage(0);
+    	goToPage(0);
       	return true;
     default:
         return false;
@@ -137,9 +111,9 @@ function onHandle(line, report) {
 
     // handle commands
     if (doCommand(input)) {
-			report();
-			return;
-		}
+	report();
+	return;
+    }
 
     // perform evaluation
     var data = eval_clojure(input);
@@ -150,8 +124,8 @@ function onHandle(line, report) {
     }
 
     // handle page
-    if (currentPage >= 0 && pageExitConditions[currentPage].verify(data)) {
-  			goToPage(currentPage + 1);
+    if (currentPage >= 0 && pageExitCondition(currentPage)(data)) {
+  	goToPage(currentPage + 1);
     }
 
     // display expr results
@@ -175,7 +149,16 @@ function changerUpdated() {
 
 var controller;
 
+function setCurrentPage(){
+    return function(){
+	$.post("/tutorial?page="+currentPage, function(data){
+	    $("#changer").html(data);
+	})}
+}
+
 $(document).ready(function() {
+    $.getJSON("/metadata.json", function (data) { pages = data; } );
+
     controller = $("#console").console({
         welcomeMessage:'Give me some Clojure:',
         promptLabel: '> ',
@@ -188,6 +171,7 @@ $(document).ready(function() {
 
     $("#about").click(setupLink("about"));
     $("#links").click(setupLink("links"));
+    $("#tutorial").click( setCurrentPage() );
     $("#home").click(setupLink("home"));
 
     changerUpdated();

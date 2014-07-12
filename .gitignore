@@ -4,3 +4,6 @@ lib
 classes
 *~
 .lein-deps-sum
+target/
+.nrepl-port
+logs/
