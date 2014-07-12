@@ -288,6 +288,72 @@
       Type <code class="expr">next</code> to continue.
     </p>
   </div>
+  <div class="page">
+    <p>
+      We just saw <code>conj</code> for adding an element to the end
+      of a vector. We can also use <code>conj</code> to add elements
+      to a set:
+    </p>
+    <pre class="codeblock expr">
+      <code class="expr">
+        (def s #{1 2 3})
+      </code>
+    </pre>
+    <pre class="codeblock expr">
+      <code class="expr">
+        (conj s 4)
+      </code>
+    </pre>
+    <p>
+      We use <code>disj</code> to remove an element from a set:
+    </p>
+    <pre class="codeblock expr">
+      <code class="expr">
+        (disj s 3)
+      </code>
+    </pre>
+    <p>
+      Remember that these Clojure datastructures are
+      immutable; <code>conj</code> and <code>disj</code> return
+      new sets, our original <code class="expr">s</code> is
+      unchanged.
+    </p>
+  </div>
+  <div class="page" data-exitexpr='(assoc (dissoc m :tea) :cappuccino 1.90 :latte 1.80)'>
+    <p>
+      Maps (also known as <em>associative arrays</em> have their own
+      functions for adding and removing items:
+      <code>assoc</code> and <code>dissoc</code> (which you can think
+      of assoc<em>iate</em> and dissoc<em>iate</em>).
+    </p>
+    <pre class="codeblock expr">
+      <code class="expr">
+        (assoc m :latte 1.80)
+      </code>
+    </pre>
+    <pre class="codeblock expr">
+      <code class="expr">
+        (dissoc m :coffee 1.80)
+      </code>
+    </pre>
+    <p>
+      We can <code>assoc</code> multiple key/value pairs in one go:
+    </p>
+    <pre class="codeblock expr">
+      <code class="expr">
+        (assoc m :cappuccino 1.90 :latte 1.80)
+      </code>
+    </pre>
+    <p>
+      If we want to <code>assoc</code> and <code>dissoc</code> in one
+      go, we can nest the forms:
+    </p>
+    <pre class="codeblock expr">
+      <code class="expr">
+        (assoc (dissoc m :tea) :cappuccino 1.90 :latte 1.80)
+      </code>
+    </pre>
+  </div>
   <div class="page" data-tag="sudoku" data-exitexpr="(range 10)">
     <p>
       Let's put some of the things we have learned to work. We're
