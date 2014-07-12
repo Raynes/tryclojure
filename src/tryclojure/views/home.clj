@@ -33,21 +33,21 @@
 
 (defn home-html []
   (html
-    [:p.bottom
-      "Welcome to Clojure! "
-	  "We are "
-	  [:ul
-	    [:li "Ray Miller @ray1729"]
-	    [:li "Jim Downing @jimdowning"]
-		[:li "Gareth Rogers"] ]
-	  "Please grab any of us if you have questions through this session or afterwards."]
-	[:p.bottom
-	  "If you want to learn more clojure after today, consider joining us at the monthly Cambridge Clojure meetup: bit.ly/camclj"]
-	[:p.bottom
-	  "To get started, go to bit.ly/tryclj"]
-	[:p.bottom
-      "You can see a Clojure interpreter above - we call it a <em>REPL</em>."]
-    [:p.bottom "Type <code class=\"expr\">next</code> in the REPL to begin." ]))
+   [:p.bottom "Welcome to Clojure! We are:"]
+   [:ul
+    [:li "Ray Miller @ray1729"]
+    [:li "Jim Downing @jimdowning"]
+    [:li "Gareth Rogers"]]
+   [:p.bottom
+    "Please grab any of us if you have questions through this session or afterwards."]
+   [:p.bottom
+    "If you want to learn more clojure after today, consider joining us at the m
+onthly Cambridge Clojure meetup: <a href=\"http://bit.ly/camclj\">bit.ly/camclj</a>"]
+   [:p.bottom
+    "To get started, go to <a href=\"http://bit.ly/tryclj\">bit.ly/tryclj</a>"]
+   [:p.bottom
+    "You can see a Clojure interpreter above - we call it a <em>REPL</em>."
+    "Type <code class=\"expr\">next</code> in the REPL to begin." ]))
 
 (defn root-html []
   (html5
