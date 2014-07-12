@@ -288,7 +288,7 @@
       Type <code class="expr">next</code> to continue.
     </p>
   </div>
-  <div class="page" data-tag="sudoku" data-exitexpr="(range 10)">
+  <div class="page" data-tag="sudoku" data-exitexpr="next">
     <p>
       Let's put some of the things we have learned to work. We're
       going to write a function to solve Sudoku puzzles. (If
@@ -296,6 +296,18 @@
       <a href="http://en.wikipedia.org/wiki/Sudoku" target="_blank">
         read about it</a> before coming back here.)
     </p>
+	<p>We're going to tackle this is 3 stages: </p>
+	<ol>
+	  <li>Create a data structure to represent the sudoku puzzle and learn how to retrieve values from it</li>
+	  <li>Pretty print the puzzle structure so we can see what's going on</li>
+	  <li>Solve the puzzle</li>
+	</ol>
+	<p>You'll learn a lot of Clojure along the way to solving the puzzle, so enjoy the journey!</p>
+    <p>
+      Type <code class="expr">next</code> to continue.
+    </p>
+  </div>
+  <div class="page" data-exitexpr="(range 10)">
     <p>
       Each cell in the Sudoku grid can contain any of the digits 1-9.
       We can use the <code>range</code> function to generate a list of
@@ -732,6 +744,11 @@
     </pre>
   </div>
   <div class="page" data-exitexpr="true">
+	<ol>
+	  <li>Create a data structure to represent the sudoku puzzle and learn how to retrieve values from it</li>
+	  <li><b>Pretty print the puzzle structure so we can see what's going on</b></li>
+	  <li>Solve the puzzle</li>
+	</ol>
     <p>
       Before we go on to solve the puzzle, let's write a function to
       pretty-print our grid. We'd like the output to look like this:
@@ -1016,16 +1033,34 @@
     <p>
       To continue, enter <code class="expr">(render-grid grid)</code>.
     </p>
-  </div>
+	</div>
   <!-- Add content: encapsulate helpers with letfn closure -->
-  <div class="page" data-exitexpr='(col-peers "D5")'>
+  <div class="page" data-exitexpr='next'>	
+      <ol>
+	  <li>Create a data structure to represent the sudoku puzzle and learn how to retrieve values from it</li>
+	  <li>Pretty print the puzzle structure so we can see what's going on</li>
+	  <li><b>Solve the puzzle</b></li>
+	</ol>
     <p>
       We're going to solve the puzzle using a combination
-      of <em>assignment</em>, <em>elimination</em> and <em>search</em>
-      (more on this later). When we <em>assign</em> the value 6 to the
+      of <em>assignment</em>, <em>elimination</em> and <em>search</em>. 
+	  We start by finding trivially <em>assignable</em> cells, those that 
+	  only have a single member in the set of candidate values. We'll then 
+	  <em>eliminate</em> that value from the candidates of the row, column 
+	  and square of the assigned cell. Repeatedly assigning and eliminating 
+	  will be sufficient for some puzzles. For more complex ones, we'll 
+	  <em>search</em> by guessing through all the assignable values of the 
+	  cells until we've either reached an impossible situation or solved the 
+	  puzzle. 
+	</p>  
+	<p>Type <code class="expr">next</code> to make a start, by implementing the 
+	<em>elimination</em> code.</p>
+	</div>
+	<div class="page" data-exitexpr='(col-peers "D5")'>	
+	<p>When we <em>assign</em> the value 6 to the
       cell B1, no other cells in the same row, column or 3x3 square
       can have the value 6 - so we <em>eliminate</em> it from the
-      corresponding candidate lists.
+      corresponding candidate lists. 
     </p>
     <p>
       We call the cells we have to eliminate when assigning a value to
