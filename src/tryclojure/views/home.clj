@@ -41,8 +41,8 @@
    [:p.bottom
     "Please grab any of us if you have questions through this session or afterwards."]
    [:p.bottom
-    "If you want to learn more clojure after today, consider joining us at the m
-onthly Cambridge Clojure meetup: <a href=\"http://bit.ly/camclj\">bit.ly/camclj</a>"]
+    "If you want to learn more clojure after today, consider joining us at the
+     monthly Cambridge Clojure meetup: <a href=\"http://bit.ly/camclj\">bit.ly/camclj</a>"]
    [:p.bottom
     "To get started, go to <a href=\"http://bit.ly/tryclj\">bit.ly/tryclj</a>"]
    [:p.bottom

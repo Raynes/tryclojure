@@ -201,7 +201,7 @@
       our map: <code class="expr">(get m :tea)</code>.
     </p>
     <p>
-      Maps also act as functions - give a key as an argument, they
+      Maps also act as functions - given a key as an argument, they
       return the value for that key in the map:
       <code class="expr">(m :tea)</code>.
     </p>
@@ -1362,7 +1362,7 @@
       the <code>eliminate</code> function. This function should take a grid, list of cells, and value to eliminate,
       and return a new grid with this value eliminated from the specified cells:
     </p>
-    <pre class="codeblock expr">
+    <pre class="codeblock">
       <code>
         (defn eliminate [grid cells value-to-eliminate]
           ...)
@@ -1372,7 +1372,7 @@
       We'll start with a simple helper function to eliminate a value
       from a single cell:
     </p>
-    <pre class="codeblock expr">
+    <pre class="codeblock">
       <code>
         (defn eliminate-one [grid cell value-to-eliminate]
           (let [ix         (cell-index cell)
@@ -1389,7 +1389,7 @@
       than the one we're trying to eliminate, we should return the grid
       unchanged:
     </p>
-    <pre class="codeblock expr">
+    <pre class="codeblock">
       <code>
         (if (number? cell-value)
           (if (= cell-value value-to-eliminate) nil grid))
@@ -1401,7 +1401,7 @@
       an inconsistent state and should return <code>nil</code>. Otherwise, we return a grid
       with the new candidates for the cell:
     </p>
-    <pre class="codeblock expr">
+    <pre class="codeblock">
       <code>
         (let [new-candidates (disj cell-value value-to-eliminate)]
           (if (empty? new-candidates)
@@ -1409,7 +1409,6 @@
             (assoc grid ix new-candidates)))
       </code>
     </pre>
-    <!-- need to explain disj -->
     <p>
       Putting this all together, we have:
     </p>
@@ -1536,7 +1535,7 @@
       <code>when</code> and <code>let</code>! If we enjoy typing, we could have do things
       the long way:
     </p>
-    <pre class="codeblock expr">
+    <pre class="codeblock">
       <code>
         (if (contains? (grid ix) value)
            (let [new-grid (eliminate grid (peers cell) value)]
@@ -1699,7 +1698,7 @@
       the original one! Let's take a look at our <code>solve</code>
       function so far:
     </p>
-    <pre class="codeblock expr">
+    <pre class="codeblock">
       <code class="expr">
         1 (defn solve [grid]
         2   (cond
@@ -1787,6 +1786,6 @@
     </p>
     <p>
       We've only scratched the surface of Clojure. If you're keen to know more,
-      click on the 'links' button above for suggested further reading.
+      click on the 'links' button below for suggested further reading.
     </p>
 </div>
