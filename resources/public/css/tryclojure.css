@@ -160,10 +160,14 @@ div.footer {
 }
 
 pre.codeblock {
-  background: #D8ACDB;
+  background: #eee;
   border: 1px solid #aaa;
   font-size: 14px;
   padding: 10px 0;
+}
+
+pre.codeblock.expr {
+    background: #D8ACDB;
 }
 
 #changer pre.codeblock code{

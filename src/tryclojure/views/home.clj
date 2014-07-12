@@ -36,7 +36,7 @@
     [:p.bottom
       "Welcome to Clojure! "
       "You can see a Clojure interpreter above - we call it a <em>REPL</em>."]
-    [:p.bottom "Type <code>next</code> in the REPL to begin." ]))
+    [:p.bottom "Type <code class=\"expr\">next</code> in the REPL to begin." ]))
 
 (defn root-html []
   (html5
