@@ -1,32 +1,27 @@
 body {
- background: #fff;
+ background: #F7F7F7;
  text-align: center;
+ font-family: Helvetica, sans-serif;
+ color: #6C7B89;
 }
 
 #wrapper {
  text-align: left;
  width: 620px;
  margin: 0 auto;
- border-radius: 5px;
- border: 5px solid #eee;
 }
 
 #header {
- background: #fff;
- margin-top: 24px;
- margin: 10px;
+ margin: 20px 0px 20px 190px;
 }
 
 #header h1 {
  height: 72px;
  line-height: 72px;
  background: url(../clojure-logo.png) no-repeat;
- margin: 0;
- padding: 0;
- padding-left: 75px;
- font-family: Arial, sans-serif;
+ padding: 0px 0px 0px 80px;
  font-weight: normal;
- font-size: 48px;
+ font-size: 36px;
 }
 
 #header h1 span.logo-try {
@@ -35,105 +30,105 @@ body {
 }
 
 #header h1 span.logo-clojure {
- color: #5881d8;
+ color: #2B4A8B;
  display:inline
+}
+
+#container {
+ margin-bottom: 40px;
 }
 
 #console {
  height: 220px;
- background: #eee;
- margin: 10px;
- border-radius: 5px;
- -moz-border-radius: 5px;
- border: 1px solid #aaa;
+ padding: 10px;
+ background: #FFFFFF;
+ font-family: monospace;
+ font-size: 14px;
+ color: #6C7B89;
+ margin-bottom: 10px;
 }
 
-#console div.jquery-console-inner { 
+#console div.jquery-console-inner {
  width:580px;
- height:200px; 
+ height:200px;
  margin: 10px 10px;
- overflow:auto; 
+ overflow:auto;
  text-align:left;
 }
 #console div.jquery-console-message-value {
-  color:#0066FF; 
-  font-family:monospace;
-  padding:0.1em; 
+  color:#63b132;
 }
 #console div.jquery-console-prompt-box {
- color:#444; font-family:monospace; 
+ color: #6C7B89;
 }
 #console div.jquery-console-focus span.jquery-console-cursor {
- background:#333; color:#eee; font-weight:bold;
+ background:#6C7B89;
+ color: #FFFFFF;
 }
 #console div.jquery-console-message-error {
- color:#ef0505; font-family:sans-serif; font-weight:bold;
- padding:0.1em; 
+ color:#FD713B;
 }
 #console div.jquery-console-message-success {
- color:#187718; font-family:monospace;
- padding:0.1em; 
+ color:#63b132;
 }
-#console span.jquery-console-prompt-label { 
+#console span.jquery-console-prompt-label {
  font-weight:bold;
 }
 
-.bottom { 
- background-color: white; color: #333; 
+/**.bottom {
+ background-color: white; color: #333;
 }
-.bottom a,a:visited { 
- color: #111; 
+.bottom a,a:visited {
+ color: #111;
 }
-table.bottom { 
+table.bottom {
  width: 100%; border: 1px solid black;
-}
+}**/
 
 #buttons {
  background: transparent;
  text-align: center;
- margin-top: 10px;
+ margin-bottom: 10px;
 }
-#buttons a { 
-/* color: #4881d8;*/
- color: #3D5B99;
- padding: .3em 1em;
- margin-right: .7em;
+
+#buttons a {
+ display: inline-block;
+ color: #2B4A8B;
+ padding: 2px 2px;
+ border-bottom: 2px solid #2B4A8B;
+ text-transform: uppercase;
+ margin: 10px;
  font-family: Helvetica, sans-serif;
- font-size: 16px; 
- font-weight: bold;
- background: #90b4fe;
- border-radius: 5px;
- -moz-border-radius: 5px;
+ font-size: 16px;
+ transition: all 100ms;
 }
 #buttons a.last {
  margin-right: 0;
 }
 #buttons a:hover {
- color: #5881d8;
- cursor: pointer; 
+ cursor: pointer;
 }
 
-#changer { 
- margin: 10px;
- padding: 0.25em 0.5em 0.25em 0.5em;
- background: #EAF2F5;
- border-radius: 5px;
- -moz-border-radius: 5px;
- border: 1px solid #BEDCE7;
-}
-
-#changer h3 {
-  color: #555;
-}
-
-#changer p {
- background: transparent;
+#changer {
  line-height: 1.3em;
- font-family: Arial, serif;
- font-size: 16px;
- color: #555;
+ padding: 20px;
+ background: #D6DADD;
+ margin-bottom: 10px;
 }
-
+/*
+#changer h3 {
+  color: red;
+}
+*/
+#changer p {
+ margin: 0.6em;
+}
+#changer a {
+ color: #2B4A8B;
+}
+#changer a:visited {
+ color: #60749E;
+}
 #changer code {
   background-color: #eee;
   border: 1px solid #aaa;
@@ -141,24 +136,31 @@ table.bottom {
   font-family: courier, monospace;
   padding: 0.1em 0.25em 0.1em 0.25em;
 }
-
-div#tuttext {
+#changer ul {
+ margin: 0px;
+ padding: 0px;
+ list-style: none;
 }
 
-div.continue {
+#tuttext {
+}
+
+.continue {
  width: 100%;
  text-align: center;
- padding-top: 0.5em; 
+ padding-top: 0.5em;
 }
 
-div.footer { 
- text-align: center; 
+.footer {
+ text-align: center;
 }
 
 /* Coderay alpha style */
+code {
+ display: inline-block;
+}
+
 .code {
- border-radius: 2px;
- -moz-border-radius: 1px;
  color: #000;
 }
 .code pre { margin: 0px; }
@@ -204,7 +206,7 @@ table.code td { padding: 2px 4px; vertical-align: top; }
 
 /* operator */
 #changer .code span.cl {
- 
+
 }
 
 /* number */
