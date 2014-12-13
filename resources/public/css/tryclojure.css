@@ -1,134 +1,131 @@
 body {
- background: #F7F7F7;
- text-align: center;
- font-family: Helvetica, sans-serif;
- color: #6C7B89;
+  background: #F7F7F7;
+  text-align: center;
+  font-family: Helvetica, sans-serif;
+  color: #6C7B89;
 }
 
 #wrapper {
- text-align: left;
- width: 620px;
- margin: 0 auto;
+  text-align: left;
+  width: 620px;
+  margin: 0 auto;
 }
 
 #header {
- margin: 20px 0px 20px 190px;
+  margin: 20px 0px 20px 190px;
 }
 
 #header h1 {
- height: 72px;
- line-height: 72px;
- background: url(../clojure-logo.png) no-repeat;
- padding: 0px 0px 0px 80px;
- font-weight: normal;
- font-size: 36px;
+  height: 72px;
+  line-height: 72px;
+  background: url(../clojure-logo.png) no-repeat;
+  padding: 0px 0px 0px 80px;
+  font-weight: normal;
+  font-size: 36px;
 }
 
 #header h1 span.logo-try {
- color: #63b132;
- display:inline;
+  color: #63b132;
+  display:inline;
 }
 
 #header h1 span.logo-clojure {
- color: #2B4A8B;
- display:inline
+  color: #2B4A8B;
+  display:inline
 }
 
 #container {
- margin-bottom: 40px;
+  margin-bottom: 40px;
 }
 
 #console {
- height: 220px;
- padding: 10px;
- background: #FFFFFF;
- font-family: monospace;
- font-size: 14px;
- color: #6C7B89;
- margin-bottom: 10px;
+  height: 220px;
+  padding: 10px;
+  background: #FFFFFF;
+  font-family: monospace;
+  font-size: 14px;
+  color: #6C7B89;
+  margin-bottom: 10px;
 }
 
 #console div.jquery-console-inner {
- width:580px;
- height:200px;
- margin: 10px 10px;
- overflow:auto;
- text-align:left;
+  width:580px;
+  height:200px;
+  margin: 10px 10px;
+  overflow:auto;
+  text-align:left;
 }
+
 #console div.jquery-console-message-value {
   color:#63b132;
 }
+
 #console div.jquery-console-prompt-box {
- color: #6C7B89;
-}
-#console div.jquery-console-focus span.jquery-console-cursor {
- background:#6C7B89;
- color: #FFFFFF;
-}
-#console div.jquery-console-message-error {
- color:#FD713B;
-}
-#console div.jquery-console-message-success {
- color:#63b132;
-}
-#console span.jquery-console-prompt-label {
- font-weight:bold;
+  color: #6C7B89;
 }
 
-/**.bottom {
- background-color: white; color: #333;
+#console div.jquery-console-focus span.jquery-console-cursor {
+  background:#6C7B89;
+  color: #FFFFFF;
 }
-.bottom a,a:visited {
- color: #111;
+
+#console div.jquery-console-message-error {
+  color:#FD713B;
 }
-table.bottom {
- width: 100%; border: 1px solid black;
-}**/
+
+#console div.jquery-console-message-success {
+  color:#63b132;
+}
+
+#console span.jquery-console-prompt-label {
+  font-weight:bold;
+}
 
 #buttons {
- background: transparent;
- text-align: center;
- margin-bottom: 10px;
+  background: transparent;
+  text-align: center;
+  margin-bottom: 10px;
 }
 
 #buttons a {
- display: inline-block;
- color: #2B4A8B;
- padding: 2px 2px;
- border-bottom: 2px solid #2B4A8B;
- text-transform: uppercase;
- margin: 10px;
- font-family: Helvetica, sans-serif;
- font-size: 16px;
- transition: all 100ms;
+  display: inline-block;
+  color: #2B4A8B;
+  padding: 2px 2px;
+  border-bottom: 2px solid #2B4A8B;
+  text-transform: uppercase;
+  margin: 10px;
+  font-family: Helvetica, sans-serif;
+  font-size: 16px;
+  transition: all 100ms;
 }
+
 #buttons a.last {
- margin-right: 0;
+  margin-right: 0;
 }
+
 #buttons a:hover {
- cursor: pointer;
+  cursor: pointer;
 }
 
 #changer {
- line-height: 1.3em;
- padding: 20px;
- background: #D6DADD;
- margin-bottom: 10px;
+  line-height: 1.3em;
+  padding: 20px;
+  background: #D6DADD;
+  margin-bottom: 10px;
 }
-/*
-#changer h3 {
-  color: red;
-}
-*/
+
 #changer p {
- margin: 0.6em;
+    margin: 0.6em;
 }
+
 #changer a {
- color: #2B4A8B;
+  color: #2B4A8B;
 }
+
 #changer a:visited {
- color: #60749E;
+  color: #60749E;
 }
+
 #changer code {
   background-color: #eee;
   border: 1px solid #aaa;
@@ -136,33 +133,35 @@ table.bottom {
   font-family: courier, monospace;
   padding: 0.1em 0.25em 0.1em 0.25em;
 }
+
 #changer ul {
- margin: 0px;
- padding: 0px;
- list-style: none;
+  margin: 0px;
+  padding: 0px;
+  list-style: none;
 }
 
 #tuttext {
 }
 
 .continue {
- width: 100%;
- text-align: center;
- padding-top: 0.5em;
+  width: 100%;
+  text-align: center;
+  padding-top: 0.5em;
 }
 
 .footer {
- text-align: center;
+  text-align: center;
 }
 
 /* Coderay alpha style */
 code {
- display: inline-block;
+  display: inline-block;
 }
 
 .code {
- color: #000;
+  color: #000;
 }
+
 .code pre { margin: 0px; }
 
 span.code { white-space: pre; border: 0px; padding: 2px; }
@@ -179,29 +178,29 @@ table.code td { padding: 2px 4px; vertical-align: top; }
 
 /* keywords */
 #changer .code span.r {
- color: #0000ff;
- font-weight: bold;
+  color: #0000ff;
+  font-weight: bold;
 }
 
 /* symbols */
 #changer .code span.sy {
- color: #318495;
+  color: #318495;
 }
 
 /* strings */
 #changer .code span.s {
- color: #008800;
+  color: #008800;
 }
 
 /* paren */
 #changer .code span.of {
- color: #222;
- font-weight: bold;
+  color: #222;
+  font-weight: bold;
 }
 
 /* comment */
 #changer .code span.c {
- color: #ccc;
+  color: #ccc;
 }
 
 /* operator */
@@ -211,5 +210,5 @@ table.code td { padding: 2px 4px; vertical-align: top; }
 
 /* number */
 #changer .code span.i {
- color: #ff0000;
+  color: #ff0000;
 }
