@@ -48,6 +48,11 @@ body {
   margin-bottom: 10px;
 }
 
+#console textarea {
+  /* Use a largish font to ensure iOS doesn't zoom in on focus */
+  font-size: 2em;
+}
+
 #console div.jquery-console-inner {
   width:580px;
   height:200px;
@@ -211,4 +216,18 @@ table.code td { padding: 2px 4px; vertical-align: top; }
 /* number */
 #changer .code span.i {
   color: #ff0000;
+}
+
+@media (max-width: 619px) {
+
+  #wrapper {
+    width: 100%;
+  }
+  #header {
+    margin: 20px auto;
+  }
+  #console div.jquery-console-inner {
+    width: auto;
+  }
+
 }
