@@ -72,3 +72,11 @@
   -o-transform: rotate(45deg);
   transform: rotate(45deg);
 }
+
+@media (max-width: 619px) {
+
+  .github-fork-ribbon {
+    zoom: 0.6;
+  }
+
+}

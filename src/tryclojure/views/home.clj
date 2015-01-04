@@ -30,7 +30,7 @@
      " The design is by " (link-to "http://apgwoz.com" "Andrew Gwozdziewycz") "."]))
 
 (defn home-html []
-  (html 
+  (html
     [:p.bottom
       "Welcome to Clojure! "
       "You can see a Clojure interpreter above - we call it a <em>REPL</em>."]
@@ -39,6 +39,7 @@
 (defn root-html []
   (html5
    [:head
+    [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
     (include-css "/css/tryclojure.css"
                  "/css/gh-fork-ribbon.css")
     (include-js "http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"
