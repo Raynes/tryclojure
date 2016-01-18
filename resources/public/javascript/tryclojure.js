@@ -60,9 +60,9 @@ function goToPage(pageNumber) {
 	currentPage = pageNumber;
 
 	var block = $("#changer");
-  	block.fadeOut(function(e) {
+  	block.fadeTo("fast", 0, function(e) {
     	block.load("/tutorial", { 'page' : pages[pageNumber] }, function() {
-      block.fadeIn();
+      block.fadeTo("fast", 100);
       changerUpdated();
 		});
 	});
