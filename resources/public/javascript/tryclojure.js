@@ -61,8 +61,9 @@ function goToPage(pageNumber) {
 
 	var block = $("#changer");
   	block.fadeOut(function(e) {
-    	block.load("/tutorial", { 'page' : pages[pageNumber] }, function() {
-      block.fadeIn();
+    	$.get("/tutorial", { 'page' : pages[pageNumber] }, function(data) {
+			block.html(data)
+			block.fadeIn();
       changerUpdated();
 		});
 	});
